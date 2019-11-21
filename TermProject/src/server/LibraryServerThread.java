@@ -1,11 +1,15 @@
 package server;
 
 import java.io.BufferedReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +28,7 @@ public class LibraryServerThread extends Thread{
 	BufferedReader br=null;
 	PrintWriter pw=null;
 	private String id=null;
-	
+	private String method=null;
 	LibraryServerThread(Socket client, Map<String, String> client_id_ip, List<PrintWriter> listUser){
 		this.client=client;
 		this.client_id_ip=client_id_ip;
@@ -35,75 +39,88 @@ public class LibraryServerThread extends Thread{
 	@Override
 	public void run() {
 		try {
-			System.out.println("클라이언트 연결 요청 [Client IP: "+client.getInetAddress()+"]");
-			br	= new	BufferedReader(new InputStreamReader(client.getInputStream()));
-			pw=new PrintWriter(new OutputStreamWriter(client.getOutputStream()));
+			br = new BufferedReader(new InputStreamReader(client.getInputStream(),StandardCharsets.UTF_8));
+			pw=new PrintWriter(new OutputStreamWriter(client.getOutputStream(), StandardCharsets.UTF_8));
 			
 			while(true) {
-				String request=br.readLine();
-				if(request==null) {
-					break;
+				try {
+					String request=br.readLine();
+					if(request==null) {
+						break;
+					}
+					String [] request_tokens=request.split(":");// [ex] LOGIN:ID:IP
+				
+					if(request_tokens[0].equals(ServerRequest.SIGN_UP.getRequest())) {//SignUp:ID:PW:Name:Phone:Email,Address
+						method="SignUp";
+						SignUp(request_tokens[1],request_tokens[2],request_tokens[3],request_tokens[4],request_tokens[5],request_tokens[6]);
+					
+					}else if(request_tokens[0].equals(ServerRequest.LOG_IN.getRequest())) {//LogIn:ID:PW
+						method="LogIn";
+						LogIn(request_tokens[1], request_tokens[2], pw);
+					}else if(request_tokens[0].equals(ServerRequest.SIGN_OUT.getRequest())) {//SignOut:ID:PW
+						SignOut(request_tokens[1], request_tokens[2],pw);
+					
+					}else if(request_tokens[0].equals(ServerRequest.LOG_OUT.getRequest())) {//LogOut:ID
+						LogOut(request_tokens[1],pw);
+					
+					}else if(request_tokens[0].equals(ServerRequest.MODIFY_USER_DATA.getRequest())) {//ModifyUserData:ID:PW:NAME:PHONE:EMAIL:ADDRESS  !아이디는 변경 불가!
+						ModifyUserData(request_tokens[1],request_tokens[2],request_tokens[3],request_tokens[4],request_tokens[5],request_tokens[6]);
+					
+					}else if(request_tokens[0].equals(ServerRequest.SEARCH_BOOK.getRequest())) {//SearchBook:제목-~~:작가-~~
+						SearchBook(request_tokens, pw);
+					}else if(request_tokens[0].equals(ServerRequest.ADD_BOOK_DATA.getRequest())) {//AddBookData:제목:작가:ㅇㅇㅇ:, 이게 되면 메인화면에 새로 들어온 책에 띄울거임, BroadCast를 만들어서 띄어주는 형식으로 만들자!!
+						AddBookData(request_tokens);
+					}else if(request_tokens[0].equals(ServerRequest.MODIFY_BOOK_DATA.getRequest())) {//ModifyBookData:책제목:작가:ㅐㅐㅐ
+						modifyBookData(request_tokens);
+					}else if(request_tokens[0].equals(ServerRequest.DELETE_BOOK_DATA.getRequest())) {//DeleteBookData:책번호
+						deleteBookData(request_tokens[1]);
+					}else if(request_tokens[0].equals(ServerRequest.PURCHASE_BOOK.getRequest())) {//PurchaseBook:살 책 제목:파는사람Id:사는사람ID
+					
+					}else if(request_tokens[0].equals(ServerRequest.RENTAL_BOOK.getRequest())) {}
+
+				}catch(MyException e) {
+					pw.println(method+":"+e.getMessage());
+					pw.flush();
 				}
-				String [] request_tokens=request.split(":");// [ex] LOGIN:ID:IP
-				
-				if(request_tokens[0].equals(ServerRequest.SIGN_UP.getRequest())) {//SignUp:ID:PW:Name:Phone:Email,Address
-					SignUp(request_tokens[1],request_tokens[2],request_tokens[3],request_tokens[4],request_tokens[5],request_tokens[6]);
-					
-				}else if(request_tokens[0].equals(ServerRequest.LOG_IN.getRequest())) {//LogIn:ID:PW
-					LogIn(request_tokens[1], request_tokens[2], pw);
-					
-				}else if(request_tokens[0].equals(ServerRequest.SIGN_OUT.getRequest())) {//SignOut:ID:PW
-					SignOut(request_tokens[1], request_tokens[2],pw);
-					
-				}else if(request_tokens[0].equals(ServerRequest.LOG_OUT.getRequest())) {//LogOut:ID
-					LogOut(request_tokens[1],pw);
-					
-				}else if(request_tokens[0].equals(ServerRequest.MODIFY_USER_DATA.getRequest())) {//ModifyUserData:ID:PW:NAME:PHONE:EMAIL:ADDRESS  !아이디는 변경 불가!
-					ModifyUserData(request_tokens[1],request_tokens[2],request_tokens[3],request_tokens[4],request_tokens[5],request_tokens[6]);
-					
-				}else if(request_tokens[0].equals(ServerRequest.SEARCH_BOOK.getRequest())) {//SearchBook:제목-~~:작가-~~
-					SearchBook(request_tokens, pw);
-				}else if(request_tokens[0].equals(ServerRequest.ADD_BOOK_DATA.getRequest())) {//AddBookData:제목:작가:ㅇㅇㅇ:, 이게 되면 메인화면에 새로 들어온 책에 띄울거임, BroadCast를 만들어서 띄어주는 형식으로 만들자!!
-					AddBookData(request_tokens);
-				}else if(request_tokens[0].equals(ServerRequest.MODIFY_BOOK_DATA.getRequest())) {//ModifyBookData:책제목:작가:ㅐㅐㅐ
-					modifyBookData(request_tokens);
-				}else if(request_tokens[0].equals(ServerRequest.DELETE_BOOK_DATA.getRequest())) {//DeleteBookData:책번호
-					deleteBookData(request_tokens[1]);
-				}else if(request_tokens[0].equals(ServerRequest.PURCHASE_BOOK.getRequest())) {//PurchaseBook:살 책 제목:파는사람Id:사는사람ID
-					
-				}else if(request_tokens[0].equals(ServerRequest.RENTAL_BOOK.getRequest())) {//RentalBook:책제목-~~:판매자~~~:판매가:~~~
-					
-				}
-				
-				
-				
-				
 			}
-	
-		}catch(MyException e) {
-			System.out.println(id+"님이 로그아웃 하셨습니다.");
-			LogOut(id,pw);
-			
 		}catch(IOException e) {
-			e.printStackTrace();
+		
+			if(e.getMessage().equals("Connection reset")) {
+				System.out.println(id+"님이 시스템을 종료하셨습니다.");
+				LogOut(id,pw);
+			}else if(e.getMessage().equals("socket closed")){
+				
+			}else{
+				e.printStackTrace();
+				LogOut(id,pw);
+			}
+		
 		}
 	}
 	
 	private synchronized void SignUp(String id, String password, String name, String phone, String Email, String Address) throws MyException {
-		LogInContext.SignUp(name, phone, id, password,Email,Address);//아이디,비밀번호,이름,전화번호,연체료,빌린 책 수, 연결여부(로그인여부[0이면 연결X, 1이면 연결O])
+		if(LogInContext.SignUp(name, phone, id, password,Email,Address)) {//아이디,비밀번호,이름,전화번호,연체료,빌린 책 수, 연결여부(로그인여부[0이면 연결X, 1이면 연결O])
+			pw.println("SignUp:성공:");
+			pw.flush();
+		}
 	}
+	
 	private synchronized void LogIn(String id, String password, PrintWriter cleint) throws MyException {
 		if(LogInContext.LogIn(id,password)) {//로그인 성공하면 정보 저장
+			DB_USER.userLogIn(id);
+			pw.println("LogIn:성공:"+DB_USER.getUser(id).toString());
+			pw.flush();
 			client_id_ip.put(id, client.getInetAddress().toString());
 			listUser.add(cleint);
 			this.id=id;
-			cleint.println(DB_USER.getUser(id).toString());//회원정보를 보낸다, client 는 PrintWriter
+			storeUserLog("LogIn");
 		}
 	}
 	private synchronized void SignOut(String id, String password, PrintWriter client) throws MyException {
 		if(LogInContext.SignOut(id, password)) {
 			client_id_ip.remove(id);
 			listUser.remove(client);
+			storeUserLog("LogOut");
 			pw.close();
 		}
 	}
@@ -111,6 +128,8 @@ public class LibraryServerThread extends Thread{
 		LogInContext.LogOut(id);
 		client_id_ip.remove(id);
 		listUser.remove(client);
+		System.out.println(id+"님이 로그아웃 되었습니다.");
+		storeUserLog("LogOut");
 		pw.close();
 	}
 	private synchronized void ModifyUserData(String id, String changePw, String changeName, String changePhone,String changeEmail, String changeAddress) {//로그인 할 상태에서 바꾸는 거기 때문에 정보가 이상해질 일 없음
@@ -189,4 +208,30 @@ public class LibraryServerThread extends Thread{
 		DB_BOOK.deleateBook(Integer.parseInt(Book_Number));
 	}
 	
+	private void storeUserLog(String status) {
+		SimpleDateFormat format_day = new SimpleDateFormat ( "yyyy-MM-dd");			
+		SimpleDateFormat format_clock = new SimpleDateFormat ( "HH:mm:ss");		
+		Calendar time = Calendar.getInstance();	       
+		String day = format_day.format(time.getTime());
+		String clock = format_clock.format(time.getTime());
+		PrintWriter pw=null;
+		try {
+			if(status.equals("LogIn")) {
+				pw=new PrintWriter(new FileWriter("src/server/userlog/"+day+"UserLogIn.txt"),true);
+				StringBuffer stb= new StringBuffer(day+", "+clock);
+				stb.append("  [User ID: "+this.id+"]  [User IP: "+this.client_id_ip.get(id)+"], LogIn");
+				pw.println(stb);
+				pw.close();
+			}else if(status.equals("LogOut")){
+				pw=new PrintWriter(new FileWriter("src/server/userlog/"+day+"UserLogOut.txt"),true);
+				StringBuffer stb= new StringBuffer(day+", "+clock);
+				stb.append("  [User ID: "+this.id+"]  [User IP: "+this.client_id_ip.get(id)+"], LogOut");
+				pw.println(stb);
+				pw.close();
+			}
+
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

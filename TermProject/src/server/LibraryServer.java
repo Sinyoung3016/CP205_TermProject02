@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class LibraryServer {
 	
-	private final static int PORT=8888;
+	private final static int PORT=26432;
 	public static void main(String[] args) {
 		Map<String, String> client_id_ip=new HashMap<>();
 		List<PrintWriter> listUser= new ArrayList<PrintWriter>();
@@ -29,7 +29,7 @@ public class LibraryServer {
 			
 			while(true) {
 				Socket c_socket=server.accept();
-				new LibraryServerThread(c_socket, client_id_ip,listUser);
+				new LibraryServerThread(c_socket, client_id_ip,listUser).start();;
 				
 			}
 			

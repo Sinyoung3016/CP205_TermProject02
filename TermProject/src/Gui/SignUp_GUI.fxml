@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox fx:id="SignUpVbox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Gui.SignUp_Controller">
+   <children>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Button fx:id="mainbutton" mnemonicParsing="false" onAction="#mainbuttonAction" style="-fx-background-color: white; -fx-text-fill: #3065AC;" text="HelloBooks">
+               <font>
+                  <Font name="Trebuchet MS Bold" size="60.0" />
+               </font>
+            </Button>
+         </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </HBox>
+      <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="900.0" spacing="38.0">
+         <children>
+            <Label style="-fx-text-fill: #3065AC;" text="ID">
+               <font>
+                  <Font name="Trebuchet MS Bold" size="18.0" />
+               </font></Label>
+            <TextField fx:id="idField">
+               <font>
+                  <Font size="14.0" />
+               </font></TextField>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <padding>
+            <Insets left="247.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="900.0" spacing="10.0">
+         <children>
+            <Label style="-fx-text-fill: #3065AC;" text="PassWord">
+               <font>
+                  <Font name="Trebuchet MS Bold" size="18.0" />
+               </font></Label>
+            <TextField fx:id="passwordField">
+               <font>
+                  <Font size="14.0" />
+               </font></TextField>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <padding>
+            <Insets left="213.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="900.0" spacing="25.0">
+         <children>
+            <Label style="-fx-text-fill: #3065AC;" text="Name">
+               <font>
+                  <Font name="Trebuchet MS Bold" size="18.0" />
+               </font></Label>
+            <TextField fx:id="nameField">
+               <font>
+                  <Font size="14.0" />
+               </font></TextField>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <padding>
+            <Insets left="230.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="900.0" spacing="21.0">
+         <children>
+            <Label style="-fx-text-fill: #3065AC;" text="E-Mail">
+               <font>
+                  <Font name="Trebuchet MS Bold" size="18.0" />
+               </font></Label>
+            <TextField fx:id="emailField">
+               <font>
+                  <Font size="14.0" />
+               </font></TextField>
+            <Label style="-fx-text-fill: #3065AC;" text="\@">
+               <font>
+                  <Font name="Trebuchet MS Bold" size="18.0" />
+               </font></Label>
+            <ChoiceBox fx:id="email_next" prefHeight="30.0" prefWidth="150.0" />
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <padding>
+            <Insets left="230.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="900.0" spacing="9.0">
+         <children>
+            <Label style="-fx-text-fill: #3065AC;" text="Phone Num.">
+               <font>
+                  <Font name="Trebuchet MS Bold" size="18.0" />
+               </font></Label>
+            <TextField fx:id="phonenumberField">
+               <font>
+                  <Font size="14.0" />
+               </font></TextField>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <padding>
+            <Insets left="190.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="900.0" spacing="23.0">
+         <children>
+            <Label style="-fx-text-fill: #3065AC;" text="Address">
+               <font>
+                  <Font name="Trebuchet MS Bold" size="18.0" />
+               </font></Label>
+            <TextArea fx:id="addressField" prefHeight="40.0" prefWidth="400.0">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <HBox.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </HBox.margin></TextArea>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <padding>
+            <Insets left="213.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+         <children>
+            <Button fx:id="SignUpButton" mnemonicParsing="false" onAction="#signupAction" prefHeight="40.0" prefWidth="300.0" style="-fx-background-color: #3065AC; -fx-text-fill: white;" text="SignUp">
+               <font>
+                  <Font name="Trebuchet MS Bold" size="18.0" />
+               </font></Button>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </HBox>
+   </children>
+</VBox>

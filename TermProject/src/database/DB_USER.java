@@ -36,7 +36,7 @@ public class DB_USER extends DBManager {
 				MemberInfo[1] = rs.getString("PassWord");
 				MemberInfo[2] = rs.getString("Name");
 				MemberInfo[3] = rs.getString("Phone");
-				MemberInfo[4] = rs.getString("Emain");
+				MemberInfo[4] = rs.getString("Email");
 				MemberInfo[5] = rs.getString("Address");
 				MemberInfo[6] = rs.getString("Lend_OK");
 				MemberInfo[7]=rs.getString("is_connected");//연결되면 1, 아니면 0
@@ -81,13 +81,12 @@ public class DB_USER extends DBManager {
 		String[] userInfo = new String[8];
 		
 		try {
-
 			conn = getConn();
 
 			state = conn.createStatement();// conn연결정보를 state로 생성.
 			
 			String sql;
-			sql = "SELECT *FROM user WHERE ID='" + ID + "'";
+			sql = "SELECT * FROM user WHERE id='" + ID + "'";
 			
 			rs = state.executeQuery(sql);
 			if(rs==null) {
@@ -95,20 +94,17 @@ public class DB_USER extends DBManager {
 			}
 
 			if (rs.next()) {
-
-				userInfo[0] = rs.getString("ID");
-				userInfo[1] = rs.getString("PassWord");
-				userInfo[2] = rs.getString("Name");
+				userInfo[0] = rs.getString("id");
+				userInfo[1] = rs.getString("password");
+				userInfo[2] = rs.getString("name");
 				userInfo[3] = rs.getString("Phone");
-				userInfo[4] = rs.getString("Emain");
+				userInfo[4] = rs.getString("Email");
 				userInfo[5] = rs.getString("Address");
 				userInfo[6] = rs.getString("Lend_OK");
 				userInfo[7]=rs.getString("is_connected");//연결되면 1, 아니면 0
-
 				// RentalBookRegistrationNum
 			}
 			User returnUser=new User(userInfo);
-			
 			return returnUser;
 
 			
@@ -148,7 +144,7 @@ public class DB_USER extends DBManager {
 			conn = getConn();
 
 			String sql;
-			sql = "INSERT INTO user (ID, PassWord, Name, Phone, LateFee, Rental_Book_Num)VALUES (?,?,?,?,?,?)";
+			sql = "INSERT INTO user (ID, PassWord, Name, Phone, Email, Address, Lend_OK, is_connected)VALUES (?,?,?,?,?,?,?,?)";
 			pstmt = conn.prepareStatement(sql);
 
 			pstmt.setString(1, changeUser.getID());

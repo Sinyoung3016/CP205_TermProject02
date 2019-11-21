@@ -34,7 +34,19 @@ public class User {
 		}
 	}
 
+	public User(String UserInfo) {
+		String[] info=UserInfo.split("-");
+		this.ID=info[1];
+		this.password=info[3];
+		this.name=info[5];
+		this.phone=info[7];
+		this.Email=info[9];
+		this.Address=info[11];
+		this.Lend_OK=Boolean.parseBoolean(info[13]);
+		this.is_connected=Boolean.parseBoolean(info[15]);
 
+		
+	}
 	public String getID() {
 		return ID;
 	}
@@ -84,9 +96,15 @@ public class User {
 
 
 	public String toString() {
-		StringBuilder sb=new StringBuilder("회원정보: [");
-		sb.append("{ID: "+this.ID+"}  {PW: "+this.password+"}  {이름: "+this.name+"}  {전화번호: "+this.phone+"}  {이메일: "+this.Email
-				+"} {주소: "+this.getAddress()+"} {대여가능여부: "+this.Lend_OK+"} {접속여부: "+this.is_connected+"} ]");
+		StringBuilder sb=new StringBuilder("회원정보");//회원정보ID:~~:PW:~~
+		sb.append("ID-"+this.ID);//token1
+		sb.append("-PW-"+this.password);//token3
+		sb.append("-이름-"+this.name);
+		sb.append("-전화번호-"+this.phone);
+		sb.append("-이메일-"+this.Email);
+		sb.append("-주소-"+this.getAddress());
+		sb.append("-대여가능여부-"+this.Lend_OK);
+		sb.append("-접속여부-"+this.is_connected);//15
 		return new String(sb);
 	}
 

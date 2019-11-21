@@ -53,9 +53,7 @@ public class LogInContext {
 		}
 		if (PW.equals(getUser.getPassword())) {
 			//성공
-
 			if(!getUser.is_connected()) {//연결되어 있으면 true, 아니면 false
-				
 				return true;//로그인 성공
 			}
 			else {
