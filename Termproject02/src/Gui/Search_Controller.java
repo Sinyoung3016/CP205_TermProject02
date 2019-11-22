@@ -20,6 +20,4 @@ public class Search_Controller extends Base_Controller implements Initializable 
 		super.base();
 		// Base end
 	}
-	
-	
 }

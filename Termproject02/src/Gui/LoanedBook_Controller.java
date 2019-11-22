@@ -21,27 +21,27 @@ public class LoanedBook_Controller extends Base_Controller implements Initializa
 		// Base end
 	}
 	
-	public void backAction() {
+	public void backAction() {//전의 화면으로
 		
 	}
 
-	public void removeAction() {
+	public void removeAction() {//등록된 책을 삭제
 		
 	}
 	
-	public void comfirmAction() {
+	public void comfirmAction() {//전의 화면으로
 		
 	}
-	public void goLeftAction() {
+	public void goLeftAction() {//왼쪽으로 넘어가며  다른 책 보여주기 
 		
 	}
-	public void goRightAction() {
+	public void goRightAction() {//오른쪽으로 넘어가며 다른 책 보여주기 
 		
 	}
-	public void returnAction() {
+	public void returnAction() { //반납확인, lb_RentalStatus을 true로
 		
 	}
-	public void lateinreturnAction() {
+	public void lateinreturnAction() { //빌린 사람의  lb_Rent를 false로
 		
 	}
 }

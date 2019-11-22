@@ -281,7 +281,7 @@
                               <Font name="Trebuchet MS Bold" size="14.0" />
                            </font>
                         </Button>
-                        <Button fx:id="btn_ProfileBorrowed" mnemonicParsing="false" onAction="#borrowedAction" prefWidth="86.0" style="-fx-background-color: #3065AC; -fx-text-fill: white;" text="Borrowed">
+                        <Button fx:id="btn_ProfileNewAlert" mnemonicParsing="false" onAction="#alertAction" prefWidth="86.0" style="-fx-background-color: #3065AC; -fx-text-fill: white;" text="New Alert">
                            <font>
                               <Font name="Trebuchet MS Bold" size="14.0" />
                            </font>

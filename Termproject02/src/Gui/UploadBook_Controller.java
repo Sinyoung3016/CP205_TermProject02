@@ -25,11 +25,11 @@ public class UploadBook_Controller extends Base_Controller implements Initializa
 		// Base end
 	}
 
-	public void backAction() {
+	public void backAction() {// 전의 화면으로 
 
 	}
 
-	public void saveAction() {
+	public void saveAction() {// 책 업로드
 
 	}
 }

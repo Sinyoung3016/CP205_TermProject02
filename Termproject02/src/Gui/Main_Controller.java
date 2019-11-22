@@ -45,12 +45,12 @@ public class Main_Controller extends Base_Controller implements Initializable {
 	
 	@FXML
 	public void goLeftAction() {
-		// adPicture를 왼쪽으로 이동 
+		// 왼쪽으로 이동하며 다른 adPicture 보여주기  
 	}
 
 	@FXML
 	public void goRightAction() {
-		// adPicture를 오른쪽으로 이동
+		// 오른쪽으로 이동하며 다른 adPicture 보여주기
 	}
 
 }

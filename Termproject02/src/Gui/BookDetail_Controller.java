@@ -33,12 +33,12 @@ public class BookDetail_Controller extends Base_Controller implements Initializa
 	}
 
 	@FXML
-	public void borrowedNowAction() { //이 책을 바로 빌리기
+	public void borrowedNowAction() { //이 책을 바로 빌리기 책주인에게 알리기 -> 책 주인의 New Alert에 뜨기
 
 	}
 
 	@FXML
-	public void buyNowAction() { //이 책을 바로 구매하기
+	public void buyNowAction() { //이 책을 바로 구매하기 -> 책 주인의 New Alert에 뜨기
 
 	}
 	@FXML

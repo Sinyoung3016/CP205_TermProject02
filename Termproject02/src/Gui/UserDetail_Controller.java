@@ -47,7 +47,7 @@ public class UserDetail_Controller extends Base_Controller implements Initializa
 	}
 
 	public void confirmAction() {
-		// 화면종료하고 전의 화면으로
+		// 전의 화면으로
 
 	}
 
