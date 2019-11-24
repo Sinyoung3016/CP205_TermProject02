@@ -1,0 +1,2 @@
+2019-11-24, 20:50:54  [User ID: huipulco]  [User IP: /192.168.0.1], LogOut
+2019-11-24, 20:51:04  [User ID: huipulco]  [User IP: /192.168.0.1], LogOut
