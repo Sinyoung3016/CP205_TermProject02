@@ -25,7 +25,7 @@ public class DataModel {
 	public static User user;
 	public static List<Book> book_list;
 	public static ObservableList<HBoxCell> ItemList_newBook;
-	public static ObservableList ItemList_myBook;
+	public static ObservableList<Object> ItemList_myBook;
 	public static BufferedReader br;
 	public static ArrayList<Image> advertisement_list=new ArrayList<>();
 	

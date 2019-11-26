@@ -26,7 +26,7 @@ public class MyBookList_Controller extends Base_Controller implements Initializa
 	public ListView lv_MybooklistField;
 	private Socket socket;
 	
-	private ObservableList<String> ItemList_myBook;
+	private ObservableList<Object> ItemList_myBook;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -36,8 +36,6 @@ public class MyBookList_Controller extends Base_Controller implements Initializa
 		// Base end
 		ItemList_myBook=DataModel.ItemList_myBook;
 		lv_MybooklistField.setItems(ItemList_myBook);
-		
-	
 	}
 
 	public void showborrowedAction() { // ∫Ù∏∞ √• MybooklistFieldø° ∫∏ø©¡‡ LoanedBook ¿¸√º ∫∏ø©¡‡

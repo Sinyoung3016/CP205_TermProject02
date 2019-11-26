@@ -135,6 +135,7 @@ public class Base_Controller { // 변하지 않는 화면 = Base
 			Stage primaryStage = (Stage) btn_MyInfo.getScene().getWindow();
 			Parent search = FXMLLoader.load(getClass().getResource("/Gui/MyBookList_GUI.fxml"));
 			Scene scene = new Scene(search);
+			scene.getStylesheets().add(getClass().getResource("CSS.css").toExternalForm());
 			primaryStage.setTitle("HelloBooks/MyBookList");
 			primaryStage.setScene(scene);
 			primaryStage.show();
