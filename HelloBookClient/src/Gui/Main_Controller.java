@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 
 import Gui.model.DataModel;
 import book.Book;
+import book.Book.HBoxCell;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -28,7 +29,7 @@ public class Main_Controller extends Base_Controller implements Initializable {
 	@FXML
 	public ListView lv_NewBooks, lv_BestSeller;
 	private int ad_count;
-	private ObservableList<Book> ItemList_newBook;
+	private ObservableList<HBoxCell> ItemList_newBook;
 
 
 	private Image[] ad = {

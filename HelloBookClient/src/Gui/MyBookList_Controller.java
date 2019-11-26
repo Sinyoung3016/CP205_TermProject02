@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 
 import Gui.model.DataModel;
 import book.Book;
+import book.Book.HBoxCell;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -25,7 +26,7 @@ public class MyBookList_Controller extends Base_Controller implements Initializa
 	public ListView lv_MybooklistField;
 	private Socket socket;
 	
-	private ObservableList<String> ItemList_myBook;
+	private ObservableList<HBoxCell> ItemList_myBook;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {

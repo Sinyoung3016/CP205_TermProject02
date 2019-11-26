@@ -41,46 +41,67 @@
       </HBox>
       <HBox prefHeight="500.0" prefWidth="900.0" spacing="10.0">
          <children>
-            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="688.0" spacing="10.0" style="-fx-background-color: #e8f5ff;">
+            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="688.0" style="-fx-background-color: #e8f5ff;">
                <HBox.margin>
                   <Insets bottom="5.0" left="10.0" />
                </HBox.margin>
                <children>
                   <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="10.0">
                      <children>
-                        <Label style="-fx-text-fill: #3065AC;" text="About">
+                        <Label style="-fx-text-fill: #3065AC;" text="Title">
                            <font>
                               <Font name="Trebuchet MS Bold" size="14.0" />
                            </font>
                         </Label>
-                        <ChoiceBox fx:id="cb_About" prefWidth="80.0" style="-fx-text-fill: #3065AC;" />
+                        <TextField fx:id="tf_Title" alignment="CENTER" prefWidth="150.0" />
+                        <Label style="-fx-text-fill: #3065AC;" text="Author">
+                           <font>
+                              <Font name="Trebuchet MS Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="tf_Author" alignment="CENTER" prefWidth="150.0" />
+                        <Label style="-fx-text-fill: #3065AC;" text="Publisher">
+                           <font>
+                              <Font name="Trebuchet MS Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="tf_Publisher" alignment="CENTER" prefWidth="150.0" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="10.0">
+                     <children>
                         <Label style="-fx-text-fill: #3065AC;" text="Genre">
                            <font>
                               <Font name="Trebuchet MS Bold" size="14.0" />
                            </font>
                         </Label>
-                        <ChoiceBox fx:id="cb_genre" prefWidth="80.0" style="-fx-text-fill: #3065AC;" />
+                        <ChoiceBox fx:id="cb_genre" prefWidth="120.0" style="-fx-text-fill: #3065AC;" />
                         <Label style="-fx-text-fill: #3065AC;" text="BookCondition">
                            <font>
                               <Font name="Trebuchet MS Bold" size="14.0" />
                            </font>
                         </Label>
-                        <ChoiceBox fx:id="cb_BookCondition" prefWidth="80.0" style="-fx-text-fill: #3065AC;" />
+                        <ChoiceBox fx:id="cb_BookCondition" prefWidth="120.0" style="-fx-text-fill: #3065AC;" />
                         <Label style="-fx-text-fill: #3065AC;" text="RentalStatus">
                            <font>
                               <Font name="Trebuchet MS Bold" size="14.0" />
                            </font>
                         </Label>
-                        <ChoiceBox fx:id="cb_RentalStatus" prefWidth="80.0" style="-fx-text-fill: #3065AC;" />
+                        <ChoiceBox fx:id="cb_RentalStatus" prefWidth="120.0" style="-fx-text-fill: #3065AC;" />
                      </children>
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
-                     <padding>
-                        <Insets top="10.0" />
-                     </padding>
                   </HBox>
-                  <ListView fx:id="lv_BookList" prefHeight="418.0" prefWidth="200.0">
+                  <Button fx:id="btn_DetailSearch" mnemonicParsing="false" onAction="#DetailSearchAction" prefWidth="100.0" style="-fx-text-fill: white; -fx-background-color: #3065AC;" text="Search">
+                     <font>
+                        <Font name="Trebuchet MS Bold" size="14.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="12.0" />
+                     </VBox.margin>
+                  </Button>
+                  <ListView fx:id="lv_BookList" prefHeight="340.0" prefWidth="200.0">
                      <VBox.margin>
                         <Insets left="10.0" right="10.0" />
                      </VBox.margin>

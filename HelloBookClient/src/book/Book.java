@@ -1,5 +1,10 @@
 package book;
 
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+
 public class Book {
 
 	private int book_num; // 등록번호, 등록된 순으로 1씩 증가시킴.
@@ -95,5 +100,28 @@ public class Book {
 
 		return new String(sb);
 	}
+	
+	public HBoxCell getBook() {
+		return new HBoxCell(this.book_num, this.title, this.auther);
+	}
+	
+	public static class HBoxCell extends HBox {
+        Label num = new Label();
+        Button title = new Button();
+        Label author = new Label();
+
+        HBoxCell(int book_num, String book_title, String book_author) {
+             super();
+
+             num.setText(book_num + "");
+             num.setMaxWidth(Double.MAX_VALUE);
+             HBox.setHgrow(num, Priority.ALWAYS);
+
+             title.setText(book_title);
+             author.setText(book_author);
+
+             this.getChildren().addAll(num, title, author);
+        }
+   }
 
 }
