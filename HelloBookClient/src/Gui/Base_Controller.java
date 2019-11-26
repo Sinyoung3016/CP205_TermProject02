@@ -90,6 +90,7 @@ public class Base_Controller { // 변하지 않는 화면 = Base
 						new OutputStreamWriter(DataModel.socket.getOutputStream(), StandardCharsets.UTF_8), true);
 				pw.println(m);
 				pw.flush();
+				DataModel.socket=null;
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

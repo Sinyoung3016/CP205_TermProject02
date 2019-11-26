@@ -1,11 +1,16 @@
 package Gui.model;
 
+
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 
 import book.Book;
 import javafx.collections.ObservableList;
+import javafx.scene.image.Image;
 import user.User;
 
 public class DataModel {
@@ -20,6 +25,7 @@ public class DataModel {
 	public static ObservableList<Book> ItemList_newBook;
 	public static ObservableList<String> ItemList_myBook;
 	public static BufferedReader br;
+	public static ArrayList<Image> advertisement_list=new ArrayList<>();
 	
 	public static void addNewBook(Book book) {
 		ItemList_newBook.add(0,book);
@@ -32,6 +38,5 @@ public class DataModel {
 		ItemList_myBook.add(book);
 
 	}
-	
-	
+
 }

@@ -1,6 +1,8 @@
 package server;
 
+import java.awt.Image;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,6 +17,8 @@ import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import javax.imageio.ImageIO;
 
 import authentication.LogInContext;
 import book.Book;
@@ -38,14 +42,20 @@ public class LibraryServerThread extends Thread{
 		this.client_id_ip=client_id_ip;
 		this.listUser=listUser;
 		this.new_book_list=new_book_list;
+		
 	}
 	
 	
 	@Override
 	public void run() {
 		try {
+	
 			br = new BufferedReader(new InputStreamReader(client.getInputStream(),StandardCharsets.UTF_8));
 			pw=new PrintWriter(new OutputStreamWriter(client.getOutputStream(), StandardCharsets.UTF_8));
+			
+			
+			
+			
 			
 			while(true) {
 				try {
@@ -316,4 +326,7 @@ public class LibraryServerThread extends Thread{
 			}
 		}
 	}
+	
+	
+
 }
