@@ -26,7 +26,7 @@ public class MyBookList_Controller extends Base_Controller implements Initializa
 	public ListView lv_MybooklistField;
 	private Socket socket;
 	
-	private ObservableList<HBoxCell> ItemList_myBook;
+	private ObservableList<String> ItemList_myBook;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
