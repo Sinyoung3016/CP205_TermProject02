@@ -11,6 +11,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ResourceBundle;
 
+import Gui.model.ClientThread;
 import Gui.model.DataModel;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -48,7 +49,7 @@ public class Login_Controller implements Initializable {
 		} catch (IOException e) {
 			//if (e.getMessage().equals("Connection refused: connect")) {
 			//	lb_error.setText("서버에 연결되지 않음");
-			lb_error.setText(e.getMessage());
+				lb_error.setText(e.getMessage());
 				btn_Login.setDisable(true);
 				btn_SignUp.setDisable(true);
 			//}
@@ -88,6 +89,10 @@ public class Login_Controller implements Initializable {
 					try {
 						DataModel.user = new User(tokens[2]);
 						DataModel.ID = tf_ID.getText();
+						new ClientThread(DataModel.socket).start();
+						
+						Thread.sleep(500);
+						
 						Stage primaryStage = (Stage) btn_Login.getScene().getWindow();
 						Parent login = FXMLLoader.load(getClass().getResource("/Gui/Main_GUI.fxml"));
 						Scene scene = new Scene(login);

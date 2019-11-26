@@ -13,6 +13,32 @@ import book.Book;
 public class DB_BOOK  extends DBManager{
 	
 	
+	public synchronized static int getBookCount() {
+		Connection conn = null;
+		Statement state = null;
+		ResultSet rs =null;
+		List<Book > returnBookList = new ArrayList<>();
+		String [] BookInfo=new String[11];
+		try {
+			conn = getConn();
+			state = conn.createStatement();// conn연결정보를 state로 생성.
+			String sql;
+			sql = "SELECT COUNT(*) count FROM BOOK";	
+			
+			rs = state.executeQuery(sql);
+			if(rs.next());
+			return rs.getInt("count");				
+		} catch (Exception e) {
+			System.out.println(e);
+			return -1;
+		}  finally {	
+			try {
+				if (state != null)	state.close();
+				if (conn != null)	conn.close();
+				if(rs!=null)	rs.close();
+			} catch (SQLException e) {}
+		}
+	}
 	public synchronized static List<Book> getAllBook() {
 		Connection conn = null;
 		Statement state = null;
@@ -80,7 +106,7 @@ public class DB_BOOK  extends DBManager{
 			} catch (SQLException e) {}
 		}
 	}
-	public synchronized static void insertBook(int Book_Number,String Title,String Auther, String Publisher, String Genre, String Book_Condition,int Full_Price, int Sale_Price, int Lend_Price, Boolean Rental_Status, String Introduction) {//삽입 
+	public synchronized static void insertBook(int BookNum,String Title,String Auther, String Publisher, String Genre, String Book_Condition,int Full_Price, int Sale_Price, int Lend_Price, Boolean Rental_Status, String Introduction) throws SQLException {//삽입 
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 
@@ -94,7 +120,7 @@ public class DB_BOOK  extends DBManager{
 			sql = "INSERT INTO book (Book_Number, Title, Auther, Publisher, Genre, Book_Condition,Full_Price,Sale_Price,Lend_Price,Rental_Status,Introduction)VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 			pstmt = conn.prepareStatement(sql);
 
-			pstmt.setString(1, Book_Number+"");
+			pstmt.setString(1, BookNum+"");
 			pstmt.setString(2, Title);
 			pstmt.setString(3, Auther);
 			pstmt.setString(4, Publisher);
@@ -113,9 +139,7 @@ public class DB_BOOK  extends DBManager{
 			pstmt.executeUpdate();
 			pstmt.close();
 			conn.close();
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}  finally {	
+		} finally {	
 			try {
 				if (pstmt != null)	pstmt.close();
 				if (conn != null)	conn.close();
@@ -169,7 +193,8 @@ public class DB_BOOK  extends DBManager{
 		}
 	}
 
-	public synchronized static Book searchBook(int Book_Number) {//등록번호로 찾기-관리자가 사용할 메소드
+	public synchronized static Book searchBookByNum(int Book_Number) {//등록번호로 찾기-관리자가 사용할 메소드
+
 		Connection conn = null;
 		Statement state = null;
 		ResultSet rs =null;
@@ -218,6 +243,7 @@ public class DB_BOOK  extends DBManager{
 		}
 	}
 	public synchronized static List<Book> searchBook(String info) {//한개로 찾기 ex)제목이면 Title-~~~, 작가면 Auther-~~~이런식으로 입력받아서 :로 스플릿 해서 경우 나눔
+
 		Connection conn = null;
 		Statement state = null;
 		ResultSet rs =null;

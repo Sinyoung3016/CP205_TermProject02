@@ -8,7 +8,9 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
@@ -18,21 +20,24 @@ import authentication.LogInContext;
 import book.Book;
 import database.DB_BOOK;
 import database.DB_USER;
+import database.DB_UsersBook;
 import exception.MyException;
 import user.User;
 
 public class LibraryServerThread extends Thread{
+	private List<Book> new_book_list;
 	private Map<String, String> client_id_ip;
-	List<PrintWriter> listUser =null;
+	private List<PrintWriter> listUser =null;
 	private Socket client;
 	BufferedReader br=null;
 	PrintWriter pw=null;
 	private String id=null;
 	private String method=null;
-	LibraryServerThread(Socket client, Map<String, String> client_id_ip, List<PrintWriter> listUser){
+	LibraryServerThread(Socket client, Map<String, String> client_id_ip, List<PrintWriter> listUser, List<Book> new_book_list){
 		this.client=client;
 		this.client_id_ip=client_id_ip;
 		this.listUser=listUser;
+		this.new_book_list=new_book_list;
 	}
 	
 	
@@ -50,6 +55,7 @@ public class LibraryServerThread extends Thread{
 					}
 					String [] request_tokens=request.split(":");// [ex] LOGIN:ID:IP
 				
+				
 					if(request_tokens[0].equals(ServerRequest.SIGN_UP.getRequest())) {//SignUp:ID:PW:Name:Phone:Email,Address
 						method="SignUp";
 						SignUp(request_tokens[1],request_tokens[2],request_tokens[3],request_tokens[4],request_tokens[5],request_tokens[6]);
@@ -61,6 +67,7 @@ public class LibraryServerThread extends Thread{
 						SignOut(request_tokens[1], request_tokens[2],pw);
 					
 					}else if(request_tokens[0].equals(ServerRequest.LOG_OUT.getRequest())) {//LogOut:ID
+						method="LogOut";
 						LogOut(request_tokens[1],pw);
 					
 					}else if(request_tokens[0].equals(ServerRequest.MODIFY_USER_DATA.getRequest())) {//ModifyUserData:ID:PW:NAME:PHONE:EMAIL:ADDRESS  !아이디는 변경 불가!
@@ -68,17 +75,30 @@ public class LibraryServerThread extends Thread{
 					
 					}else if(request_tokens[0].equals(ServerRequest.SEARCH_BOOK.getRequest())) {//SearchBook:제목-~~:작가-~~
 						SearchBook(request_tokens, pw);
+						
+					}else if(request_tokens[0].equals(ServerRequest.PRINT_BOOK_LIST.getRequest())) {//SearchBook:제목-~~:작가-~~
+						method="PrintBookList";
+						
+						PrintBookList(request_tokens[1],request_tokens[2],pw);
+						
 					}else if(request_tokens[0].equals(ServerRequest.ADD_BOOK_DATA.getRequest())) {//AddBookData:제목:작가:ㅇㅇㅇ:, 이게 되면 메인화면에 새로 들어온 책에 띄울거임, BroadCast를 만들어서 띄어주는 형식으로 만들자!!
+						method="AddBookData";
 						AddBookData(request_tokens);
+						
 					}else if(request_tokens[0].equals(ServerRequest.MODIFY_BOOK_DATA.getRequest())) {//ModifyBookData:책제목:작가:ㅐㅐㅐ
 						modifyBookData(request_tokens);
+						
 					}else if(request_tokens[0].equals(ServerRequest.DELETE_BOOK_DATA.getRequest())) {//DeleteBookData:책번호
 						deleteBookData(request_tokens[1]);
+						
 					}else if(request_tokens[0].equals(ServerRequest.PURCHASE_BOOK.getRequest())) {//PurchaseBook:살 책 제목:파는사람Id:사는사람ID
 					
 					}else if(request_tokens[0].equals(ServerRequest.RENTAL_BOOK.getRequest())) {}
 
 				}catch(MyException e) {
+					pw.println(method+":"+e.getMessage());
+					pw.flush();
+				}catch(SQLException e) {
 					pw.println(method+":"+e.getMessage());
 					pw.flush();
 				}
@@ -112,11 +132,20 @@ public class LibraryServerThread extends Thread{
 	private synchronized void LogIn(String id, String password, PrintWriter pw) throws MyException {
 		if(LogInContext.LogIn(id,password)) {//로그인 성공하면 정보 저장
 			DB_USER.userLogIn(id);
+			
 			pw.println("LogIn:성공:"+DB_USER.getUser(id).toString());
 			pw.flush();
 			client_id_ip.put(id, client.getInetAddress().toString());
 			listUser.add(pw);
 			this.id=id;
+			
+			try {
+				sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			
+			UpdateNewBookforStart();
 			storeUserLog("LogIn");
 		}
 	}
@@ -189,24 +218,36 @@ public class LibraryServerThread extends Thread{
 		
 		}
 	}
-	private synchronized void AddBookData(String[] bookData) {//로그인 할 상태에서 바꾸는 거기 때문에 정보가 이상해질 일 없음
+	private synchronized void AddBookData(String[] bookData) throws  SQLException {
 		
-		DB_BOOK.insertBook(Integer.parseInt(bookData[1]),bookData[2],bookData[3],bookData[4],bookData[5],bookData[6],Integer.parseInt(bookData[7]),Integer.parseInt(bookData[8]),Integer.parseInt(bookData[9]),Boolean.parseBoolean(bookData[10]),bookData[11]);
+		int bookNum=DB_BOOK.getBookCount();
+		DB_BOOK.insertBook(bookNum+1,bookData[1],bookData[2],bookData[3],bookData[4],bookData[5],Integer.parseInt(bookData[6]),Integer.parseInt(bookData[7]),Integer.parseInt(bookData[8]),Boolean.parseBoolean(bookData[9]),bookData[10]);
+		
+		DB_UsersBook.uploadBook(bookNum+1,id,bookData[1]);//등록번호,아이디,제목
+		pw.println("AddBookData:성공");
+		pw.flush();
 		String[] newBookData=new String[11];
-		for(int i=0; i<11; i++) {
-			newBookData[i]=bookData[i+1];
+		newBookData[0]=bookNum+1+"";
+		for(int i=1; i<11; i++) {
+			newBookData[i]=bookData[i];
 		}
 		Book newBook=new Book(newBookData);
+		new_book_list.add(0,newBook);
+
+		if(new_book_list.size()==21) {
+			new_book_list.remove(20);
+			
+		}
 		broadcast(newBook);
 	}
+	
 	private void broadcast(Book addBook) {
 		synchronized(listUser) {//모든 사람들에게 메세지 출력
 			for(PrintWriter writer : listUser) {
-				writer.println(addBook);
+				writer.println("NewBook:"+addBook.getBookInfoTokens());
 				writer.flush();
 			}
 		}
-		
 	}
 	
 	private synchronized void modifyBookData(String[] bookData) {
@@ -241,6 +282,38 @@ public class LibraryServerThread extends Thread{
 
 		}catch(IOException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	private void UpdateNewBookforStart() {
+		
+		
+		for(int i=new_book_list.size()-1; i>=0; i--) {
+			pw.println("NewBook:"+new_book_list.get(i).getBookInfoTokens());
+			pw.flush();
+			
+		}
+	}
+	
+	private synchronized void PrintBookList(String id, String status, PrintWriter pw) throws SQLException {
+		List<Book> book_list=new ArrayList<>();
+		List<Integer> book_num_list=null;
+		if(status.equals("Registered")) {
+			book_num_list=DB_UsersBook.getRegisteredBookNumber(id);
+			
+			for(int i=0; i<book_num_list.size();i++) {
+				book_list.add(DB_BOOK.searchBookByNum(book_num_list.get(i)));
+				
+			}
+			if(book_list.size()==0) {
+				pw.println("PrintBookList:등록한 책이 없습니다.");
+				pw.flush();
+			}
+	
+			for(int i=book_list.size()-1; i>=0; i--) {
+				pw.println("PrintBookList:"+book_list.get(i).getBookInfoTokens());
+				pw.flush();
+			}
 		}
 	}
 }

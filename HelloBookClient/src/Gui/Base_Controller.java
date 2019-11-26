@@ -1,5 +1,6 @@
 package Gui;
 
+import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
@@ -28,7 +29,9 @@ public class Base_Controller { // 변하지 않는 화면 = Base
 	public Label lb_ProfileName, lb_ProfileID, lb_ProfileLend;
 
 	public ListView lv_ProfileList;
+	
 
+	
 	public void base() {
 
 		// Profile start
@@ -62,11 +65,7 @@ public class Base_Controller { // 변하지 않는 화면 = Base
 	public void logoutAction() throws Exception {
 
 		//Logout start
-		String m = "LogOut:" + DataModel.ID;
-		DataModel.ID = null;
-		PrintWriter pw = new PrintWriter(
-				new OutputStreamWriter(DataModel.socket.getOutputStream(), StandardCharsets.UTF_8), true);
-		pw.println(m);
+		LogOut();
 		//Logout end
 
 		//To Login_GUI
@@ -80,6 +79,22 @@ public class Base_Controller { // 변하지 않는 화면 = Base
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	public static void LogOut() {
+		if(DataModel.socket!=null) {
+			String m = "LogOut:" + DataModel.ID;
+			DataModel.ID = null;
+			PrintWriter pw;
+			try {
+				pw = new PrintWriter(
+						new OutputStreamWriter(DataModel.socket.getOutputStream(), StandardCharsets.UTF_8), true);
+				pw.println(m);
+				pw.flush();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
 	}
 
 	public void searchAction() throws Exception { 
@@ -101,11 +116,31 @@ public class Base_Controller { // 변하지 않는 화면 = Base
 
 	public void salesAction() { 
 		// To UploadBook_GUI
-
+		try {
+			Stage primaryStage = (Stage) btn_Search.getScene().getWindow();
+			Parent search = FXMLLoader.load(getClass().getResource("/Gui/UploadBook_GUI.fxml"));
+			Scene scene = new Scene(search);
+			primaryStage.setTitle("HelloBooks/UploadBook");
+			primaryStage.setScene(scene);
+			primaryStage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void mybooklistAction() { 
 		// To MyBookList_GUI
+		try {
+			Stage primaryStage = (Stage) btn_MyInfo.getScene().getWindow();
+			Parent search = FXMLLoader.load(getClass().getResource("/Gui/MyBookList_GUI.fxml"));
+			Scene scene = new Scene(search);
+			primaryStage.setTitle("HelloBooks/MyBookList");
+			primaryStage.setScene(scene);
+			primaryStage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 
 	}
 

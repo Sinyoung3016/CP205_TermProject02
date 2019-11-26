@@ -12,6 +12,7 @@ public class First_Main extends Application {
 			Parent root = FXMLLoader.load(getClass().getResource("/Gui/Login_GUI.fxml"));
 			Scene scene = new Scene(root);
 			primaryStage.setTitle("HelloBooks");
+			primaryStage.setOnCloseRequest(ActionEvent->Base_Controller.LogOut());
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (Exception e) {

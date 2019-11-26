@@ -8,6 +8,7 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -161,17 +162,20 @@
                                           </TextField>
                                           <HBox alignment="CENTER" prefHeight="106.0" prefWidth="200.0" spacing="20.0">
                                              <children>
-                                                <RadioButton fx:id="rb_BCTop" mnemonicParsing="false" style="-fx-text-fill: #3065AC;" text="상">
+                                                <RadioButton fx:id="rb_BCTop" mnemonicParsing="false" style="-fx-text-fill: #3065AC;" text="상" userData="상">
+                                                   <font>
+                                                      <Font name="Trebuchet MS Bold" size="13.0" />
+                                                   </font>
+                                                   <toggleGroup>
+                                                      <ToggleGroup fx:id="condition" />
+                                                   </toggleGroup>
+                                                </RadioButton>
+                                                <RadioButton fx:id="rb_BCMid" mnemonicParsing="false" style="-fx-text-fill: #3065AC;" text="중" toggleGroup="$condition" userData="중">
                                                    <font>
                                                       <Font name="Trebuchet MS Bold" size="13.0" />
                                                    </font>
                                                 </RadioButton>
-                                                <RadioButton fx:id="rb_BCMid" mnemonicParsing="false" style="-fx-text-fill: #3065AC;" text="중">
-                                                   <font>
-                                                      <Font name="Trebuchet MS Bold" size="13.0" />
-                                                   </font>
-                                                </RadioButton>
-                                                <RadioButton fx:id="rb_BCLow" mnemonicParsing="false" style="-fx-text-fill: #3065AC;" text="하">
+                                                <RadioButton fx:id="rb_BCLow" mnemonicParsing="false" style="-fx-text-fill: #3065AC;" text="하" toggleGroup="$condition" userData="하">
                                                    <font>
                                                       <Font name="Trebuchet MS Bold" size="13.0" />
                                                    </font>

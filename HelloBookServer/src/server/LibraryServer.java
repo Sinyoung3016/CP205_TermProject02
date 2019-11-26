@@ -8,8 +8,11 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import book.Book;
 
 public class LibraryServer {
 	
@@ -17,6 +20,7 @@ public class LibraryServer {
 	public static void main(String[] args) {
 		Map<String, String> client_id_ip=new HashMap<>();
 		List<PrintWriter> listUser= new ArrayList<PrintWriter>();
+		List<Book> new_book_list=new LinkedList<Book>();
 		
 		try {
 			
@@ -31,7 +35,7 @@ public class LibraryServer {
 			while(true) {
 				Socket c_socket=server.accept();
 				System.out.println(c_socket.getInetAddress().toString()+"에서 연결 요청");
-				new LibraryServerThread(c_socket, client_id_ip,listUser).start();;
+				new LibraryServerThread(c_socket, client_id_ip,listUser,new_book_list).start();;
 				
 			}
 			

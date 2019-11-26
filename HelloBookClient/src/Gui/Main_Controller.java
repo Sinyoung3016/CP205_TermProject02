@@ -1,21 +1,24 @@
 package Gui;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.Socket;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ResourceBundle;
 
 import Gui.model.DataModel;
+import book.Book;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.stage.Stage;
 
 public class Main_Controller extends Base_Controller implements Initializable {
 
@@ -27,6 +30,8 @@ public class Main_Controller extends Base_Controller implements Initializable {
 	public Label lb_adExplain;
 	@FXML
 	public ListView lv_NewBooks, lv_BestSeller;
+	private ObservableList<Book> ItemList_newBook;
+
 
 	private Image[] ad = {
 
@@ -39,8 +44,12 @@ public class Main_Controller extends Base_Controller implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// Base start
+		
 		super.base();
+		ItemList_newBook=DataModel.ItemList_newBook;
+		lv_NewBooks.setItems(ItemList_newBook);
 		// Base end
+	
 	}
 	
 	@FXML
@@ -52,5 +61,6 @@ public class Main_Controller extends Base_Controller implements Initializable {
 	public void goRightAction() {
 		// 오른쪽으로 이동하며 다른 adPicture 보여주기
 	}
+
 
 }

@@ -4,6 +4,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import Gui.model.DataModel;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -26,6 +28,9 @@ public class UserDetail_Controller extends Base_Controller implements Initializa
 		// Base start
 		super.base();
 		// Base end
+		ObservableList<String> emailList = FXCollections.observableArrayList("naver.com", "gmail.com",
+				"hanmail.net");
+		cb_Email.setItems(emailList);
 
 		// MyInfo print start
 		user = DataModel.user;
@@ -36,7 +41,9 @@ public class UserDetail_Controller extends Base_Controller implements Initializa
 		} else {
 			lb_Rent.setText("대여 불가 : 사유) 책 미반납");
 		}
-		tf_Email.setText(user.getEmail()); // 이메일 처리 해줘
+		String[] email=user.getEmail().split("@");
+		tf_Email.setText(email[0]); // 이메일 처리 해줘
+		cb_Email.setValue(email[1]);
 		tf_Phone.setText(user.getPhone());
 		ta_Address.setText(user.getAddress());
 		// MyInfo print end
