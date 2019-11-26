@@ -25,7 +25,7 @@ public class MyBookList_Controller extends Base_Controller implements Initializa
 	@FXML
 	public ListView lv_MybooklistField;
 	private Socket socket;
-	
+
 	private ObservableList<Object> ItemList_myBook;
 
 	@Override
@@ -34,37 +34,61 @@ public class MyBookList_Controller extends Base_Controller implements Initializa
 		// Base start
 		super.base();
 		// Base end
-		ItemList_myBook=DataModel.ItemList_myBook;
+		ItemList_myBook = DataModel.ItemList_myBook;
 		lv_MybooklistField.setItems(ItemList_myBook);
 	}
 
 	public void showborrowedAction() { // 빌린 책 MybooklistField에 보여줘 LoanedBook 전체 보여줘
-		
+		// Button 색 변화 start
+		btn_BorrowedBook.setStyle("-fx-background-color: #6464CD");
+		btn_LoanedBook.setStyle("-fx-background-color: #3065AC");
+		btn_RegisteredBook.setStyle("-fx-background-color: #3065AC");
+		btn_SoldBook.setStyle("-fx-background-color: #3065AC");
+		// Button 색 변화 end
 		DataModel.ItemList_myBook.clear();
 	}
 
 	public void showloanedAction() { // 빌려준 책 MybooklistField에 보여줘 registeredBook 중 lend 된 책
+		// Button 색 변화 start
+		btn_LoanedBook.setStyle("-fx-background-color: #6464CD");
+		btn_BorrowedBook.setStyle("-fx-background-color: #3065AC");
+		btn_RegisteredBook.setStyle("-fx-background-color: #3065AC");
+		btn_SoldBook.setStyle("-fx-background-color: #3065AC");
+		// Button 색 변화 end
 		DataModel.ItemList_myBook.clear();
 	}
 
 	public void showregisteredAction() { // 등록한 책 MybooklistField에 보여줘 registeredBook 전체 보여줘
+		// Button 색 변화 start
+		btn_RegisteredBook.setStyle("-fx-background-color: #6464CD");
+		btn_BorrowedBook.setStyle("-fx-background-color: #3065AC");
+		btn_LoanedBook.setStyle("-fx-background-color: #3065AC");
+		btn_SoldBook.setStyle("-fx-background-color: #3065AC");
+		// Button 색 변화 end
+
 		DataModel.ItemList_myBook.clear();
-		socket=DataModel.socket;
+		socket = DataModel.socket;
 		PrintWriter pw;
 		try {
 			pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
-			pw.println("PrintBookList:"+DataModel.ID+":Registered");
+			pw.println("PrintBookList:" + DataModel.ID + ":Registered");
 			pw.flush();
 
-			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	
+
 	}
 
 	public void showsoldAction() { // 팔린 책 MybooklistField에 보여줘 registeredBook 중 soldout된 책
+		// Button 색 변화 start
+		btn_SoldBook.setStyle("-fx-background-color: #6464CD");
+		btn_BorrowedBook.setStyle("-fx-background-color: #3065AC");
+		btn_RegisteredBook.setStyle("-fx-background-color: #3065AC");
+		btn_LoanedBook.setStyle("-fx-background-color: #3065AC");
+		// Button 색 변화 end
+
 		DataModel.ItemList_myBook.clear();
 	}
 
