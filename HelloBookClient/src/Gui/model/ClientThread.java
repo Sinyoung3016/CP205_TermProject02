@@ -58,7 +58,7 @@ public class ClientThread  extends Thread{
                     		for(int i=1; i<11; i++) {
                     			newBookData[i]=tokens[i*2+2];
                     		}
-                    		Platform.runLater(() -> { DataModel.addMyBookList(new Book(newBookData).toString());});
+                    		Platform.runLater(() -> { DataModel.addMyBookList(new Book(newBookData));});
                     	}
                     	else {
                     		Platform.runLater(() -> { DataModel.addMyBookList(tokens[1]);});

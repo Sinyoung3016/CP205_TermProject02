@@ -25,7 +25,7 @@ public class DataModel {
 	public static User user;
 	public static List<Book> book_list;
 	public static ObservableList<HBoxCell> ItemList_newBook;
-	public static ObservableList<String> ItemList_myBook;
+	public static ObservableList ItemList_myBook;
 	public static BufferedReader br;
 	public static ArrayList<Image> advertisement_list=new ArrayList<>();
 	
@@ -38,6 +38,9 @@ public class DataModel {
 	}
 	public static void addMyBookList(String book) {
 		ItemList_myBook.add(book);
+	}
+	public static void addMyBookList(Book book) {
+		ItemList_myBook.add(book.getBook());
 	}
 
 }
