@@ -46,22 +46,17 @@
 					<children>
 						<HBox alignment="CENTER" prefHeight="500.0" prefWidth="200.0" style="-fx-background-color: #e8f5ff;">
 							<children>
-								<Button fx:id="btn_Left" mnemonicParsing="false" onAction="#goLeftAction" prefHeight="50.0" style="-fx-text-fill: #3065AC; -fx-background-color: #e8f5ff;" text="&lt;">
+								<Button fx:id="btn_Left" mnemonicParsing="false" onAction="#goLeftAction" prefHeight="31.0" prefWidth="14.0" style="-fx-text-fill: #3065AC; -fx-background-color: #e8f5ff;" text="&lt;">
 									<font>
 										<Font size="18.0" />
 									</font>
 								</Button>
 								<VBox alignment="CENTER" prefHeight="200.0" prefWidth="350.0">
 									<children>
-										<ImageView fx:id="iv_ad" fitHeight="308.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true" />
-										<Label fx:id="lb_adExplain" alignment="CENTER" prefHeight="150.0" prefWidth="300.0" style="-fx-text-fill: #3065AC;">
-											<font>
-												<Font name="Trebuchet MS Bold" size="14.0" />
-											</font>
-										</Label>
+										<ImageView fx:id="iv_ad" fitHeight="357.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true" />
 									</children>
 								</VBox>
-								<Button fx:id="btn_Right" mnemonicParsing="false" onAction="#goRightAction" prefHeight="50.0" style="-fx-text-fill: #3065AC; -fx-background-color: #e8f5ff;" text="&gt;">
+								<Button fx:id="btn_Right" mnemonicParsing="false" onAction="#goRightAction" prefHeight="15.0" prefWidth="35.0" style="-fx-text-fill: #3065AC; -fx-background-color: #e8f5ff;" text="&gt;">
 									<font>
 										<Font size="18.0" />
 									</font>

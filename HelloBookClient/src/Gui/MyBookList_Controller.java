@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 
 import Gui.model.DataModel;
 import book.Book;
+import book.Book.HBoxCell;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;

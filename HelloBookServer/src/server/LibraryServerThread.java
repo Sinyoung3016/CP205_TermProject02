@@ -52,10 +52,7 @@ public class LibraryServerThread extends Thread{
 	
 			br = new BufferedReader(new InputStreamReader(client.getInputStream(),StandardCharsets.UTF_8));
 			pw=new PrintWriter(new OutputStreamWriter(client.getOutputStream(), StandardCharsets.UTF_8));
-			
-			
-			
-			
+
 			
 			while(true) {
 				try {
@@ -64,7 +61,7 @@ public class LibraryServerThread extends Thread{
 						break;
 					}
 					String [] request_tokens=request.split(":");// [ex] LOGIN:ID:IP
-				
+					System.out.println(request);
 				
 					if(request_tokens[0].equals(ServerRequest.SIGN_UP.getRequest())) {//SignUp:ID:PW:Name:Phone:Email,Address
 						method="SignUp";
