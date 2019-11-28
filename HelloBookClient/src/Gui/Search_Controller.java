@@ -10,18 +10,25 @@ import java.util.ResourceBundle;
 
 import Gui.model.DataModel;
 import book.Book.HBoxCell;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 public class Search_Controller extends Base_Controller implements Initializable {
 
@@ -157,13 +164,43 @@ public class Search_Controller extends Base_Controller implements Initializable 
 				pw.flush();
 			
 				btn_DetailSearch.setDisable(true);
-				Thread.sleep(500);
+				
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
+				
+				Platform.runLater(() -> {
+				for(HBoxCell item:ItemList_searchBook) {
+
+					
+					item.title.setOnAction(new EventHandler<ActionEvent>() { 
+					@Override 
+					public void handle(ActionEvent evnet){ 
+						try {
+							//item.num
+							PrintWriter pw=new PrintWriter(new OutputStreamWriter(DataModel.socket.getOutputStream())); 
+							pw.println("PrintBookData:"+item.num.getText());
+							pw.flush(); //책번호에 대한 정보를 달라고 요청
+							
+							Stage primaryStage = (Stage) btn_LogOut.getScene().getWindow();
+							Parent search = FXMLLoader.load(getClass().getResource("/Gui/BookDetail_GUI.fxml"));
+							Scene scene = new Scene(search);
+							primaryStage.setTitle("HelloBooks");
+							primaryStage.setScene(scene);
+							primaryStage.show();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}});
+				}
+				});
+				
+
 				btn_DetailSearch.setDisable(false);
 			}
 		}catch(IOException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-
 			e.printStackTrace();
 		}
 	}
