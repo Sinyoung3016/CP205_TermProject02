@@ -48,7 +48,7 @@ public class Main_Controller extends Base_Controller implements Initializable {
 		ItemList_newBook=DataModel.ItemList_newBook;
 		lv_NewBooks.setItems(ItemList_newBook);
 		
-		File dirFile=new File("src\\Gui\\advertisement");
+		File dirFile=new File("src\\image\\advertisement");
 		File []fileList=dirFile.listFiles();
 		
 		if(fileList!=null) {
