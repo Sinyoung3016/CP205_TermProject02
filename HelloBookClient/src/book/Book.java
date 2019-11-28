@@ -1,9 +1,15 @@
 package book;
 
+import Gui.Base_Controller;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
+import javafx.stage.Stage;
 
 public class Book {
 
@@ -37,6 +43,25 @@ public class Book {
 		this.rental_status = Boolean.parseBoolean(bookInfo[9]);
 		this.Introduction = bookInfo[10];
 
+	}
+	public Book(String tokens) {
+		String[] bookInfo=tokens.split(":");
+		this.book_num=Integer.parseInt(bookInfo[0]);
+		this.title = bookInfo[1];
+		this.auther = bookInfo[2];
+		this.publisher = bookInfo[3];
+		this.genre = bookInfo[4];
+		this.book_condition = bookInfo[5];
+		this.full_price = Integer.parseInt(bookInfo[6]);
+		this.sale_price = Integer.parseInt(bookInfo[7]);
+		this.lend_price = Integer.parseInt(bookInfo[8]);
+		if (bookInfo[9].equals("1")||bookInfo[9].equals("true")) {// true
+			bookInfo[9] = "true";
+		} else {
+			bookInfo[9] = "false";
+		}
+		this.rental_status = Boolean.parseBoolean(bookInfo[9]);
+		this.Introduction = bookInfo[10];
 	}
 
 	public int getBook_num() {
@@ -101,15 +126,19 @@ public class Book {
 		return new String(sb);
 	}
 	
+	
+	
 	public HBoxCell getBook() {
+		
 		return new HBoxCell(this.book_num, this.title, this.auther);
 	}
 	
 	public static class HBoxCell extends HBox {
-        Label num = new Label();
-        Button title = new Button();
-        Label author = new Label();
+       public Label num = new Label();//책 등록번호
+       public Button title = new Button();
+       public Label author = new Label();
 
+        
         HBoxCell(int book_num, String book_title, String book_author) {
              super();
 
@@ -130,6 +159,7 @@ public class Book {
 
              this.getChildren().addAll(num, title, author);
         }
+    
    }
 
 }

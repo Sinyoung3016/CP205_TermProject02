@@ -80,6 +80,10 @@ public class Base_Controller { // 변하지 않는 화면 = Base
 			e.printStackTrace();
 		}
 	}
+	public static void CloseButtonActione() {
+		LogOut();
+		System.exit(0);//이걸 안 해주면, 로그인 버튼 누르고 메인화면 뜨기 전에 X버튼을 누르면, 로그아웃이 됨과 동시에 Main 화면이 떠 오류가 발생한다.!
+	}
 	public static void LogOut() {
 		if(DataModel.socket!=null) {
 			String m = "LogOut:" + DataModel.ID;

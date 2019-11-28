@@ -80,6 +80,8 @@ public class UploadBook_Controller extends Base_Controller implements Initializa
 		if(tf_Title.getText().length()==0||tf_Author.getText().length()==0||tf_Publisher.getText().length()==0||cb_Genre.getSelectionModel().getSelectedItem()==null||
 				condition.getSelectedToggle()==null||tf_FullPrice.getText().length()==0||tf_SalePrice.getText().length()==0||tf_LendPrice.getText().length()==0||ta_Introduction.getText().length()==0) {
 			new Alert(Alert.AlertType.WARNING, "칸을 모두 채워주세요", ButtonType.CLOSE).show();
+		}else if(tf_Title.getText().contains(":")||tf_Author.getText().contains(":")||tf_Publisher.getText().contains(":")||ta_Introduction.getText().contains(":")) {
+			new Alert(Alert.AlertType.WARNING, "특수문자 ':'을 사용하실 수 없습니다. ", ButtonType.CLOSE).show();
 		}
 		else {
 

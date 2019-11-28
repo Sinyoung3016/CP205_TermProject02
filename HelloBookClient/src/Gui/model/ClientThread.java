@@ -24,7 +24,8 @@ public class ClientThread  extends Thread{
             try {
             	BufferedReader br=null;
             	
-            	br=DataModel.br = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+            	//br=DataModel.br = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+            	br= new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
             	DataModel.ItemList_newBook=FXCollections.observableArrayList();
              	DataModel.ItemList_myBook=FXCollections.observableArrayList();
                 while(true) {
@@ -38,8 +39,10 @@ public class ClientThread  extends Thread{
                     	for(int i=1; i<11; i++) {
                     		newBookData[i]=tokens[i*2+2];
                     	}
-                    	Platform.runLater(() -> { DataModel.addNewBook(new Book(newBookData));});
-
+                    	
+                    	
+                    	Platform.runLater(() -> { DataModel.addNewBook(new Book(newBookData));
+                    	});
                     	
                     }
                     else if (tokens[0].equals("AddBookData")) {
@@ -61,9 +64,25 @@ public class ClientThread  extends Thread{
                     		Platform.runLater(() -> { DataModel.addMyBookList(new Book(newBookData));});
                     	}
                     	else {
-                    		Platform.runLater(() -> { DataModel.addMyBookList(tokens[1]);});
+                    		Platform.runLater(() -> { DataModel.addMyBookList(tokens[1]);});//등록된 책이 없음니다가 저장
                     	}
-    				}
+    				} 
+                    else if (tokens[0].equals("PrintBookData")) {
+                    		if(tokens[0].equals("책이 존재하지 않습니다.")) {//책이 없을때
+                    			DataModel.book_for_detail=null;
+                    		}else {
+                    			System.out.println("도착!");
+                    			String mergeToken="";
+                    			System.out.println(tokens.length);
+                    			for(int i=2; i<tokens.length; i+=2) {//0은printBookData, 1은 [등록번호, 마지막은 ]임
+                    				mergeToken+=tokens[i]+":";
+                    			}
+                    			System.out.println(mergeToken);
+                    			DataModel.book_for_detail=new Book(mergeToken);
+                    			System.out.println("wjwkd");
+                    		}
+                    	}
+    				
                 }
             }
             catch (IOException e) {

@@ -1,21 +1,28 @@
 package Gui;
 
 import java.io.File;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import Gui.model.DataModel;
-import book.Book;
 import book.Book.HBoxCell;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 
 public class Main_Controller extends Base_Controller implements Initializable {
 	private ArrayList<Image> ad_images=new ArrayList<>();
@@ -43,10 +50,39 @@ public class Main_Controller extends Base_Controller implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// Base start
-		
+
 		super.base();
+
 		ItemList_newBook=DataModel.ItemList_newBook;
+
+	 
+		for(HBoxCell item:ItemList_newBook) {
+			item.title.setOnAction(new EventHandler<ActionEvent>() { 
+			@Override 
+			public void handle(ActionEvent evnet){ 
+				try {
+					//item.num
+					PrintWriter pw=new PrintWriter(new OutputStreamWriter(DataModel.socket.getOutputStream())); 
+					pw.println("PrintBookData:"+item.num.getText());
+					pw.flush(); //책번호에 대한 정보를 달라고 요청
+					System.out.println("PrintBookData:"+item.num.getText());
+					
+					Stage primaryStage = (Stage) btn_LogOut.getScene().getWindow();
+					Parent search = FXMLLoader.load(getClass().getResource("/Gui/BookDetail_GUI.fxml"));
+					Scene scene = new Scene(search);
+					primaryStage.setTitle("HelloBooks");
+					primaryStage.setScene(scene);
+					primaryStage.show();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}});
+		}
+
+
+
 		lv_NewBooks.setItems(ItemList_newBook);
+		
 		
 		File dirFile=new File("src\\image\\advertisement");
 		File []fileList=dirFile.listFiles();
@@ -71,6 +107,7 @@ public class Main_Controller extends Base_Controller implements Initializable {
 			
 			
 		}
+	
 	}
 
 	private class chageImageThread extends Thread{

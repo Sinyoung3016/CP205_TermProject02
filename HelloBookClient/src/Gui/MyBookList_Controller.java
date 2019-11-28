@@ -39,38 +39,17 @@ public class MyBookList_Controller extends Base_Controller implements Initializa
 	}
 
 	public void showborrowedAction() { // 빌린 책 MybooklistField에 보여줘 LoanedBook 전체 보여줘
-		// Button 색 변화 start
-		/*
-		 * btn_BorrowedBook.setStyle("-fx-background-color: #6464CD");
-		 * btn_LoanedBook.setStyle("-fx-background-color: #3065AC");
-		 * btn_RegisteredBook.setStyle("-fx-background-color: #3065AC");
-		 * btn_SoldBook.setStyle("-fx-background-color: #3065AC");
-		 */
-		// Button 색 변화 end
+
 		DataModel.ItemList_myBook.clear();
 	}
 
 	public void showloanedAction() { // 빌려준 책 MybooklistField에 보여줘 registeredBook 중 lend 된 책
-		// Button 색 변화 start
-		/*
-		 * btn_LoanedBook.setStyle("-fx-background-color: #6464CD");
-		 * btn_BorrowedBook.setStyle("-fx-background-color: #3065AC");
-		 * btn_RegisteredBook.setStyle("-fx-background-color: #3065AC");
-		 * btn_SoldBook.setStyle("-fx-background-color: #3065AC");
-		 */
-		// Button 색 변화 end
+
 		DataModel.ItemList_myBook.clear();
 	}
 
 	public void showregisteredAction() { // 등록한 책 MybooklistField에 보여줘 registeredBook 전체 보여줘
-		// Button 색 변화 start
-		/*
-		 * btn_RegisteredBook.setStyle("-fx-background-color: #6464CD");
-		 * btn_BorrowedBook.setStyle("-fx-background-color: #3065AC");
-		 * btn_LoanedBook.setStyle("-fx-background-color: #3065AC");
-		 * btn_SoldBook.setStyle("-fx-background-color: #3065AC");
-		 */
-		// Button 색 변화 end
+
 
 		DataModel.ItemList_myBook.clear();
 		socket = DataModel.socket;
@@ -88,14 +67,7 @@ public class MyBookList_Controller extends Base_Controller implements Initializa
 	}
 
 	public void showsoldAction() { // 팔린 책 MybooklistField에 보여줘 registeredBook 중 soldout된 책
-		// Button 색 변화 start
-		/*
-		 * btn_SoldBook.setStyle("-fx-background-color: #6464CD");
-		 * btn_BorrowedBook.setStyle("-fx-background-color: #3065AC");
-		 * btn_RegisteredBook.setStyle("-fx-background-color: #3065AC");
-		 * btn_LoanedBook.setStyle("-fx-background-color: #3065AC");
-		 */
-		// Button 색 변화 end
+
 
 		DataModel.ItemList_myBook.clear();
 	}

@@ -18,6 +18,8 @@ import java.util.ResourceBundle;
 
 import Gui.model.ClientThread;
 import Gui.model.DataModel;
+import book.Book;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -100,11 +102,24 @@ public class Login_Controller implements Initializable {
 						Thread.sleep(500);
 						
 						Stage primaryStage = (Stage) btn_Login.getScene().getWindow();
-						Parent login = FXMLLoader.load(getClass().getResource("/Gui/Main_GUI.fxml"));
-						Scene scene = new Scene(login);
-						primaryStage.setTitle("HelloBooks/Main");
-						primaryStage.setScene(scene);
-						primaryStage.show();
+						Platform.runLater(() -> {//이걸 안 해주면 ClientThread에서 새로운 책을 등록할 때  Platform.runLater를 사용하여, 메인화면이 다 설정된 다음 새로운 책 등록이 됨-> 맨 처음 로그인했을 때 버튼을 눌러도 아무 효과가 발생되지 않음.
+						Parent login;
+						try {
+							login = FXMLLoader.load(getClass().getResource("/Gui/Main_GUI.fxml"));
+							Scene scene = new Scene(login);
+							primaryStage.setTitle("HelloBooks/Main");
+							primaryStage.setScene(scene);
+							primaryStage.show();
+							
+						} catch (IOException e) {
+							e.printStackTrace();
+						}	
+						});
+		
+						
+						
+						
+						//primaryStage.show();
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
