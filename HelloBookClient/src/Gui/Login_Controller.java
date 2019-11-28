@@ -1,9 +1,13 @@
 package Gui;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
@@ -25,7 +29,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import user.User;
 
@@ -47,15 +50,15 @@ public class Login_Controller implements Initializable {
 		try {
 			socket.connect(new InetSocketAddress(DataModel.SERVER_IP, DataModel.PORT));
 			DataModel.socket = socket;
-
-
+ 
 		}catch (Exception e) {
 			e.printStackTrace();
-	
+			//if (e.getMessage().equals("Connection refused: connect")) {
+			//	lb_error.setText("서버에 연결되지 않음");
 				lb_error.setText(e.getMessage());
 				btn_Login.setDisable(true);
 				btn_SignUp.setDisable(true);
-	
+			//}
 		}
 	}
 
@@ -77,7 +80,6 @@ public class Login_Controller implements Initializable {
 						new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
 				pw.println(m);
 				pw.flush();
-
 				message = br.readLine();
 
 			} catch (IOException e1) {

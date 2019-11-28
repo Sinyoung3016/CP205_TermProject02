@@ -1,0 +1,43 @@
+.button {
+   -fx-background-color: #3065AC;
+}
+.button.HelloBooks {
+	 -fx-text-fill: #3065AC;
+   -fx-background-color: white;
+}
+
+.button.HelloBooks:hover {
+   -fx-text-fill: #6464CD;
+}
+
+.button.HelloBooks:pressed, .button.HelloBooks:default:hover:pressed {
+	-fx-text-fill: #6464CD;
+}
+
+.button:hover {
+   -fx-background-color: #6464CD;
+}
+
+.button:pressed, .button:default:hover:pressed {
+	-fx-background-color: #6464CD;
+
+}
+
+
+/*이 아래는 LoanedBook에서 Return과 late in Return 버튼에 대한거 */
+.button.Return {
+   -fx-background-color: #993366;
+}
+
+.button.Return:hover {
+   -fx-background-color: #680550;
+}
+
+.button.Return:pressed, .button.Return:default:hover:pressed {
+	-fx-background-color: #680550;
+}
+
+
+
+
+

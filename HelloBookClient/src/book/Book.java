@@ -114,11 +114,19 @@ public class Book {
              super();
 
              num.setText(book_num + "");
-             num.setMaxWidth(Double.MAX_VALUE);
-             HBox.setHgrow(num, Priority.ALWAYS);
-
+             num.setStyle("-fx-text-fill: #3065AC" + "-fx-font-style: Trebuchet MS Bold" + "-fx-font-size: 12");
+             num.setPrefWidth(20);
+             num.setPrefHeight(20);
+          
              title.setText(book_title);
+             title.setStyle("-fx-text-fill: #3065AC" + "-fx-font-style: Trebuchet MS Bold" + "-fx-font-size: 12");
+             title.setPrefWidth(100); 
+             title.setPrefHeight(20);
+             
              author.setText(book_author);
+             author.setStyle("-fx-text-fill: #3065AC" + "-fx-font-style: Trebuchet MS Bold" + "-fx-font-size: 12");
+             author.setPrefWidth(20); 
+             author.setPrefHeight(20);
 
              this.getChildren().addAll(num, title, author);
         }

@@ -16,16 +16,16 @@ import user.User;
 
 public class DataModel {
 
-	public final static String SERVER_IP="192.168.0.68";
+	//public final static String SERVER_IP="118.42.100.169";
 	//public final static String SERVER_IP="10.3.166.25";
-	//public final static String SERVER_IP="192.168.0.2";
+	public final static String SERVER_IP="192.168.0.68";
 	public final static int PORT=26432;
 	public static Socket socket=null;
 	public static String ID;
 	public static User user;
 	public static List<Book> book_list;
 	public static ObservableList<HBoxCell> ItemList_newBook;
-	public static ObservableList ItemList_myBook;
+	public static ObservableList<Object> ItemList_myBook;
 	public static BufferedReader br;
 	public static ArrayList<Image> advertisement_list=new ArrayList<>();
 	

@@ -11,11 +11,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Gui.SignUp_Controller">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: white;" stylesheets="@css/Css.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Gui.SignUp_Controller">
    <children>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
-            <Button fx:id="btn_Main" mnemonicParsing="false" onAction="#mainAction" style="-fx-background-color: white; -fx-text-fill: #3065AC;" text="HelloBooks">
+            <Button fx:id="btn_Main" mnemonicParsing="false" onAction="#mainAction" styleClass="HelloBooks" text="HelloBooks">
                <font>
                   <Font name="Trebuchet MS Bold" size="60.0" />
                </font>
@@ -206,7 +206,7 @@
       </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
          <children>
-            <Button fx:id="btn_SignUp" mnemonicParsing="false" onAction="#signupAction" prefHeight="40.0" prefWidth="300.0" style="-fx-background-color: #3065AC; -fx-text-fill: white;" text="SignUp">
+            <Button fx:id="btn_SignUp" mnemonicParsing="false" onAction="#signupAction" prefHeight="40.0" prefWidth="300.0" style="-fx-text-fill: white;" text="SignUp">
                <font>
                   <Font name="Trebuchet MS Bold" size="18.0" />
                </font></Button>
