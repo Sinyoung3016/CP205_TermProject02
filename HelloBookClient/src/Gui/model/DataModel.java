@@ -1,9 +1,6 @@
 package Gui.model;
 
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +23,10 @@ public class DataModel {
 	public static User user;
 	
 	public static List<Book> book_list;
+	public static boolean exist_new_book=false;
 	public static ObservableList<HBoxCell> ItemList_newBook;
-	public static ObservableList<Object> ItemList_myBook;
+	public static ObservableList<HBoxCell> ItemList_myBook;
+	public static ObservableList<HBoxCell> ItemList_searchBook;
 	
 	public static ArrayList<Image> advertisement_list=new ArrayList<>();
 	
@@ -44,14 +43,25 @@ public class DataModel {
 		if(DataModel.ItemList_newBook.size()==21) {
     		DataModel.ItemList_newBook.remove(20);
     	}
-
-
 	}
-	public static void addMyBookList(String book) {
-		ItemList_myBook.add(book);
+	
+	public static void addNewBook(String no_book_message) {		
+		ItemList_newBook.add(Book.getBook(no_book_message));
+	}
+	
+	
+	public static void addMyBookList(String no_book_message) {
+		ItemList_myBook.add(Book.getBook(no_book_message));//등록된 책이 없습니다.
 	}
 	public static void addMyBookList(Book book) {
 		ItemList_myBook.add(book.getBook());
+	}
+	
+	public static void addSearchBookList(String no_book_message) {
+		ItemList_searchBook.add(Book.getBook(no_book_message));//등록된 책이 없습니다.
+	}
+	public static void addSearchBookList(Book book) {
+		ItemList_searchBook.add(book.getBook());
 	}
 
 }

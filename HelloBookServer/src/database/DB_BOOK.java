@@ -211,9 +211,7 @@ public class DB_BOOK  extends DBManager{
 			sql = "SELECT *FROM book WHERE Book_Number='" +Book_Number+ "'";
 			
 			rs = state.executeQuery(sql);
-			if(rs==null) {
-				return null;//존재 X
-			}
+
 			if (rs.next()) {
 				BookInfo[0] = rs.getString("Book_Number");
 				BookInfo[1] = rs.getString("Title");
@@ -248,7 +246,8 @@ public class DB_BOOK  extends DBManager{
 		Statement state = null;
 		ResultSet rs =null;
 		List<Book> returnBookList=new ArrayList<>();
-		String[] BookInfo = new String[9];
+
+		String[] BookInfo = new String[11];
 		try {
 
 			conn = getConn();
@@ -256,15 +255,19 @@ public class DB_BOOK  extends DBManager{
 			state = conn.createStatement();// conn연결정보를 state로 생성.
 			
 			String[] searchInfo=info.split("-");
+			String searchStr;
+			if(searchInfo[0].equals("Rental_Status")) {//대여가능여부는 like%%로 검색 X..
+
+				searchStr=searchInfo[0]+" like '" +searchInfo[1]+ "'";
+			}else {
+				searchStr=searchInfo[0]+" like '%" +searchInfo[1]+ "%'";
+			}
 
 			String sql;
-			sql = "SELECT *FROM book WHERE "+searchInfo[0]+" like '%" +searchInfo[1]+ "%'";
+			sql = "SELECT *FROM book WHERE "+searchStr;
 			
 			rs = state.executeQuery(sql);
-			if(rs==null) {
-				System.out.println("존재안해");
-				return null;//존재 X
-			}
+
 			while (rs.next()) {//나중에 바꿔
 				BookInfo[0] = rs.getString("Book_Number");
 				BookInfo[1] = rs.getString("Title");
@@ -298,22 +301,32 @@ public class DB_BOOK  extends DBManager{
 		Statement state = null;
 		ResultSet rs =null;
 		List<Book> returnBookList=new ArrayList<>();
-		String[] BookInfo = new String[9];
+		String[] BookInfo = new String[11];
 		try {
 
 			conn = getConn();
 
 			state = conn.createStatement();// conn연결정보를 state로 생성.
-			String[] searchInfo1=info1.split("-");
-			String[] searchInfo2=info2.split("-");
+			
+			ArrayList<String[]> searchInfoArr=new ArrayList<String[]>();
+			
+			searchInfoArr.add(info1.split("-"));
+			searchInfoArr.add(info2.split("-"));
+			String[] searchStr=new String[2];
+			for(int i=0; i<2; i++) {
+				if(searchInfoArr.get(i)[0].equals("Rental_Status")) {//대여가능여부는 like%%로 검색 X..
+					searchStr[i]=searchInfoArr.get(i)[0]+" like '" +searchInfoArr.get(i)[1]+ "'";
+				}else {
+					searchStr[i]=searchInfoArr.get(i)[0]+" like '%" +searchInfoArr.get(i)[1]+ "%'";
+				}
+			}
 
 			String sql;
-			sql = "SELECT *FROM book WHERE "+searchInfo1[0]+" like'%" +searchInfo1[1]+ "%' AND "+searchInfo2[0]+" like'%"+searchInfo2[1]+"%'";
+			sql = "SELECT *FROM book WHERE "+searchStr[0]+" AND "+searchStr[1];
+
 			
 			rs = state.executeQuery(sql);
-			if(rs==null) {
-				return null;//존재 X
-			}
+	
 			while (rs.next()) {//나중에 바꿔
 				BookInfo[0] = rs.getString("Book_Number");
 				BookInfo[1] = rs.getString("Title");
@@ -347,24 +360,33 @@ public class DB_BOOK  extends DBManager{
 		Statement state = null;
 		ResultSet rs =null;
 		List<Book> returnBookList=new ArrayList<>();
-		String[] BookInfo = new String[9];
+		String[] BookInfo = new String[11];
 		try {
 
 			conn = getConn();
 
 			state = conn.createStatement();// conn연결정보를 state로 생성.
-			String[] searchInfo1=info1.split("-");
-			String[] searchInfo2=info2.split("-");
-			String[] searchInfo3=info3.split("-");
-			String sql;
-			sql = "SELECT *FROM book WHERE "+searchInfo1[0]+" like '%"+searchInfo1[1]
-																		 +"%' AND "+searchInfo2[0]+" like '%"+searchInfo2[1]
-																		 +"%' AND "+searchInfo3[0]+" like '%"+searchInfo3[1]+"%'";
+
+			ArrayList<String[]> searchInfoArr=new ArrayList<String[]>();
 			
-			rs = state.executeQuery(sql);
-			if(rs==null) {
-				return null;//존재 X
+			searchInfoArr.add(info1.split("-"));
+			searchInfoArr.add(info2.split("-"));
+			searchInfoArr.add(info3.split("-"));
+			String[] searchStr=new String[3];
+			for(int i=0; i<3; i++) {
+				if(searchInfoArr.get(i)[0].equals("Rental_Status")) {//대여가능여부는 like%%로 검색 X..
+					searchStr[i]=searchInfoArr.get(i)[0]+" like '" +searchInfoArr.get(i)[1]+ "'";
+				}else {
+					searchStr[i]=searchInfoArr.get(i)[0]+" like '%" +searchInfoArr.get(i)[1]+ "%'";
+				}
 			}
+
+			String sql;
+			
+			sql = "SELECT *FROM book WHERE "+searchStr[0]+" AND "+searchStr[1]+" AND "+searchStr[2];
+
+			rs = state.executeQuery(sql);
+
 			while (rs.next()) {//나중에 바꿔
 				BookInfo[0] = rs.getString("Book_Number");
 				BookInfo[1] = rs.getString("Title");
@@ -399,26 +421,33 @@ public class DB_BOOK  extends DBManager{
 		Statement state = null;
 		ResultSet rs =null;
 		List<Book> returnBookList=new ArrayList<>();
-		String[] BookInfo = new String[9];
+		String[] BookInfo = new String[11];
 		try {
 
 			conn = getConn();
 
 			state = conn.createStatement();// conn연결정보를 state로 생성.
-			String[] searchInfo1=info1.split("-");
-			String[] searchInfo2=info2.split("-");
-			String[] searchInfo3=info3.split("-");
-			String[] searchInfo4=info4.split("-");
-			String sql;
-			sql = "SELECT *FROM book WHERE "+searchInfo1[0]+" like '%"+searchInfo1[1]
-																		 +"%' AND "+searchInfo2[0]+" like '%"+searchInfo2[1]
-																		 +"%' AND "+searchInfo3[0]+" like '%"+searchInfo3[1]
-																		 +"%' AND "+searchInfo4[0]+" like '%"+searchInfo4[1]+"%'";
 			
-			rs = state.executeQuery(sql);
-			if(rs==null) {
-				return null;//존재 X
+			ArrayList<String[]> searchInfoArr=new ArrayList<String[]>();
+			
+			searchInfoArr.add(info1.split("-"));
+			searchInfoArr.add(info2.split("-"));
+			searchInfoArr.add(info3.split("-"));
+			searchInfoArr.add(info4.split("-"));
+			String[] searchStr=new String[4];
+			for(int i=0; i<4; i++) {
+				if(searchInfoArr.get(i)[0].equals("Rental_Status")) {//대여가능여부는 like%%로 검색 X..
+					searchStr[i]=searchInfoArr.get(i)[0]+" like '" +searchInfoArr.get(i)[1]+ "'";
+				}else {
+					searchStr[i]=searchInfoArr.get(i)[0]+" like '%" +searchInfoArr.get(i)[1]+ "%'";
+				}
 			}
+
+			String sql;
+			
+			sql = "SELECT *FROM book WHERE "+searchStr[0]+" AND "+searchStr[1]+" AND "+searchStr[2]+" AND "+searchStr[3];
+			rs = state.executeQuery(sql);
+	
 			while (rs.next()) {//나중에 바꿔
 				BookInfo[0] = rs.getString("Book_Number");
 				BookInfo[1] = rs.getString("Title");
@@ -451,28 +480,99 @@ public class DB_BOOK  extends DBManager{
 		Statement state = null;
 		ResultSet rs =null;
 		List<Book> returnBookList=new ArrayList<>();
-		String[] BookInfo = new String[9];
+		String[] BookInfo = new String[11];
 		try {
 
 			conn = getConn();
 
 			state = conn.createStatement();// conn연결정보를 state로 생성.
-			String[] searchInfo1=info1.split("-");
-			String[] searchInfo2=info2.split("-");
-			String[] searchInfo3=info3.split("-");
-			String[] searchInfo4=info4.split("-");
-			String[] searchInfo5=info5.split("-");
+			
+			ArrayList<String[]> searchInfoArr=new ArrayList<String[]>();
+			
+			searchInfoArr.add(info1.split("-"));
+			searchInfoArr.add(info2.split("-"));
+			searchInfoArr.add(info3.split("-"));
+			searchInfoArr.add(info4.split("-"));
+			searchInfoArr.add(info5.split("-"));
+			String[] searchStr=new String[5];
+			for(int i=0; i<5; i++) {
+				if(searchInfoArr.get(i)[0].equals("Rental_Status")) {//대여가능여부는 like%%로 검색 X..
+					searchStr[i]=searchInfoArr.get(i)[0]+" like '" +searchInfoArr.get(i)[1]+ "'";
+				}else {
+					searchStr[i]=searchInfoArr.get(i)[0]+" like '%" +searchInfoArr.get(i)[1]+ "%'";
+				}
+			}
+
 			String sql;
-			sql = "SELECT *FROM book WHERE "+searchInfo1[0]+" like '"+searchInfo1[1]
-																		 +"' AND "+searchInfo2[0]+" like '"+searchInfo2[1]
-																		 +"' AND "+searchInfo3[0]+" like '"+searchInfo3[1]
-																		 +"' AND "+searchInfo4[0]+" like '"+searchInfo4[1]
-																		 +"' AND "+searchInfo5[0]+" like '"+searchInfo5[1]+"'";
+			
+			sql = "SELECT *FROM book WHERE "+searchStr[0]+" AND "+searchStr[1]+" AND "+searchStr[2]+" AND "+searchStr[3]+" AND "+searchStr[4];
 			
 			rs = state.executeQuery(sql);
-			if(rs==null) {
-				return null;//존재 X
+	
+			while (rs.next()) {//나중에 바꿔
+				BookInfo[0] = rs.getString("Book_Number");
+				BookInfo[1] = rs.getString("Title");
+				BookInfo[2] = rs.getString("Auther");
+				BookInfo[3] = rs.getString("Publisher");
+				BookInfo[4] = rs.getString("Genre");
+				BookInfo[5] = rs.getString("Book_Condition");
+				BookInfo[6] = rs.getString("Full_Price");
+				BookInfo[7] = rs.getString("Sale_Price");
+				BookInfo[8] = rs.getString("Lend_Price");
+				BookInfo[9] = rs.getString("Rental_Status");
+				BookInfo[10] = rs.getString("Introduction");
+				
+				returnBookList.add(new Book(BookInfo));
+
 			}
+			return returnBookList;
+
+		} catch (Exception e) {
+			return null;
+		} finally {	
+			try {
+				if (state != null)	state.close();
+				if (conn != null)	conn.close();
+				if(rs!=null)	rs.close();
+			} catch (SQLException e) {}
+		}
+	}
+	
+	public synchronized static List<Book> searchBook(String info1, String info2, String info3,String info4,String info5, String info6) {//정보 5ro
+		Connection conn = null;
+		Statement state = null;
+		ResultSet rs =null;
+		List<Book> returnBookList=new ArrayList<>();
+		String[] BookInfo = new String[11];
+		try {
+
+			conn = getConn();
+
+			state = conn.createStatement();// conn연결정보를 state로 생성.
+			
+			ArrayList<String[]> searchInfoArr=new ArrayList<String[]>();
+			
+			searchInfoArr.add(info1.split("-"));
+			searchInfoArr.add(info2.split("-"));
+			searchInfoArr.add(info3.split("-"));
+			searchInfoArr.add(info4.split("-"));
+			searchInfoArr.add(info5.split("-"));
+			searchInfoArr.add(info6.split("-"));
+			String[] searchStr=new String[5];
+			for(int i=0; i<5; i++) {
+				if(searchInfoArr.get(i)[0].equals("Rental_Status")) {//대여가능여부는 like%%로 검색 X..
+					searchStr[i]=searchInfoArr.get(i)[0]+" like '" +searchInfoArr.get(i)[1]+ "'";
+				}else {
+					searchStr[i]=searchInfoArr.get(i)[0]+" like '%" +searchInfoArr.get(i)[1]+ "%'";
+				}
+			}
+
+			String sql;
+			
+			sql = "SELECT *FROM book WHERE "+searchStr[0]+" AND "+searchStr[1]+" AND "+searchStr[2]+" AND "+searchStr[3]+" AND "+searchStr[4]+" AND "+searchStr[5];
+			
+			rs = state.executeQuery(sql);
+		
 			while (rs.next()) {//나중에 바꿔
 				BookInfo[0] = rs.getString("Book_Number");
 				BookInfo[1] = rs.getString("Title");

@@ -132,6 +132,10 @@ public class Book {
 		
 		return new HBoxCell(this.book_num, this.title, this.auther);
 	}
+	public static HBoxCell getBook(String no_book_message) {
+		
+		return new HBoxCell(no_book_message);
+	}
 	
 	public static class HBoxCell extends HBox {
        public Label num = new Label();//책 등록번호
@@ -154,11 +158,17 @@ public class Book {
              
              author.setText(book_author);
              author.setStyle("-fx-text-fill: #3065AC" + "-fx-font-style: Trebuchet MS Bold" + "-fx-font-size: 12");
-             author.setPrefWidth(20); 
+             author.setPrefWidth(300); 
              author.setPrefHeight(20);
 
              this.getChildren().addAll(num, title, author);
         }
+        HBoxCell(String no_book_message) {
+            super();
+            num.setText(no_book_message);
+
+            this.getChildren().addAll(num);
+       }
     
    }
 

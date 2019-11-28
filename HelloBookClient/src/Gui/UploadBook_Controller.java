@@ -1,8 +1,6 @@
 package Gui;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -14,10 +12,7 @@ import Gui.model.DataModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -26,8 +21,6 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
-import javafx.stage.Stage;
-import user.User;
 
 public class UploadBook_Controller extends Base_Controller implements Initializable {
 
@@ -67,8 +60,7 @@ public class UploadBook_Controller extends Base_Controller implements Initializa
 		// Base start
 		super.base();
 		// Base end
-		ObservableList<String> publicComboList = FXCollections.observableArrayList("인문/사회", "수학/과학",
-				"공학","역사","소설","동화","기타");
+		ObservableList<String> publicComboList = FXCollections.observableArrayList("인문/사회", "수학/과학","공학","역사","소설","동화","기타");
 		cb_Genre.setItems(publicComboList);
 	}
 
@@ -82,6 +74,8 @@ public class UploadBook_Controller extends Base_Controller implements Initializa
 			new Alert(Alert.AlertType.WARNING, "칸을 모두 채워주세요", ButtonType.CLOSE).show();
 		}else if(tf_Title.getText().contains(":")||tf_Author.getText().contains(":")||tf_Publisher.getText().contains(":")||ta_Introduction.getText().contains(":")) {
 			new Alert(Alert.AlertType.WARNING, "특수문자 ':'을 사용하실 수 없습니다. ", ButtonType.CLOSE).show();
+		}else if(tf_Title.getText().contains("-")||tf_Author.getText().contains("-")||tf_Publisher.getText().contains(":")||ta_Introduction.getText().contains(":")) {
+			new Alert(Alert.AlertType.WARNING, "특수문자 '-'을 사용하실 수 없습니다. ", ButtonType.CLOSE).show();
 		}
 		else {
 

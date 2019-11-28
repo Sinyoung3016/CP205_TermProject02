@@ -61,7 +61,7 @@ public class LibraryServerThread extends Thread{
 						break;
 					}
 					String [] request_tokens=request.split(":");// [ex] LOGIN:ID:IP
-					System.out.println(request);
+
 				
 					if(request_tokens[0].equals(ServerRequest.SIGN_UP.getRequest())) {//SignUp:ID:PW:Name:Phone:Email,Address
 						method="SignUp";
@@ -81,11 +81,11 @@ public class LibraryServerThread extends Thread{
 						ModifyUserData(request_tokens[1],request_tokens[2],request_tokens[3],request_tokens[4],request_tokens[5],request_tokens[6]);
 					
 					}else if(request_tokens[0].equals(ServerRequest.SEARCH_BOOK.getRequest())) {//SearchBook:제목-~~:작가-~~
+						method="SearchBook";
 						SearchBook(request_tokens, pw);
 						
-					}else if(request_tokens[0].equals(ServerRequest.PRINT_BOOK_LIST.getRequest())) {//SearchBook:제목-~~:작가-~~
+					}else if(request_tokens[0].equals(ServerRequest.PRINT_BOOK_LIST.getRequest())) {//PrintBookList:제목-~~:작가-~~
 						method="PrintBookList";
-						
 						PrintBookList(request_tokens[1],request_tokens[2],pw);
 						
 					}else if(request_tokens[0].equals(ServerRequest.ADD_BOOK_DATA.getRequest())) {//AddBookData:제목:작가:ㅇㅇㅇ:, 이게 되면 메인화면에 새로 들어온 책에 띄울거임, BroadCast를 만들어서 띄어주는 형식으로 만들자!!
@@ -98,6 +98,8 @@ public class LibraryServerThread extends Thread{
 					}else if(request_tokens[0].equals(ServerRequest.DELETE_BOOK_DATA.getRequest())) {//DeleteBookData:책번호
 						deleteBookData(request_tokens[1]);
 						
+					}	else if(request_tokens[0].equals(ServerRequest.PRINT_BOOK_DATA.getRequest())) {//PrintBookData:책번호
+						PrintBookData(Integer.parseInt(request_tokens[1]));
 					}else if(request_tokens[0].equals(ServerRequest.PURCHASE_BOOK.getRequest())) {//PurchaseBook:살 책 제목:파는사람Id:사는사람ID
 					
 					}else if(request_tokens[0].equals(ServerRequest.RENTAL_BOOK.getRequest())) {}
@@ -185,7 +187,7 @@ public class LibraryServerThread extends Thread{
 	}
 	
 	private synchronized void SearchBook(String[] info,PrintWriter cleint) {
-
+			
 			List<Book> searchResult=null;
 			if(info.length==1) {//검색 정보 없음-모든 책 검색
 				searchResult=DB_BOOK.getAllBook();
@@ -205,23 +207,24 @@ public class LibraryServerThread extends Thread{
 			}else if(info.length==6) {//검색 정보 5개
 
 				searchResult=DB_BOOK.searchBook(info[1], info[2], info[3], info[4],info[5]);
-			}else {//이외
-				pw.println("이상한거 입력한 거 같아여");
-				return;
+			}else if(info.length==7) {//검색 정보 5개
+
+				searchResult=DB_BOOK.searchBook(info[1], info[2], info[3], info[4],info[5],info[6]);
 			}
-			String result="";
-			if(searchResult.size()==0) {
+			
+			
+			if(searchResult==null||searchResult.size()==0) {
+				String result="SearchBookList:정보에 부합하는 책이 없습니다.";
+
 				cleint.println(result);
 				cleint.flush();
 			}else {
-				result="";
-				Iterator e=searchResult.iterator();
-				while(e.hasNext()) {
-					result+=e.next()+"\r\n";
-					}
+				for(int i=0; i<searchResult.size(); i++) {
+					String result="SearchBookList:"+searchResult.get(i).getBookInfoTokens();
+					cleint.println(result);
+					cleint.flush();
+				}
 				
-				cleint.println(result);
-				cleint.flush();
 		
 		}
 	}
@@ -293,8 +296,10 @@ public class LibraryServerThread extends Thread{
 	}
 	
 	private void UpdateNewBookforStart() {
-		
-		
+		if(new_book_list.size()==0) {
+			pw.println("NewBook:"+"새로운 책이 없습니다.");
+			pw.flush();
+		}
 		for(int i=new_book_list.size()-1; i>=0; i--) {
 			pw.println("NewBook:"+new_book_list.get(i).getBookInfoTokens());
 			pw.flush();
@@ -322,6 +327,20 @@ public class LibraryServerThread extends Thread{
 				pw.flush();
 			}
 		}
+	}
+	
+	private synchronized void PrintBookData(int book_num) throws SQLException {
+
+		Book returnBook=DB_BOOK.searchBookByNum(book_num);
+		if(returnBook==null) {
+			pw.println("PrintBookData:책이 존재하지 않습니다.");
+			pw.flush();
+		}else {
+			pw.println("PrintBookData:"+returnBook.getBookInfoTokens());
+			pw.flush();
+
+		}
+		
 	}
 	
 	

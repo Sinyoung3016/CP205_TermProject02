@@ -1,11 +1,6 @@
 package Gui;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -18,7 +13,6 @@ import java.util.ResourceBundle;
 
 import Gui.model.ClientThread;
 import Gui.model.DataModel;
-import book.Book;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

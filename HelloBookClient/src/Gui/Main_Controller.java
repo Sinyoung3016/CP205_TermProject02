@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 
 import Gui.model.DataModel;
 import book.Book.HBoxCell;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -39,14 +40,8 @@ public class Main_Controller extends Base_Controller implements Initializable {
 	private ObservableList<HBoxCell> ItemList_newBook;
 
 
-	private Image[] ad = {
 
-	};
-
-	private Image[] user = {
-
-	};
-
+	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// Base start
@@ -57,6 +52,8 @@ public class Main_Controller extends Base_Controller implements Initializable {
 
 	 
 		for(HBoxCell item:ItemList_newBook) {
+
+			
 			item.title.setOnAction(new EventHandler<ActionEvent>() { 
 			@Override 
 			public void handle(ActionEvent evnet){ 
@@ -65,7 +62,6 @@ public class Main_Controller extends Base_Controller implements Initializable {
 					PrintWriter pw=new PrintWriter(new OutputStreamWriter(DataModel.socket.getOutputStream())); 
 					pw.println("PrintBookData:"+item.num.getText());
 					pw.flush(); //책번호에 대한 정보를 달라고 요청
-					System.out.println("PrintBookData:"+item.num.getText());
 					
 					Stage primaryStage = (Stage) btn_LogOut.getScene().getWindow();
 					Parent search = FXMLLoader.load(getClass().getResource("/Gui/BookDetail_GUI.fxml"));
@@ -79,10 +75,42 @@ public class Main_Controller extends Base_Controller implements Initializable {
 			}});
 		}
 
+		lv_NewBooks.setItems(ItemList_newBook);//이 아래 위치에 Listner를 추가해줘야 잘 작동됌!!!
 
+	
+		lv_NewBooks.getItems().addListener (new ListChangeListener() {//새롭게 추가될때마다 해줌!!
+		    @Override
+		    public void onChanged(ListChangeListener.Change change) {
+		    	if(ItemList_newBook.size()!=0) {
 
-		lv_NewBooks.setItems(ItemList_newBook);
+		    		HBoxCell hbc= (HBoxCell) lv_NewBooks.getItems().get(0);
+		    		hbc.title.setOnAction(new EventHandler<ActionEvent>() { 
+		    			@Override 
+		    			public void handle(ActionEvent evnet){ 
+		    				try {
+		    					//item.num
+		    					PrintWriter pw=new PrintWriter(new OutputStreamWriter(DataModel.socket.getOutputStream())); 
+		    					pw.println("PrintBookData:"+hbc.num.getText());
+		    					pw.flush(); //책번호에 대한 정보를 달라고 요청
+							
+		    					Stage primaryStage = (Stage) btn_LogOut.getScene().getWindow();
+		    					Parent search = FXMLLoader.load(getClass().getResource("/Gui/BookDetail_GUI.fxml"));
+		    					Scene scene = new Scene(search);
+		    					primaryStage.setTitle("HelloBooks");
+		    					primaryStage.setScene(scene);
+		    					primaryStage.show();
+		    				} catch (Exception e) {
+		    					e.printStackTrace();
+		    				}
+		    			}}); 	
+		    		}
+		    	}
+		    });
 		
+
+		
+		
+
 		
 		File dirFile=new File("src\\image\\advertisement");
 		File []fileList=dirFile.listFiles();

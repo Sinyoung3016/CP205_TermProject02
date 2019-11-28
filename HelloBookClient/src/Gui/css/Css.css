@@ -3,7 +3,7 @@
 }
 .button.HelloBooks {
 	-fx-text-fill: #3065AC;
-   -fx-background-color: white;
+	-fx-background-color: white;
 }
 
 .button.HelloBooks:hover {

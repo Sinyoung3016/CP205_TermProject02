@@ -33,6 +33,25 @@ public class Book {
 		this.Introduction = bookInfo[10];
 
 	}
+	public Book(String tokens) {
+		String[] bookInfo=tokens.split(":");
+		this.book_num=Integer.parseInt(bookInfo[0]);
+		this.title = bookInfo[1];
+		this.auther = bookInfo[2];
+		this.publisher = bookInfo[3];
+		this.genre = bookInfo[4];
+		this.book_condition = bookInfo[5];
+		this.full_price = Integer.parseInt(bookInfo[6]);
+		this.sale_price = Integer.parseInt(bookInfo[7]);
+		this.lend_price = Integer.parseInt(bookInfo[8]);
+		if (bookInfo[9].equals("1")||bookInfo[9].equals("true")) {// true
+			bookInfo[9] = "true";
+		} else {
+			bookInfo[9] = "false";
+		}
+		this.rental_status = Boolean.parseBoolean(bookInfo[9]);
+		this.Introduction = bookInfo[10];
+	}
 
 	public int getBook_num() {
 		return book_num;
