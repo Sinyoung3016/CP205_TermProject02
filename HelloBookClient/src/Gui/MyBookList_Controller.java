@@ -34,8 +34,11 @@ public class MyBookList_Controller extends Base_Controller implements Initializa
 		// Base start
 		super.base();
 		// Base end
+		
+		//lv print start
 		ItemList_myBook = DataModel.ItemList_myBook;
 		lv_MybooklistField.setItems(ItemList_myBook);
+		//lv print end
 	}
 
 	public void showborrowedAction() { // ∫Ù∏∞ √• MybooklistFieldø° ∫∏ø©¡‡ LoanedBook ¿¸√º ∫∏ø©¡‡

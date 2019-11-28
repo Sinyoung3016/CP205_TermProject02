@@ -18,8 +18,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class Main_Controller extends Base_Controller implements Initializable {
-	private ArrayList<Image> ad_images=new ArrayList<>();
-	private Image[] ad_arr;
+
 	@FXML
 	public Button btn_Left, btn_Right;
 	@FXML
@@ -28,37 +27,32 @@ public class Main_Controller extends Base_Controller implements Initializable {
 	public Label lb_adExplain;
 	@FXML
 	public ListView lv_NewBooks, lv_BestSeller;
+
+	private ArrayList<Image> ad_images = new ArrayList<>();
+	private Image[] ad_arr;
 	private int ad_count;
 	private ObservableList<HBoxCell> ItemList_newBook;
-
-
-	private Image[] ad = {
-
-	};
-
-	private Image[] user = {
-
-	};
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// Base start
-		
 		super.base();
-		ItemList_newBook=DataModel.ItemList_newBook;
-		lv_NewBooks.setItems(ItemList_newBook);
-		
-		File dirFile=new File("src\\Gui\\advertisement");
-		File []fileList=dirFile.listFiles();
-		
-		if(fileList.length>0) {
-			for(File tempFile : fileList) {
+		// Base end
 
-				if(tempFile.isFile()) {
+		// lv print start
+		ItemList_newBook = DataModel.ItemList_newBook;
+		lv_NewBooks.setItems(ItemList_newBook);
+		// lv print end
+
+		// ad init start
+		File dirFile = new File("src\\Gui\\advertisement");
+		File[] fileList = dirFile.listFiles();
+
+		if (fileList.length > 0) {
+			for (File tempFile : fileList) {
+				if (tempFile.isFile()) {
 					Image image = new Image(tempFile.toURI().toString());
 					ad_images.add(image);
-				
-				
 				}
 			}
 			iv_ad.setPreserveRatio(false);
@@ -67,21 +61,20 @@ public class Main_Controller extends Base_Controller implements Initializable {
 			 * ad[count++]=i; } System.out.println("??");
 			 */
 			new chageImageThread().start();
-			
-			
-			
+		// ad init end
+
 		}
 	}
 
-	private class chageImageThread extends Thread{
+	private class chageImageThread extends Thread {
 		@Override
 		public void run() {
-			if(ad_images.size()!=0) {
+			if (ad_images.size() != 0) {
 
-				ad_count=0;
-				while(DataModel.socket!=null) {
-					if(ad_count>=ad_images.size()-1) {
-						ad_count=-1;
+				ad_count = 0;
+				while (DataModel.socket != null) {
+					if (ad_count >= ad_images.size() - 1) {
+						ad_count = -1;
 					}
 					iv_ad.setImage(ad_images.get(++ad_count));
 					try {
@@ -91,35 +84,29 @@ public class Main_Controller extends Base_Controller implements Initializable {
 						e.printStackTrace();
 					}
 				}
-					
-				}
+
 			}
 		}
-	
-	
-	
-	
+	}
+
 	@FXML
 	public void goLeftAction() {
-		// 왼쪽으로 이동하며 다른 adPicture 보여주기  
-		
-		if(ad_count<=0) {
-			ad_count=ad_images.size();
+		// 왼쪽으로 이동하며 다른 adPicture 보여주기
+		if (ad_count <= 0) {
+			ad_count = ad_images.size();
 		}
 		iv_ad.setImage(ad_images.get(--ad_count));
-	
-	
+
 	}
 
 	@FXML
 	public void goRightAction() {
 		// 오른쪽으로 이동하며 다른 adPicture 보여주기
-		if(ad_count>=ad_images.size()-1) {
-			ad_count=-1;
+		if (ad_count >= ad_images.size() - 1) {
+			ad_count = -1;
 		}
 		iv_ad.setImage(ad_images.get(++ad_count));
 
 	}
-
 
 }

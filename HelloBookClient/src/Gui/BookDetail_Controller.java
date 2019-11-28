@@ -29,7 +29,6 @@ public class BookDetail_Controller extends Base_Controller implements Initializa
 
 	@FXML
 	public void putWishListAction() { //이 책을 wishlist에 넣기
-
 	}
 
 	@FXML
