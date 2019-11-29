@@ -46,9 +46,6 @@ public class SignUp_Controller implements Initializable {
 	public Button btn_Main, btn_SignUp;
 	@FXML
 	public Label lb_error_id , lb_error_pw , lb_error_confirm , lb_error_name , lb_error_email , lb_error_phone;
-	
-	
-	
 	public Socket socket;
 
 	@FXML
