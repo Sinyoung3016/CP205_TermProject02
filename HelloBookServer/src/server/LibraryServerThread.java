@@ -99,7 +99,7 @@ public class LibraryServerThread extends Thread{
 						deleteBookData(request_tokens[1]);
 						
 					}	else if(request_tokens[0].equals(ServerRequest.PRINT_BOOK_DATA.getRequest())) {//PrintBookData:책번호
-						PrintBookData(Integer.parseInt(request_tokens[1]));
+						PrintBookData(request_tokens[1],Integer.parseInt(request_tokens[2]));
 					}else if(request_tokens[0].equals(ServerRequest.PURCHASE_BOOK.getRequest())) {//PurchaseBook:살 책 제목:파는사람Id:사는사람ID
 					
 					}else if(request_tokens[0].equals(ServerRequest.RENTAL_BOOK.getRequest())) {}
@@ -329,16 +329,27 @@ public class LibraryServerThread extends Thread{
 		}
 	}
 	
-	private synchronized void PrintBookData(int book_num) throws SQLException {
+	private synchronized void PrintBookData(String Status,int book_num) throws SQLException {//Detail, Registered, Loaned
 
 		Book returnBook=DB_BOOK.searchBookByNum(book_num);
-		if(returnBook==null) {
-			pw.println("PrintBookData:책이 존재하지 않습니다.");
-			pw.flush();
-		}else {
-			pw.println("PrintBookData:"+returnBook.getBookInfoTokens());
-			pw.flush();
+		if(Status.equals("Detail")) {
+			if(returnBook==null) {
+				pw.println("PrintBookData:Detail:책이 존재하지 않습니다.");
+				pw.flush();
+			}else {
+				pw.println("PrintBookData:Detail:"+returnBook.getBookInfoTokens());
+				pw.flush();
 
+			}
+		}else if(Status.equals("Registered")) {
+			if(returnBook==null) {
+				pw.println("PrintBookData:Registered:책이 존재하지 않습니다.");
+				pw.flush();
+			}else {
+				pw.println("PrintBookData:Registered:"+returnBook.getBookInfoTokens());
+				pw.flush();
+
+			}
 		}
 		
 	}

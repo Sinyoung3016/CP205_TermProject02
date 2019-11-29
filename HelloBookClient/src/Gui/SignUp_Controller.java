@@ -73,7 +73,7 @@ public class SignUp_Controller implements Initializable {
 				|| tf_phoneNum.getText().length() == 0 || cb_Email.getValue() == null
 				|| ar_address.getText().length() == 0)
 			new Alert(Alert.AlertType.WARNING, "빈칸을 전부 채워주세요.", ButtonType.CLOSE).show();
-
+	
 		//회원가입 내역 완벽할때
 		else {
 			String message=null;

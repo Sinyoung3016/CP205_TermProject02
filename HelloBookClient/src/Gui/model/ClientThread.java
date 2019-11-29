@@ -80,19 +80,39 @@ public class ClientThread  extends Thread{
     				} 
                     
                     
-                    else if (tokens[0].equals("PrintBookData")) {
-                    		if(tokens[1].equals("책이 존재하지 않습니다.")) {//책이 없을때
+                    else if (tokens[0].equals("PrintBookData")) {//PrintBookData:(Registered,Detail,Loaned):[등록번호:~~~
+                    	if(tokens[1].equals("Detail")) {
+                    		if(tokens[2].equals("책이 존재하지 않습니다.")) {//책이 없을때
                     			DataModel.book_for_detail=null;
                     		}else {
                
                     			String mergeToken="";
-                    			for(int i=2; i<tokens.length; i+=2) {//0은printBookData, 1은 [등록번호, 마지막은 ]임
+                    			for(int i=3; i<tokens.length; i+=2) {//0은printBookData, 1은 [등록번호, 마지막은 ]임
                     				mergeToken+=tokens[i]+":";
                     			}
                     			DataModel.book_for_detail=new Book(mergeToken);
           
                     		}
+                    	}else if(tokens[1].equals("Registered")) {
+                    		if(tokens[2].equals("책이 존재하지 않습니다.")) {//책이 없을때
+                    			DataModel.book_for_registered=null;
+                    		}else {
+               
+                    			String mergeToken="";
+                    			for(int i=3; i<tokens.length; i+=2) {//0은printBookData, 1은 [등록번호, 마지막은 ]임
+                    				mergeToken+=tokens[i]+":";
+                    			}
+                    			DataModel.book_for_registered=new Book(mergeToken);
+          
+                    		}
                     	}
+                    	
+                    	
+                    	
+                    	
+                    	}
+                    
+                    
                     else if (tokens[0].equals("SearchBookList")) {
                     	if(tokens[1].equals("[등록번호")) {
                     		String[] newBookData=new String[11];

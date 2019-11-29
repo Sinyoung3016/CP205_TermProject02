@@ -93,11 +93,11 @@ public class MyBookList_Controller extends Base_Controller implements Initializa
 				try {
 					//item.num
 					PrintWriter pw=new PrintWriter(new OutputStreamWriter(DataModel.socket.getOutputStream())); 
-					pw.println("PrintBookData:"+item.num.getText());
+					pw.println("PrintBookData:Registered:"+item.num.getText());
 					pw.flush(); //책번호에 대한 정보를 달라고 요청
 					
 					Stage primaryStage = (Stage) btn_LogOut.getScene().getWindow();
-					Parent search = FXMLLoader.load(getClass().getResource("/Gui/BookDetail_GUI.fxml"));
+					Parent search = FXMLLoader.load(getClass().getResource("/Gui/RegisteredBook_GUI.fxml"));
 					Scene scene = new Scene(search);
 					primaryStage.setTitle("HelloBooks");
 					primaryStage.setScene(scene);

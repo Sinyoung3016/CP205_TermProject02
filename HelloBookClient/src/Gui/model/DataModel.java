@@ -13,8 +13,7 @@ import user.User;
 
 public class DataModel {
 
-	//public final static String SERVER_IP="118.42.100.169";
-	//public final static String SERVER_IP="10.3.166.25";
+
 	public final static String SERVER_IP="10.3.166.25";
 	public final static int PORT=26432;
 	

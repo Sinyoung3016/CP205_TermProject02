@@ -35,17 +35,33 @@ public class UserDetail_Controller extends Base_Controller implements Initializa
 		// MyInfo print start
 		user = DataModel.user;
 		tf_Name.setText(user.getName());
+
+		tf_Name.setOnAction(event->{System.out.println("11");});
+		
 		tf_Password.setText(user.getPassword());
+
+		
+		
 		if (user.isLend_OK()) {
 			lb_Rent.setText("대여 가능");
 		} else {
 			lb_Rent.setText("대여 불가 : 사유) 책 미반납");
 		}
+		
+		
+		
 		String[] email=user.getEmail().split("@");
 		tf_Email.setText(email[0]); // 이메일 처리 해줘
+
+		
 		cb_Email.setValue(email[1]);
+
+		
 		tf_Phone.setText(user.getPhone());
+
+		
 		ta_Address.setText(user.getAddress());
+
 		// MyInfo print end
 	}
 

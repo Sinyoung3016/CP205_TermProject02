@@ -181,7 +181,7 @@ public class Search_Controller extends Base_Controller implements Initializable 
 						try {
 							//item.num
 							PrintWriter pw=new PrintWriter(new OutputStreamWriter(DataModel.socket.getOutputStream())); 
-							pw.println("PrintBookData:"+item.num.getText());
+							pw.println("PrintBookData:Detail:"+item.num.getText());
 							pw.flush(); //책번호에 대한 정보를 달라고 요청
 							
 							Stage primaryStage = (Stage) btn_LogOut.getScene().getWindow();
