@@ -29,29 +29,13 @@ public class UploadBook_Controller extends Base_Controller implements Initializa
 	@FXML
 	public ChoiceBox<String> cb_Genre;
 	@FXML
-	public RadioButton rb_BCTop;
+	public RadioButton rb_BCTop, rb_BCMid, rb_BCLow;
 	@FXML
-	public RadioButton rb_BCMid;
-	@FXML
-	public RadioButton rb_BCLow;
-	@FXML
-	public TextField tf_Title;
-	@FXML
-	public TextField tf_Author;
-	@FXML
-	public TextField tf_Publisher;
-	@FXML
-	public TextField tf_FullPrice;
-	@FXML
-	public TextField tf_SalePrice;
-	@FXML
-	public TextField tf_LendPrice;
-	
+	public TextField tf_Title,tf_Author, tf_Publisher, tf_FullPrice, tf_SalePrice,tf_LendPrice;
 	@FXML
 	public TextArea ta_Introduction;
 	@FXML
 	private ToggleGroup condition;
-	
 	private Socket socket;
 
 	@Override

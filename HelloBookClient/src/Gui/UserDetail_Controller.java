@@ -155,7 +155,6 @@ public class UserDetail_Controller extends Base_Controller implements Initializa
 	}
 
 	public void confirmAction() {
-		// 약간의 수정이 있으면 changeinfo로 넘어가기
 		if (tf_Name.getText().length() != 0 || pf_Password.getText().length() != 0 || tf_Email.getText().length() != 0
 				|| tf_Phone.getText().length() != 0 || ta_Address.getText().length() != 0)
 			changeinfoAction();

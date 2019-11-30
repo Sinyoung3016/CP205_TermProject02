@@ -33,7 +33,6 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class SignUp_Controller implements Initializable {
-
 	@FXML
 	public TextField tf_ID, tf_Name, tf_Email, tf_phoneNum;
 	@FXML
@@ -45,7 +44,7 @@ public class SignUp_Controller implements Initializable {
 	@FXML
 	public Button btn_Main, btn_SignUp;
 	@FXML
-	public Label lb_error_id , lb_error_pw , lb_error_confirm , lb_error_name , lb_error_email , lb_error_phone;
+	public Label lb_error_id, lb_error_pw, lb_error_confirm, lb_error_name, lb_error_email, lb_error_phone;
 	public Socket socket;
 
 	@FXML
@@ -64,32 +63,34 @@ public class SignUp_Controller implements Initializable {
 
 	@FXML
 	public void signupAction() {
-		//회원가입 내역 전부 작성 X
-		if (tf_ID.getText().length() == 0 || pf_Password.getText().length() == 0
-				|| tf_Name.getText().length() == 0 || tf_Email.getText().length() == 0
-				|| tf_phoneNum.getText().length() == 0 || cb_Email.getValue() == null
-				|| ar_address.getText().length() == 0)
+		// 회원가입 내역 전부 작성 X
+		if (tf_ID.getText().length() == 0 || pf_Password.getText().length() == 0 || tf_Name.getText().length() == 0
+				|| tf_Email.getText().length() == 0 || tf_phoneNum.getText().length() == 0
+				|| cb_Email.getValue() == null || ar_address.getText().length() == 0)
 			new Alert(Alert.AlertType.WARNING, "빈칸을 전부 채워주세요.", ButtonType.CLOSE).show();
-	
-		//회원가입 내역 완벽할때
+
+		// 회원가입 내역 완벽할때
 		else {
-			String message=null;
+			String message = null;
 			try {
-				String m="SignUp:"+tf_ID.getText()+":"+pf_Password.getText()+":"+tf_Name.getText()+":"+tf_phoneNum.getText()+":"+tf_Email.getText()+"@"+cb_Email.getSelectionModel().getSelectedItem().toString()+":"+ar_address.getText();
-				BufferedReader br= new BufferedReader(new InputStreamReader(socket.getInputStream(),StandardCharsets.UTF_8));
-				PrintWriter pw=new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8),true);
+				String m = "SignUp:" + tf_ID.getText() + ":" + pf_Password.getText() + ":" + tf_Name.getText() + ":"
+						+ tf_phoneNum.getText() + ":" + tf_Email.getText() + "@"
+						+ cb_Email.getSelectionModel().getSelectedItem().toString() + ":" + ar_address.getText();
+				BufferedReader br = new BufferedReader(
+						new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+				PrintWriter pw = new PrintWriter(
+						new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
 				pw.println(m);
 				pw.flush();
 				message = br.readLine();
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
-			String [] tokens=message.split(":");
-			if(tokens[0].equals("SignUp")) {
-				if(!tokens[1].equals("성공")) {//실패
+			String[] tokens = message.split(":");
+			if (tokens[0].equals("SignUp")) {
+				if (!tokens[1].equals("성공")) {// 실패
 					new Alert(Alert.AlertType.WARNING, tokens[1], ButtonType.CLOSE).show();
-				}
-				else {
+				} else {
 					try {
 						Stage primaryStage = (Stage) btn_SignUp.getScene().getWindow();
 						Parent search = FXMLLoader.load(getClass().getResource("/Gui/Login_GUI.fxml"));
@@ -102,22 +103,22 @@ public class SignUp_Controller implements Initializable {
 					}
 				}
 			}
-			
-			
+
 		}
 	}
+
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		socket=DataModel.socket;
+		socket = DataModel.socket;
 		ObservableList<String> publicComboList = FXCollections.observableArrayList("naver.com", "gmail.com",
 				"hanmail.net");
 		cb_Email.setItems(publicComboList);
-		
+
 		tf_ID.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 				try {
-					if(newValue.length()==0||FormException.IDFormCheck(newValue)) {
+					if (newValue.length() == 0 || FormException.IDFormCheck(newValue)) {
 						lb_error_id.setText("");
 					}
 				} catch (MyException e) {
@@ -130,7 +131,7 @@ public class SignUp_Controller implements Initializable {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 				try {
-					if(newValue.length()==0||FormException.passwordFormCheck(newValue)) {
+					if (newValue.length() == 0 || FormException.passwordFormCheck(newValue)) {
 						lb_error_pw.setText("");
 					}
 				} catch (MyException e) {
@@ -142,10 +143,9 @@ public class SignUp_Controller implements Initializable {
 		pf_Confirm.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-					if(newValue.length()==0||pf_Password.getText().equals(pf_Confirm.getText())) {
-						lb_error_confirm.setText("");
-					}
-					else {
+				if (newValue.length() == 0 || pf_Password.getText().equals(pf_Confirm.getText())) {
+					lb_error_confirm.setText("");
+				} else {
 					lb_error_confirm.setText("비밀번호가 일치하지 않습니다.");
 				}
 
@@ -155,7 +155,7 @@ public class SignUp_Controller implements Initializable {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 				try {
-					if(newValue.length()==0||FormException.NameFormCheck(newValue)) {
+					if (newValue.length() == 0 || FormException.NameFormCheck(newValue)) {
 						lb_error_name.setText("");
 					}
 				} catch (MyException e) {
@@ -168,7 +168,7 @@ public class SignUp_Controller implements Initializable {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 				try {
-					if(newValue.length()==0||FormException.emailFormCheck(newValue)) {
+					if (newValue.length() == 0 || FormException.emailFormCheck(newValue)) {
 						lb_error_email.setText("");
 					}
 				} catch (MyException e) {
@@ -181,7 +181,7 @@ public class SignUp_Controller implements Initializable {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 				try {
-					if(newValue.length()==0||FormException.phoneFormCheck(newValue)) {
+					if (newValue.length() == 0 || FormException.phoneFormCheck(newValue)) {
 						lb_error_phone.setText("");
 					}
 				} catch (MyException e) {
