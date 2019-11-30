@@ -44,7 +44,7 @@ public class Search_Controller extends Base_Controller implements Initializable 
 	@FXML
 	public ChoiceBox<String> cb_genre, cb_BookCondition, cb_RentalStatus, cb_About;
 	@FXML
-	public ListView lv_BookList;
+	public ListView<HBoxCell> lv_BookList;
 	@FXML
 	public Button btn_DetailSearch;
 	@FXML

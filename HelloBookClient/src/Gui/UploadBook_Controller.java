@@ -12,7 +12,10 @@ import Gui.model.DataModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -21,6 +24,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.stage.Stage;
 
 public class UploadBook_Controller extends Base_Controller implements Initializable {
 
@@ -49,13 +53,22 @@ public class UploadBook_Controller extends Base_Controller implements Initializa
 	}
 
 	public void backAction() {// 전의 화면으로 
-
+		try {
+			Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
+			Parent main = FXMLLoader.load(getClass().getResource("/Gui/Main_GUI.fxml"));
+			Scene scene = new Scene(main);
+			primaryStage.setTitle("HelloBooks/Main");
+			primaryStage.setScene(scene);
+			primaryStage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void saveAction() {// 책 업로드
 		if(tf_Title.getText().length()==0||tf_Author.getText().length()==0||tf_Publisher.getText().length()==0||cb_Genre.getSelectionModel().getSelectedItem()==null||
 				condition.getSelectedToggle()==null||tf_FullPrice.getText().length()==0||tf_SalePrice.getText().length()==0||tf_LendPrice.getText().length()==0||ta_Introduction.getText().length()==0) {
-			new Alert(Alert.AlertType.WARNING, "칸을 모두 채워주세요", ButtonType.CLOSE).show();
+			new Alert(Alert.AlertType.WARNING, "빈칸을 모두 채워주세요", ButtonType.CLOSE).show();
 		}else if(tf_Title.getText().contains(":")||tf_Author.getText().contains(":")||tf_Publisher.getText().contains(":")||ta_Introduction.getText().contains(":")) {
 			new Alert(Alert.AlertType.WARNING, "특수문자 ':'을 사용하실 수 없습니다. ", ButtonType.CLOSE).show();
 		}else if(tf_Title.getText().contains("-")||tf_Author.getText().contains("-")||tf_Publisher.getText().contains(":")||ta_Introduction.getText().contains(":")) {

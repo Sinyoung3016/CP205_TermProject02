@@ -88,7 +88,6 @@ public class UserDetail_Controller extends Base_Controller implements Initializa
 				} catch (MyException e) {
 					lb_error_pw.setText(e.getMessage());
 				}
-
 			}
 		});
 
@@ -102,7 +101,6 @@ public class UserDetail_Controller extends Base_Controller implements Initializa
 				} catch (MyException e) {
 					lb_error_name.setText(e.getMessage());
 				}
-
 			}
 		});
 		tf_Email.textProperty().addListener(new ChangeListener<String>() {
@@ -115,7 +113,6 @@ public class UserDetail_Controller extends Base_Controller implements Initializa
 				} catch (MyException e) {
 					lb_error_email.setText(e.getMessage());
 				}
-
 			}
 		});
 		tf_Phone.textProperty().addListener(new ChangeListener<String>() {
@@ -128,10 +125,9 @@ public class UserDetail_Controller extends Base_Controller implements Initializa
 				} catch (MyException e) {
 					lb_error_phone.setText(e.getMessage());
 				}
-
 			}
 		});
-		// 수정 양식 start
+		// 수정 양식 end
 	}
 
 	public void changeinfoAction() {
@@ -151,6 +147,17 @@ public class UserDetail_Controller extends Base_Controller implements Initializa
 			if (ta_Address.getText().length() != 0)
 				user.setAddress(ta_Address.getText());
 			// user info modify end
+		} else if (result.get() == ButtonType.CANCEL) {
+			try {
+				Stage primaryStage = (Stage) btn_ChangeInfo.getScene().getWindow();
+				Parent search = FXMLLoader.load(getClass().getResource("/Gui/UserDetail_GUI.fxml"));
+				Scene scene = new Scene(search);
+				primaryStage.setTitle("HelloBooks/MyInfo");
+				primaryStage.setScene(scene);
+				primaryStage.show();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 

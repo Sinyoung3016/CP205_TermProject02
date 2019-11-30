@@ -165,13 +165,11 @@ public class Base_Controller { // 변하지 않는 화면 = Base
 
 	public void wishlistAction() { 
 		// lv_ProfileList에 장바구니 리스트 보여주기
-
 	}
 
 	public void alertAction() { 
 		// lv_ProfileList에 새로운 알람 보여주기
 		//Alert에 있어야 하는 것 : 판매한다고 하는 유저 ID, btn_내용 삭제하기 버튼, btn_그책으로 바로가기
-
 	}
 
 }
