@@ -29,6 +29,15 @@ public class LoanedBook_Controller extends Base_Controller implements Initializa
 		this.book = DataModel.book_for_loaned;
 		super.base();
 		// Base end
+		lb_Title.setText(book.getTitle());
+		lb_Author.setText(book.getAuther());
+		lb_Publisher.setText(book.getPublisher());
+		lb_BookCondition.setText(book.getBook_condition());
+		lb_FullPrice.setText(book.getFull_price()+"");
+		lb_SalePrice.setText(book.getSale_price()+"");
+		lb_LendPrice.setText(book.getLend_price()+"");
+		lb_Introduction.setText(book.getIntroduction());
+		
 		
 	}
 

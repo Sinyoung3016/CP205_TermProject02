@@ -40,6 +40,8 @@ public class MyBookList_Controller extends Base_Controller implements Initializa
 		ItemList_myBook = DataModel.ItemList_myBook;
 		lv_MybooklistField.setItems(ItemList_myBook);
 	}
+	
+	
 
 	public void showborrowedAction() { 
 		DataModel.ItemList_myBook.clear();
@@ -73,11 +75,11 @@ public class MyBookList_Controller extends Base_Controller implements Initializa
 							// item.num
 							PrintWriter pw = new PrintWriter(
 									new OutputStreamWriter(DataModel.socket.getOutputStream()));
-							pw.println("PrintBookData:Registered:" + item.num.getText());
+							pw.println("PrintBookData:Detail:" + item.num.getText());
 							pw.flush(); // 책번호에 대한 정보를 달라고 요청
 
 							Stage primaryStage = (Stage) btn_LogOut.getScene().getWindow();
-							Parent search = FXMLLoader.load(getClass().getResource("/Gui/RegisteredBook_GUI.fxml"));
+							Parent search = FXMLLoader.load(getClass().getResource("/Gui/BookDetail_GUI.fxml"));
 							Scene scene = new Scene(search);
 							primaryStage.setTitle("HelloBooks");
 							primaryStage.setScene(scene);
@@ -90,6 +92,8 @@ public class MyBookList_Controller extends Base_Controller implements Initializa
 			}
 		});
 	}
+	
+	
 
 	public void showloanedAction() { // 
 		DataModel.ItemList_myBook.clear();
