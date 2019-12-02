@@ -17,8 +17,6 @@ public class DB_BOOK  extends DBManager{
 		Connection conn = null;
 		Statement state = null;
 		ResultSet rs =null;
-		List<Book > returnBookList = new ArrayList<>();
-		String [] BookInfo=new String[11];
 		try {
 			conn = getConn();
 			state = conn.createStatement();// conn연결정보를 state로 생성.
@@ -39,6 +37,41 @@ public class DB_BOOK  extends DBManager{
 			} catch (SQLException e) {}
 		}
 	}
+	
+	
+	public synchronized static void BorrowBook(int BookNum) throws SQLException {//빌리기
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+
+		try {
+
+			conn = getConn();
+
+			String sql = "update book set Rental_Status = ? where book_number = ?";
+	
+	        try {
+	         	pstmt = conn.prepareStatement(sql);
+
+	        	pstmt.setString(1,"0"); 
+	        	pstmt.setString(2, BookNum+"");
+	        	pstmt.executeUpdate();
+	        } catch (SQLException e) {
+	            // TODO Auto-generated catch block
+	            e.printStackTrace();
+	        }
+
+
+			
+			pstmt.close();
+			conn.close();
+		} finally {	
+			try {
+				if (pstmt != null)	pstmt.close();
+				if (conn != null)	conn.close();
+			} catch (SQLException e) {}
+		}
+	}
+	
 	public synchronized static List<Book> getAllBook() {
 		Connection conn = null;
 		Statement state = null;
@@ -147,51 +180,6 @@ public class DB_BOOK  extends DBManager{
 		}
 	}
 	
-	public synchronized static void changeBook(int Book_Number,String Title,String Auther, String Publisher, String Genre, String Book_Condition,int Full_Price, int Sale_Price, int Lend_Price, Boolean Rental_Status, String Introduction) {//삽입 
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-
-		try {
-			
-			deleateBook(Book_Number);
-			
-			conn = getConn();
-
-			String insertRentalAvailability="1";
-			
-			String sql;
-			sql = "INSERT INTO book (Book_Number, Title, Auther, Publisher, Genre, Book_Condition,Full_Price,Sale_Price,Lend_Price,Rental_Status,Introduction)VALUES (?,?,?,?,?,?,?,?,?,?,?)";
-			pstmt = conn.prepareStatement(sql);
-
-			pstmt.setString(1, Book_Number+"");
-			pstmt.setString(2, Title);
-			pstmt.setString(3, Auther);
-			pstmt.setString(4, Publisher);
-			pstmt.setString(5, Genre );
-			pstmt.setString(6, Book_Condition );
-			pstmt.setString(7, Full_Price+"");
-			pstmt.setString(8, Sale_Price+"");
-			pstmt.setString(9, Lend_Price+"");
-			if(Rental_Status.equals("true")) {
-				insertRentalAvailability="1";
-			}else if(Rental_Status.equals("false")){
-				insertRentalAvailability="0";
-			}
-			pstmt.setString(10,  insertRentalAvailability);
-			pstmt.setString(11, Introduction );
-
-			pstmt.executeUpdate();
-			pstmt.close();
-			conn.close();
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}  finally {	
-			try {
-				if (pstmt != null)	pstmt.close();
-				if (conn != null)	conn.close();
-			} catch (SQLException e) {}
-		}
-	}
 
 	public synchronized static Book searchBookByNum(int Book_Number) {//등록번호로 찾기-관리자가 사용할 메소드
 

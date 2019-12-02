@@ -27,7 +27,7 @@ public class LibraryServer {
 	private final static int PORT=26432;
 	public static void main(String[] args) {
 		Map<String, String> client_id_ip=new HashMap<>();
-		List<PrintWriter> listUser= new ArrayList<PrintWriter>();
+		Map<String,PrintWriter> listUser= new HashMap<String,PrintWriter>();
 		List<Book> new_book_list=new LinkedList<Book>();
 		
 		try {
