@@ -6,10 +6,12 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
+import alter.UserAlter;
 import book.Book;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
 
 public class ClientThread  extends Thread{
@@ -28,6 +30,7 @@ public class ClientThread  extends Thread{
             	DataModel.ItemList_newBook=FXCollections.observableArrayList();
              	DataModel.ItemList_myBook=FXCollections.observableArrayList();
              	DataModel.ItemList_searchBook=FXCollections.observableArrayList();
+             	DataModel.ItemList_alter=FXCollections.observableArrayList();
                 while(true) {
                     String msg = br.readLine();
 
@@ -80,6 +83,7 @@ public class ClientThread  extends Thread{
     				} 
                     
                     
+                    
                     else if (tokens[0].equals("PrintBookData")) {//PrintBookData:(Registered,Detail,Loaned):[등록번호:~~~
                     	if(tokens[1].equals("Detail")) {
                     		if(tokens[2].equals("책이 존재하지 않습니다.")) {//책이 없을때
@@ -106,6 +110,19 @@ public class ClientThread  extends Thread{
           
                     		}
                     	}
+                    	else if(tokens[1].equals("Loaned")) {
+                    		if(tokens[2].equals("책이 존재하지 않습니다.")) {//책이 없을때
+                    			DataModel.book_for_loaned=null;
+                    		}else {
+               
+                    			String mergeToken="";
+                    			for(int i=3; i<tokens.length; i+=2) {//0은printBookData, 1은 [등록번호, 마지막은 ]임
+                    				mergeToken+=tokens[i]+":";
+                    			}
+                    			DataModel.book_for_loaned=new Book(mergeToken);
+          
+                    		}
+                    	}
                     	
                     	
                     	
@@ -126,7 +143,19 @@ public class ClientThread  extends Thread{
                     		Platform.runLater(() -> { DataModel.addSearchBookList(tokens[1]);});//등록된 책이 없습니다가 저장
                     	}
     				} 
-    				
+                    
+                    else if (tokens[0].equals("Alter")) {
+                    	String[] alterData=new String[6];
+                    	alterData[0]=tokens[1];
+                		for(int i=1; i<6; i++) {
+                			alterData[i]=tokens[i+1];
+                		}
+                    	UserAlter user_alter=new UserAlter(alterData);
+                    	Platform.runLater(() -> { DataModel.addAlter(user_alter);});
+    				} 
+                    else if (tokens[0].equals("BorrowRequest")) {
+                    	Platform.runLater(() -> { 	new Alert(Alert.AlertType.INFORMATION, tokens[1], ButtonType.CLOSE).show();});
+    				} 
                 }
             }
             catch (IOException e) {

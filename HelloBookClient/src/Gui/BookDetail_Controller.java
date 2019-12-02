@@ -1,5 +1,8 @@
 package Gui;
 
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -7,7 +10,9 @@ import Gui.model.DataModel;
 import book.Book;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 
 public class BookDetail_Controller extends Base_Controller implements Initializable {
@@ -54,6 +59,17 @@ public class BookDetail_Controller extends Base_Controller implements Initializa
 
 	@FXML
 	public void borrowedNowAction() { //이 책을 바로 빌리기 책주인에게 알리기 -> 책 주인의 New Alert에 뜨기
+		PrintWriter pw;
+		try {
+			pw = new PrintWriter(new OutputStreamWriter(DataModel.socket.getOutputStream()));
+			pw.println("BorrowRequest:"+DataModel.ID+":"+book.getBook_num()+":"+book.getTitle()+":");////BorrowRequest:요청자:책번호:책제목
+			pw.flush();
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
 
 	}
 

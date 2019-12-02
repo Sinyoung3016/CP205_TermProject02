@@ -31,13 +31,13 @@
                <font>
                   <Font name="Trebuchet MS Bold" size="18.0" />
                </font></Label>
-            <TextField fx:id="tf_ID">
+            <TextField fx:id="tf_ID" prefWidth="200.0">
                <font>
-                  <Font size="14.0" />
+                  <Font name="Trebuchet MS" size="14.0" />
                </font></TextField>
             <Label fx:id="lb_error_id" prefHeight="24.0" prefWidth="209.0" textFill="RED">
                <font>
-                  <Font size="14.0" />
+                  <Font name="Trebuchet MS Bold" size="14.0" />
                </font>
             </Label>
          </children>
@@ -54,14 +54,17 @@
                <font>
                   <Font name="Trebuchet MS Bold" size="18.0" />
                </font></Label>
-            <PasswordField fx:id="pf_Password" prefHeight="24.0" prefWidth="172.0">
+            <PasswordField fx:id="pf_Password" prefWidth="200.0">
                <HBox.margin>
                   <Insets right="1.0" />
                </HBox.margin>
+               <font>
+                  <Font name="Trebuchet MS" size="14.0" />
+               </font>
             </PasswordField>
             <Label fx:id="lb_error_pw" prefHeight="24.0" prefWidth="239.0" textFill="RED">
                <font>
-                  <Font size="14.0" />
+                  <Font name="Trebuchet MS Bold" size="14.0" />
                </font>
             </Label>
          </children>
@@ -79,14 +82,17 @@
                   <Font name="Trebuchet MS Bold" size="18.0" />
                </font>
             </Label>
-            <PasswordField fx:id="pf_Confirm" prefHeight="24.0" prefWidth="172.0">
+            <PasswordField fx:id="pf_Confirm" prefWidth="200.0">
                <HBox.margin>
                   <Insets left="2.0" />
                </HBox.margin>
+               <font>
+                  <Font name="Trebuchet MS" size="14.0" />
+               </font>
             </PasswordField>
             <Label fx:id="lb_error_confirm" prefHeight="24.0" prefWidth="205.0" textFill="RED">
                <font>
-                  <Font size="14.0" />
+                  <Font name="Trebuchet MS Bold" size="14.0" />
                </font>
             </Label>
          </children>
@@ -106,16 +112,16 @@
                <font>
                   <Font name="Trebuchet MS Bold" size="18.0" />
                </font></Label>
-            <TextField fx:id="tf_Name">
+            <TextField fx:id="tf_Name" prefWidth="200.0">
                <font>
-                  <Font size="14.0" />
+                  <Font name="Trebuchet MS" size="14.0" />
                </font>
                <HBox.margin>
                   <Insets left="3.0" />
                </HBox.margin></TextField>
             <Label fx:id="lb_error_name" prefHeight="24.0" prefWidth="205.0" textFill="RED">
                <font>
-                  <Font size="14.0" />
+                  <Font name="Trebuchet MS Bold" size="14.0" />
                </font>
             </Label>
          </children>
@@ -126,15 +132,18 @@
             <Insets left="233.0" />
          </padding>
       </HBox>
-      <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="900.0" spacing="19.0">
+      <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="900.0" spacing="5.0">
          <children>
-            <Label prefHeight="21.0" prefWidth="55.0" style="-fx-text-fill: #3065AC;" text="E-Mail">
+            <Label prefHeight="21.0" prefWidth="60.0" style="-fx-text-fill: #3065AC;" text="E-Mail">
                <font>
                   <Font name="Trebuchet MS Bold" size="18.0" />
-               </font></Label>
-            <TextField fx:id="tf_Email" prefHeight="24.0" prefWidth="172.0">
+               </font>
+               <HBox.margin>
+                  <Insets right="17.0" />
+               </HBox.margin></Label>
+            <TextField fx:id="tf_Email" prefWidth="200.0">
                <font>
-                  <Font size="14.0" />
+                  <Font name="Trebuchet MS" size="14.0" />
                </font>
                <HBox.margin>
                   <Insets />
@@ -146,7 +155,7 @@
             <ChoiceBox fx:id="cb_Email" prefHeight="30.0" prefWidth="150.0" />
             <Label fx:id="lb_error_email" prefHeight="24.0" prefWidth="205.0" textFill="RED">
                <font>
-                  <Font size="14.0" />
+                  <Font name="Trebuchet MS Bold" size="14.0" />
                </font>
             </Label>
          </children>
@@ -154,7 +163,7 @@
             <Insets />
          </opaqueInsets>
          <padding>
-            <Insets left="230.0" />
+            <Insets left="220.0" />
          </padding>
       </HBox>
       <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="900.0" spacing="18.0">
@@ -163,16 +172,16 @@
                <font>
                   <Font name="Trebuchet MS Bold" size="18.0" />
                </font></Label>
-            <TextField fx:id="tf_phoneNum" promptText="'-' 제외">
+            <TextField fx:id="tf_phoneNum" prefWidth="200.0" promptText="'-' 제외">
                <font>
-                  <Font size="14.0" />
+                  <Font name="Trebuchet MS" size="14.0" />
                </font>
                <HBox.margin>
                   <Insets left="1.0" />
                </HBox.margin></TextField>
             <Label fx:id="lb_error_phone" prefHeight="24.0" prefWidth="138.0" textFill="RED">
                <font>
-                  <Font size="14.0" />
+                  <Font name="Trebuchet MS Bold" size="14.0" />
                </font>
             </Label>
          </children>
@@ -191,7 +200,7 @@
                </font></Label>
             <TextArea fx:id="ar_address" prefHeight="40.0" prefWidth="400.0">
                <font>
-                  <Font size="14.0" />
+                  <Font name="Trebuchet MS" size="14.0" />
                </font>
                <HBox.margin>
                   <Insets bottom="10.0" top="10.0" />

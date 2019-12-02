@@ -4,12 +4,20 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 
 import Gui.model.DataModel;
+import alter.UserAlter;
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -30,10 +38,11 @@ public class Base_Controller { // 변하지 않는 화면 = Base
 
 	public ListView lv_ProfileList;
 	
-
+	private ObservableList<UserAlter> ItemList_alter;
 	
+	@SuppressWarnings("unchecked")
 	public void base() {
-
+		
 		// Profile start
 		lb_ProfileName.setText(DataModel.user.getName());
 		lb_ProfileID.setText(DataModel.user.getID());
@@ -46,6 +55,69 @@ public class Base_Controller { // 변하지 않는 화면 = Base
 
 		// ProfileList 초기화 start
 		// ProfileList 초기화 end
+		
+		this.ItemList_alter=DataModel.ItemList_alter;
+		lv_ProfileList.setItems(ItemList_alter);
+
+		lv_ProfileList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<UserAlter>() {
+
+		    @Override
+		    public void changed(ObservableValue<? extends UserAlter> observable, UserAlter oldValue, UserAlter newValue) {
+		        // Your action here
+		    	if(newValue!=null) {
+		    		if(newValue.getRequest_Status().equals("빌리다")) {
+		    			Alert alert = new Alert(Alert.AlertType.WARNING, lv_ProfileList.getSelectionModel().getSelectedItem().toString(), ButtonType.YES, ButtonType.NO);
+		    			Optional<ButtonType> result = alert.showAndWait();
+		    			if (result.get() == ButtonType.YES) {
+		    				// 등록된 책을 삭제
+		    				try {
+		    					PrintWriter pw=new PrintWriter(new OutputStreamWriter(DataModel.socket.getOutputStream(),StandardCharsets.UTF_8));//BorrowAnswer:(수락,거부):요청자:책번호:책제목:요청받는자
+
+		    					pw.println("BorrowAnswer:수락:"+newValue.getRequested_ID()+":"+newValue.getBook_Number()+":"+newValue.getBook_Title()+":"+newValue.getRequester_ID());
+		    					pw.flush();
+		    					int index=lv_ProfileList.getSelectionModel().getSelectedIndex();
+		    					Platform.runLater(() -> {ItemList_alter.remove(index);});
+					
+		    				} catch (IOException e) {
+		    					// TODO Auto-generated catch block
+		    					e.printStackTrace();
+		    				}
+					
+		    			}else {
+		    			
+		    				try {
+								PrintWriter pw= new PrintWriter(new OutputStreamWriter(DataModel.socket.getOutputStream(),StandardCharsets.UTF_8));
+								pw.println("BorrowAnswer:거절:"+newValue.getRequested_ID()+":"+newValue.getBook_Number()+":"+newValue.getBook_Title()+":"+newValue.getRequester_ID());
+		    					pw.flush();
+								int index=lv_ProfileList.getSelectionModel().getSelectedIndex();
+								Platform.runLater(() -> {ItemList_alter.remove(index);});
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}//BorrowAnswer:(수락,거부):요청자:책번호:책제목:요청받는자
+
+	    				
+		    			}
+		    		}else if(newValue.getRequest_Status().equals("빌려주다")||newValue.getRequest_Status().equals("안빌려주다")){
+		    			Alert alert = new Alert(Alert.AlertType.WARNING, lv_ProfileList.getSelectionModel().getSelectedItem().toString(), ButtonType.YES);
+		    			alert.show();
+		    			
+						try {
+							PrintWriter pw = new PrintWriter(new OutputStreamWriter(DataModel.socket.getOutputStream(),StandardCharsets.UTF_8));
+							pw.println("AlterOK:"+newValue.getRequested_ID()+":"+newValue.getBook_Number());//AlterOK:요청자:책번호
+	    					pw.flush();
+	    					System.out.println("AlterOK:"+newValue.getRequested_ID()+":"+newValue.getBook_Number());
+							int index=lv_ProfileList.getSelectionModel().getSelectedIndex();
+							Platform.runLater(() -> {ItemList_alter.remove(index);});
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						
+		    		}
+		    	}
+		    }
+		});
 	}
 
 	public void mainAction() throws Exception {
@@ -165,13 +237,11 @@ public class Base_Controller { // 변하지 않는 화면 = Base
 
 	public void wishlistAction() { 
 		// lv_ProfileList에 장바구니 리스트 보여주기
-
 	}
 
 	public void alertAction() { 
 		// lv_ProfileList에 새로운 알람 보여주기
 		//Alert에 있어야 하는 것 : 판매한다고 하는 유저 ID, btn_내용 삭제하기 버튼, btn_그책으로 바로가기
-
 	}
 
 }
