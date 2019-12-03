@@ -222,10 +222,6 @@
                               </HBox>
                               <HBox alignment="CENTER" prefHeight="60.0" prefWidth="350.0" spacing="20.0">
                                  <children>
-                                    <Button fx:id="btn_Remove" mnemonicParsing="false" onAction="#removeAction" prefHeight="35.0" prefWidth="100.0" style="-fx-text-fill: white;" text="Remove">
-                                       <font>
-                                          <Font name="Trebuchet MS Bold" size="14.0" />
-                                       </font></Button>
                                     <Button fx:id="btn_Comfirm" mnemonicParsing="false" onAction="#comfirmAction" prefHeight="35.0" prefWidth="100.0" style="-fx-text-fill: white;" text="Comfirm">
                                        <font>
                                           <Font name="Trebuchet MS Bold" size="14.0" />
@@ -307,12 +303,7 @@
                   </Button>
                   <HBox alignment="CENTER" prefHeight="20.0" prefWidth="200.0" spacing="6.0">
                      <children>
-                        <Button fx:id="btn_ProfileWishList" mnemonicParsing="false" onAction="#wishlistAction" prefWidth="86.0" style="-fx-text-fill: white;" text="WishList">
-                           <font>
-                              <Font name="Trebuchet MS Bold" size="14.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="btn_ProfileNewAlert" mnemonicParsing="false" onAction="#alertAction" prefWidth="86.0" style="-fx-text-fill: white;" text="New Alert">
+                        <Button fx:id="btn_ProfileNewAlert" mnemonicParsing="false" onAction="#alertAction" prefWidth="180.0" style="-fx-text-fill: white;" text="New Alert">
                            <font>
                               <Font name="Trebuchet MS Bold" size="14.0" />
                            </font>

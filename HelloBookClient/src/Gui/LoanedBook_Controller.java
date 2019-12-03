@@ -18,7 +18,7 @@ import javafx.stage.Stage;
 
 public class LoanedBook_Controller extends Base_Controller implements Initializable {
 
-	public Button btn_Back, btn_Remove, btn_Comfirm, btn_Return, btn_LateinReturn;
+	public Button btn_Back,  btn_Comfirm, btn_Return, btn_LateinReturn;
 	public Label lb_WhoBorrorwed, lb_Title, lb_Author, lb_Publisher, lb_BookCondition, lb_FullPrice, lb_SalePrice,
 			lb_LendPrice, lb_Introduction;
 	private Book book;
@@ -51,15 +51,6 @@ public class LoanedBook_Controller extends Base_Controller implements Initializa
 			primaryStage.show();
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-	}
-
-	public void removeAction() {
-		Alert alert = new Alert(Alert.AlertType.WARNING, "이 책은 아직 반납처리가 되지 않았습니다.\n이 책을 정말로 삭제하시겠습니까?", ButtonType.YES, ButtonType.CANCEL);
-		Optional<ButtonType> result = alert.showAndWait();
-
-		if (result.get() == ButtonType.YES) {
-			// 등록된 책을 삭제
 		}
 	}
 

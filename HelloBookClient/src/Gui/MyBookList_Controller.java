@@ -25,7 +25,7 @@ import javafx.stage.Stage;
 public class MyBookList_Controller extends Base_Controller implements Initializable {
 
 	@FXML
-	public Button btn_LoanedBook, btn_BorrowedBook, btn_RegisteredBook, btn_SoldBook, btn_Back;
+	public Button btn_LoanedBook, btn_BorrowedBook, btn_RegisteredBook, btn_Back;
 	@FXML
 	public ListView<HBoxCell> lv_MybooklistField;
 	private ObservableList<HBoxCell> ItemList_myBook;
@@ -40,8 +40,6 @@ public class MyBookList_Controller extends Base_Controller implements Initializa
 		ItemList_myBook = DataModel.ItemList_myBook;
 		lv_MybooklistField.setItems(ItemList_myBook);
 	}
-	
-	
 
 	public void showborrowedAction() { 
 		DataModel.ItemList_myBook.clear();
@@ -198,10 +196,6 @@ public class MyBookList_Controller extends Base_Controller implements Initializa
 			}
 		});
 
-	}
-
-	public void showsoldAction() { // ∆»∏∞ √• MybooklistFieldø° ∫∏ø©¡‡ registeredBook ¡ﬂ soldoutµ» √•
-		DataModel.ItemList_myBook.clear();
 	}
 
 	public void backAction() {

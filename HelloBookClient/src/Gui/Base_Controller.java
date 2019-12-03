@@ -29,7 +29,7 @@ public class Base_Controller { // 변하지 않는 화면 = Base
 	 * lb = label btn = button tf = textfield ts = textArea lv = listview
 	 * 
 	 */
-	public Button btn_Main, btn_Search, btn_BookSales, btn_LogOut, btn_MyInfo, btn_MyBookList, btn_ProfileWishList,
+	public Button btn_Main, btn_Search, btn_BookSales, btn_LogOut, btn_MyInfo, btn_MyBookList, 
 	btn_ProfileNewAlert;
 
 	public TextField tf_Search;
@@ -233,10 +233,6 @@ public class Base_Controller { // 변하지 않는 화면 = Base
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	public void wishlistAction() { 
-		// lv_ProfileList에 장바구니 리스트 보여주기
 	}
 
 	public void alertAction() { 

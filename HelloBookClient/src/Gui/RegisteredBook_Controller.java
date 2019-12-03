@@ -25,8 +25,6 @@ public class RegisteredBook_Controller extends Base_Controller implements Initia
 	@FXML
 	public RadioButton Rbtn_canLend;
 	@FXML
-	public RadioButton Rbtn_soldOut;
-	@FXML
 	public RadioButton Rbtn_lend;
 	@FXML
 	public TextField tf_who;
@@ -51,12 +49,10 @@ public class RegisteredBook_Controller extends Base_Controller implements Initia
 		} else {
 			if (book.getRental_status()) {// 가능하다면
 				Rbtn_canLend.setSelected(true);
-				Rbtn_soldOut.setDisable(true);
 				Rbtn_lend.setDisable(true);
 				tf_who.setDisable(true);
 			} else {//빌려준상대
 				Rbtn_lend.setSelected(true);
-				Rbtn_soldOut.setDisable(true);
 				Rbtn_canLend.setDisable(true);
 				//누구에게는 아직 생각중
 				
