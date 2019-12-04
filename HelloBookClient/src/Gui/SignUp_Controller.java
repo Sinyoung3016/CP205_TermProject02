@@ -40,11 +40,11 @@ public class SignUp_Controller implements Initializable {
 	@FXML
 	public ChoiceBox<String> cb_Email;
 	@FXML
-	public TextArea ar_address;
+	public TextArea ta_address;
 	@FXML
 	public Button btn_Main, btn_SignUp;
 	@FXML
-	public Label lb_error_id, lb_error_pw, lb_error_confirm, lb_error_name, lb_error_email, lb_error_phone;
+	public Label lb_error_id, lb_error_pw, lb_error_confirm, lb_error_name, lb_error_email, lb_error_phone,lb_error_address;
 	public Socket socket;
 
 	@FXML
@@ -66,20 +66,23 @@ public class SignUp_Controller implements Initializable {
 		// 회원가입 내역 전부 작성 X
 		if (tf_ID.getText().length() == 0 || pf_Password.getText().length() == 0 || tf_Name.getText().length() == 0
 				|| tf_Email.getText().length() == 0 || tf_phoneNum.getText().length() == 0
-				|| cb_Email.getValue() == null || ar_address.getText().length() == 0)
+				|| cb_Email.getValue() == null || ta_address.getText().length() == 0) {
 			new Alert(Alert.AlertType.WARNING, "빈칸을 전부 채워주세요.", ButtonType.CLOSE).show();
-
+		}else if(!lb_error_id.getText().equals("")||!lb_error_pw.getText().equals("")||!lb_error_confirm.getText().equals("")||!lb_error_name.getText().equals("")||
+				!lb_error_email.getText().equals("")||!lb_error_phone.getText().equals("")||!lb_error_address.getText().equals("")) {
+			new Alert(Alert.AlertType.WARNING, "형식에 맞지 않는 칸이 있습니다.", ButtonType.CLOSE).show();
+		}
 		// 회원가입 내역 완벽할때
 		else {
 			String message = null;
 			try {
 				String m = "SignUp:" + tf_ID.getText() + ":" + pf_Password.getText() + ":" + tf_Name.getText() + ":"
 						+ tf_phoneNum.getText() + ":" + tf_Email.getText() + "@"
-						+ cb_Email.getSelectionModel().getSelectedItem().toString() + ":" + ar_address.getText();
+						+ cb_Email.getSelectionModel().getSelectedItem().toString() + ":" + ta_address.getText();
 				BufferedReader br = new BufferedReader(
 						new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
 				PrintWriter pw = new PrintWriter(
-						new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
+						new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
 				pw.println(m);
 				pw.flush();
 				message = br.readLine();
@@ -187,6 +190,19 @@ public class SignUp_Controller implements Initializable {
 					}
 				} catch (MyException e) {
 					lb_error_phone.setText(e.getMessage());
+				}
+
+			}
+		});
+		ta_address.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				try {
+					if (newValue.length() == 0 || FormException.AddressFormCheck(newValue)) {
+						lb_error_address.setText("");
+					}
+				} catch (MyException e) {
+					lb_error_address.setText(e.getMessage());
 				}
 
 			}

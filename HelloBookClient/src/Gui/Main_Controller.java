@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -47,6 +48,9 @@ public class Main_Controller extends Base_Controller implements Initializable {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		
+
+		
 		// Base start
 		super.base();
 		// Base end
@@ -58,7 +62,7 @@ public class Main_Controller extends Base_Controller implements Initializable {
 				public void handle(ActionEvent evnet) {
 					try {
 						// item.num
-						PrintWriter pw = new PrintWriter(new OutputStreamWriter(DataModel.socket.getOutputStream()));
+						PrintWriter pw = new PrintWriter(new OutputStreamWriter(DataModel.socket.getOutputStream(), StandardCharsets.UTF_8));
 						pw.println("PrintBookData:Detail:" + item.num.getText());
 						pw.flush(); // 책번호에 대한 정보를 달라고 요청
 
@@ -76,6 +80,7 @@ public class Main_Controller extends Base_Controller implements Initializable {
 		}
 
 		lv_NewBooks.setItems(ItemList_newBook);// 이 아래 위치에 Listner를 추가해줘야 잘 작동됌!!!
+		
 		lv_NewBooks.getItems().addListener(new ListChangeListener() {// 새롭게 추가될때마다 해줌!!
 			@Override
 			public void onChanged(ListChangeListener.Change change) {
@@ -87,8 +92,7 @@ public class Main_Controller extends Base_Controller implements Initializable {
 						public void handle(ActionEvent evnet) {
 							try {
 								// item.num
-								PrintWriter pw = new PrintWriter(
-										new OutputStreamWriter(DataModel.socket.getOutputStream()));
+								PrintWriter pw = new PrintWriter(new OutputStreamWriter(DataModel.socket.getOutputStream(), StandardCharsets.UTF_8));
 								pw.println("PrintBookData:Detail:" + hbc.num.getText());
 								pw.flush(); // 책번호에 대한 정보를 달라고 요청
 

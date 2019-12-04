@@ -75,7 +75,7 @@
 								<Font name="Trebuchet MS Bold" size="14.0" />
 							</font>
 						</Label>
-						<ListView fx:id="lv_NewBooks" prefHeight="200.0" prefWidth="350.0">
+						<ListView fx:id="lv_NewBooks" prefHeight="200.0" prefWidth="350.0" styleClass="list-cell">
 							<VBox.margin>
 								<Insets left="5.0" right="5.0" />
 							</VBox.margin>
@@ -85,7 +85,7 @@
 								<Font name="Trebuchet MS Bold" size="14.0" />
 							</font>
 						</Label>
-						<ListView fx:id="lv_BestSeller" prefHeight="200.0" prefWidth="350.0">
+						<ListView fx:id="lv_BestSeller" prefHeight="200.0" prefWidth="350.0" styleClass="list-cell">
 							<VBox.margin>
 								<Insets left="5.0" right="5.0" />
 							</VBox.margin>
@@ -160,7 +160,7 @@
 								<Insets top="5.0" />
 							</VBox.margin>
 						</HBox>
-						<ListView fx:id="lv_ProfileList" prefHeight="200.0" prefWidth="200.0">
+						<ListView fx:id="lv_alter_list" prefHeight="200.0" prefWidth="200.0" styleClass="list-cell">
 							<VBox.margin>
 								<Insets left="5.0" right="5.0" />
 							</VBox.margin>

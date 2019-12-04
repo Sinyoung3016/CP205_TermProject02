@@ -41,6 +41,10 @@ public class User {
 		this.is_connected = Boolean.parseBoolean(info[15]);
 	}
 
+	public void setLend_OK(boolean lend_OK) {
+		Lend_OK = lend_OK;
+	}
+
 	public String getID() {
 		return ID;
 	}

@@ -18,13 +18,13 @@ public class User {
 		this.phone=UserInfo[3];
 		this.Email=UserInfo[4];
 		this.Address=UserInfo[5];
-		if(Integer.parseInt(UserInfo[6])==0) {//false
+		if(UserInfo[6].equals("0")||UserInfo[6].equals("false")) {//false
 			this.Lend_OK=false;
 		}
 		else {
 			this.Lend_OK=true;
 		}
-		if(Integer.parseInt(UserInfo[7])==0) {//false
+		if(UserInfo[7].equals("0")||UserInfo[7].equals("false")) {//false
 			this.is_connected=false;
 		}
 		else {

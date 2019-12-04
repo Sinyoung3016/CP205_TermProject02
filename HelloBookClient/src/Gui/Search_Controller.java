@@ -28,6 +28,8 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class Search_Controller extends Base_Controller implements Initializable {
@@ -49,11 +51,17 @@ public class Search_Controller extends Base_Controller implements Initializable 
 	public Button btn_DetailSearch;
 	@FXML
 	public TextField tf_Title, tf_Author, tf_Publisher;
+	
+	@FXML
+	public AnchorPane AnchorPane;
 
 	private ObservableList<HBoxCell> ItemList_searchBook;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		if (DataModel.ItemList_searchBook != null) {
+			DataModel.ItemList_searchBook.clear();
+		}
 		// Base start
 		super.base();
 		// Base end
@@ -68,6 +76,7 @@ public class Search_Controller extends Base_Controller implements Initializable 
 
 		cb_RentalStatus.setValue("선택안함");
 		rentalAvailable = "선택안함";
+		
 		cb_RentalStatus.setItems(rentalAvailable_list);
 
 		cb_genre.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() { // 여기 공부 !!!
@@ -96,12 +105,39 @@ public class Search_Controller extends Base_Controller implements Initializable 
 			}
 		});
 
-		if (DataModel.ItemList_searchBook != null) {
-			DataModel.ItemList_searchBook.clear();
-		}
+		
 
 		ItemList_searchBook = DataModel.ItemList_searchBook;
 		lv_BookList.setItems(ItemList_searchBook);
+		
+		Platform.runLater(() -> {
+			for (HBoxCell item : ItemList_searchBook) {
+
+				item.title.setOnAction(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent evnet) {
+						try {
+							// item.num
+							PrintWriter pw = new PrintWriter(
+									new OutputStreamWriter(DataModel.socket.getOutputStream(), StandardCharsets.UTF_8));
+							pw.println("PrintBookData:Detail:" + item.num.getText());
+							pw.flush(); // 책번호에 대한 정보를 달라고 요청
+
+							Stage primaryStage = (Stage) btn_LogOut.getScene().getWindow();
+							Parent search = FXMLLoader.load(getClass().getResource("/Gui/BookDetail_GUI.fxml"));
+							AnchorPane.getChildren().add(search);
+							
+							/*
+							 * Scene scene = new Scene(search); primaryStage.setTitle("HelloBooks");
+							 * primaryStage.setScene(scene); primaryStage.show();
+							 */
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
+			}
+		});
 	}
 
 	@FXML
@@ -172,16 +208,17 @@ public class Search_Controller extends Base_Controller implements Initializable 
 								try {
 									// item.num
 									PrintWriter pw = new PrintWriter(
-											new OutputStreamWriter(DataModel.socket.getOutputStream()));
+											new OutputStreamWriter(DataModel.socket.getOutputStream(), StandardCharsets.UTF_8));
 									pw.println("PrintBookData:Detail:" + item.num.getText());
 									pw.flush(); // 책번호에 대한 정보를 달라고 요청
-
 									Stage primaryStage = (Stage) btn_LogOut.getScene().getWindow();
 									Parent search = FXMLLoader.load(getClass().getResource("/Gui/BookDetail_GUI.fxml"));
-									Scene scene = new Scene(search);
-									primaryStage.setTitle("HelloBooks");
-									primaryStage.setScene(scene);
-									primaryStage.show();
+									AnchorPane.getChildren().add(search);
+									
+									/*
+									 * Scene scene = new Scene(search); primaryStage.setTitle("HelloBooks");
+									 * primaryStage.setScene(scene); primaryStage.show();
+									 */
 								} catch (Exception e) {
 									e.printStackTrace();
 								}

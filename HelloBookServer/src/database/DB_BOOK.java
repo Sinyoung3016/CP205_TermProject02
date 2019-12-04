@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,19 +22,71 @@ public class DB_BOOK  extends DBManager{
 			conn = getConn();
 			state = conn.createStatement();// conn연결정보를 state로 생성.
 			String sql;
-			sql = "SELECT COUNT(*) count FROM BOOK";	
+			sql = "select * from book order by book_number desc limit 1";	
 			
 			rs = state.executeQuery(sql);
-			if(rs.next());
-			return rs.getInt("count");				
+			if(rs.next());{
+				return rs.getInt("book_number");				
+			}
 		} catch (Exception e) {
-			System.out.println(e);
-			return -1;
+		
+			PreparedStatement pstmt = null;
+			
+			
+			try {
+				String sql = "alter table book auto_increment=?";	
+				pstmt = conn.prepareStatement(sql);
+	        	pstmt.setInt(1, 1);
+	        	pstmt.executeUpdate();
+	        	sql = "alter table usersbook auto_increment=?";	
+				pstmt = conn.prepareStatement(sql);
+	        	pstmt.setInt(1, 1);
+	        	pstmt.executeUpdate();
+				System.out.println("등록된 책이 없어 등록번호를 1로 초기화시킵니다.");
+				return 0;
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			return 0;
 		}  finally {	
 			try {
 				if (state != null)	state.close();
 				if (conn != null)	conn.close();
 				if(rs!=null)	rs.close();
+			} catch (SQLException e) {}
+		}
+	}
+	public synchronized static void ReturnBook(int BookNum) throws SQLException {//빌리기
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+
+		try {
+
+			conn = getConn();
+
+			   String sql = "update book set Rental_Status=? where book_number = ?";
+
+		        try {
+		        	pstmt = conn.prepareStatement(sql);
+
+		        	pstmt.setString(1, "1");
+		        	pstmt.setString(2, BookNum+"");
+
+		        	pstmt.executeUpdate();
+		        	
+	        } catch (SQLException e) {
+	            // TODO Auto-generated catch block
+	            e.printStackTrace();
+	        }
+
+
+			
+			pstmt.close();
+			conn.close();
+		} finally {	
+			try {
+				if (pstmt != null)	pstmt.close();
+				if (conn != null)	conn.close();
 			} catch (SQLException e) {}
 		}
 	}
@@ -139,7 +192,7 @@ public class DB_BOOK  extends DBManager{
 			} catch (SQLException e) {}
 		}
 	}
-	public synchronized static void insertBook(int BookNum,String Title,String Auther, String Publisher, String Genre, String Book_Condition,int Full_Price, int Sale_Price, int Lend_Price, Boolean Rental_Status, String Introduction) throws SQLException {//삽입 
+	public synchronized static void insertBook(String Title,String Auther, String Publisher, String Genre, String Book_Condition,int Full_Price, int Sale_Price, int Lend_Price, Boolean Rental_Status, String Introduction) throws SQLException {//삽입 
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 
@@ -150,26 +203,28 @@ public class DB_BOOK  extends DBManager{
 			String insertRentalAvailability="1";
 			
 			String sql;
-			sql = "INSERT INTO book (Book_Number, Title, Auther, Publisher, Genre, Book_Condition,Full_Price,Sale_Price,Lend_Price,Rental_Status,Introduction)VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+			sql = "INSERT INTO book ( Title, Auther, Publisher, Genre, Book_Condition,Full_Price,Sale_Price,Lend_Price,Rental_Status,Introduction)VALUES (?,?,?,?,?,?,?,?,?,?)";
 			pstmt = conn.prepareStatement(sql);
 
-			pstmt.setString(1, BookNum+"");
-			pstmt.setString(2, Title);
-			pstmt.setString(3, Auther);
-			pstmt.setString(4, Publisher);
-			pstmt.setString(5, Genre );
-			pstmt.setString(6, Book_Condition );
-			pstmt.setString(7, Full_Price+"");
-			pstmt.setString(8, Sale_Price+"");
-			pstmt.setString(9, Lend_Price+"");
+
+			pstmt.setString(1, Title);
+			pstmt.setString(2, Auther);
+			pstmt.setString(3, Publisher);
+			pstmt.setString(4, Genre );
+			pstmt.setString(5, Book_Condition );
+			pstmt.setString(6, Full_Price+"");
+			pstmt.setString(7, Sale_Price+"");
+			pstmt.setString(8, Lend_Price+"");
 			if(Rental_Status.equals("true")) {
 				insertRentalAvailability="1";
 			}else if(Rental_Status.equals("false")){
 				insertRentalAvailability="0";
 			}
-			pstmt.setString(10,  insertRentalAvailability);
-			pstmt.setString(11, Introduction );
+			pstmt.setString(9,  insertRentalAvailability);
+			pstmt.setString(10, Introduction );
 			pstmt.executeUpdate();
+			
+			
 			pstmt.close();
 			conn.close();
 		} finally {	

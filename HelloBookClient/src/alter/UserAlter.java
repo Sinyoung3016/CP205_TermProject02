@@ -63,11 +63,28 @@ public class UserAlter {
 	public String toString() {
 		if(Request_Status.equals("빌리다")) {
 			return Requester_ID+"님이 책 ["+Book_Title+"]를(을) 빌리고 싶어합니다.";
-		}else 	if(Request_Status.equals("빌려주다")) {
+		}
+		else 	if(Request_Status.equals("빌려주다")) {
 			return "책 ["+Book_Title+"]를(을) 빌렸습니다.";
-		}else 	if(Request_Status.equals("안빌려주다")) {
+		}
+		else 	if(Request_Status.equals("안빌려주다")) {
 			return Requester_ID+"님이 책 ["+Book_Title+"]를(을) 빌려주는것을 거부하셨습니다.";
-		}else {
+		}
+		else 	if(Request_Status.equals("반납하다")) {
+			return "책 ["+Book_Title+"]이(가) 반납되었습니다.";
+		}
+		else if(Request_Status.equals("사다")) {
+			return Requester_ID+"님이 책 ["+Book_Title+"]를(을) 구매하고 싶어합니다.";
+		}
+		else 	if(Request_Status.equals("팔다")) {
+			return "책 ["+Book_Title+"]를(을) 구매하셨습니다.";
+		}
+		else 	if(Request_Status.equals("안팔다")) {
+			return"님이 책 ["+Book_Title+"]를(을) 파는것을 거부하셨습니다.";
+		}
+	
+		
+		else {
 			return null;
 		}
 	}

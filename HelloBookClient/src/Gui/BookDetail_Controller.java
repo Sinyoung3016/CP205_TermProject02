@@ -4,16 +4,20 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ResourceBundle;
 
 import Gui.model.DataModel;
 import book.Book;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 public class BookDetail_Controller extends Base_Controller implements Initializable {
 
@@ -23,6 +27,8 @@ public class BookDetail_Controller extends Base_Controller implements Initializa
 	public Label lb_MainBookName, lb_MainBookAuthor, lb_RentalStatus, lb_Title, lb_Author, lb_Publisher, lb_BookCondition, lb_FullPrice, lb_SalePrice, lb_LendPrice, lb_Introduction; 
 	
 	private Book book;
+	@FXML
+	public AnchorPane AnchorPane;
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		this.book=DataModel.book_for_detail;
@@ -49,16 +55,27 @@ public class BookDetail_Controller extends Base_Controller implements Initializa
 
 	@FXML
 	public void backAction() { //전 화면으로 
-
+		AnchorPane root=(AnchorPane) AnchorPane.getScene().getRoot();
+		root.getChildren().remove(AnchorPane);
 	}
 
 	@FXML
 	public void borrowedNowAction() { //이 책을 바로 빌리기 책주인에게 알리기 -> 책 주인의 New Alert에 뜨기
 		PrintWriter pw;
 		try {
-			pw = new PrintWriter(new OutputStreamWriter(DataModel.socket.getOutputStream()));
+			pw = new PrintWriter(new OutputStreamWriter(DataModel.socket.getOutputStream(), StandardCharsets.UTF_8));
 			pw.println("BorrowRequest:"+DataModel.ID+":"+book.getBook_num()+":"+book.getTitle()+":");////BorrowRequest:요청자:책번호:책제목
 			pw.flush();
+			try {
+				Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
+				Parent main = FXMLLoader.load(getClass().getResource("/Gui/Main_GUI.fxml"));
+				Scene scene = new Scene(main);
+				primaryStage.setTitle("HelloBooks/Main");
+				primaryStage.setScene(scene);
+				primaryStage.show();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -70,6 +87,24 @@ public class BookDetail_Controller extends Base_Controller implements Initializa
 
 	@FXML
 	public void buyNowAction() { //이 책을 바로 구매하기 -> 책 주인의 New Alert에 뜨기
-
+		PrintWriter pw;
+		try {
+			pw = new PrintWriter(new OutputStreamWriter(DataModel.socket.getOutputStream(), StandardCharsets.UTF_8));
+			pw.println("PurchaseRequest:"+DataModel.ID+":"+book.getBook_num()+":"+book.getTitle()+":");////BorrowRequest:요청자:책번호:책제목
+			pw.flush();
+			try {
+				Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
+				Parent main = FXMLLoader.load(getClass().getResource("/Gui/Main_GUI.fxml"));
+				Scene scene = new Scene(main);
+				primaryStage.setTitle("HelloBooks/Main");
+				primaryStage.setScene(scene);
+				primaryStage.show();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

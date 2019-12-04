@@ -12,6 +12,7 @@ import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -21,6 +22,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 public class Base_Controller { // 변하지 않는 화면 = Base
@@ -36,13 +38,12 @@ public class Base_Controller { // 변하지 않는 화면 = Base
 
 	public Label lb_ProfileName, lb_ProfileID, lb_ProfileLend;
 
-	public ListView lv_ProfileList;
+	public ListView lv_alter_list;
 	
 	private ObservableList<UserAlter> ItemList_alter;
 	
 	@SuppressWarnings("unchecked")
 	public void base() {
-		
 		// Profile start
 		lb_ProfileName.setText(DataModel.user.getName());
 		lb_ProfileID.setText(DataModel.user.getID());
@@ -54,70 +55,112 @@ public class Base_Controller { // 변하지 않는 화면 = Base
 		// Profile end
 
 		// ProfileList 초기화 start
-		// ProfileList 초기화 end
+		// ProfileList 초기화 endt
 		
 		this.ItemList_alter=DataModel.ItemList_alter;
-		lv_ProfileList.setItems(ItemList_alter);
+		lv_alter_list.setItems(ItemList_alter);
+		lv_alter_list.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
-		lv_ProfileList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<UserAlter>() {
-
-		    @Override
-		    public void changed(ObservableValue<? extends UserAlter> observable, UserAlter oldValue, UserAlter newValue) {
-		        // Your action here
-		    	if(newValue!=null) {
+	        @Override
+	        public void handle(MouseEvent event) {
+	        	
+	        	int index=lv_alter_list.getSelectionModel().getSelectedIndex();
+	        	
+	        	if(index>=0) {
+	        	UserAlter newValue= ItemList_alter.get( lv_alter_list.getSelectionModel().getSelectedIndex());
+	        	if(newValue!=null) {
 		    		if(newValue.getRequest_Status().equals("빌리다")) {
-		    			Alert alert = new Alert(Alert.AlertType.WARNING, lv_ProfileList.getSelectionModel().getSelectedItem().toString(), ButtonType.YES, ButtonType.NO);
+		    			Alert alert = new Alert(Alert.AlertType.WARNING, lv_alter_list.getSelectionModel().getSelectedItem().toString(), ButtonType.YES, ButtonType.NO);
 		    			Optional<ButtonType> result = alert.showAndWait();
 		    			if (result.get() == ButtonType.YES) {
 		    				// 등록된 책을 삭제
 		    				try {
 		    					PrintWriter pw=new PrintWriter(new OutputStreamWriter(DataModel.socket.getOutputStream(),StandardCharsets.UTF_8));//BorrowAnswer:(수락,거부):요청자:책번호:책제목:요청받는자
-
 		    					pw.println("BorrowAnswer:수락:"+newValue.getRequested_ID()+":"+newValue.getBook_Number()+":"+newValue.getBook_Title()+":"+newValue.getRequester_ID());
 		    					pw.flush();
-		    					int index=lv_ProfileList.getSelectionModel().getSelectedIndex();
-		    					Platform.runLater(() -> {ItemList_alter.remove(index);});
+		    					int index1=lv_alter_list.getSelectionModel().getSelectedIndex();
+		    					Platform.runLater(() -> {ItemList_alter.remove(index1);});
+		    				} catch (IOException e) {e.printStackTrace();}
+		    			}else {
+		    				try {
+		    					PrintWriter pw=new PrintWriter(new OutputStreamWriter(DataModel.socket.getOutputStream(),StandardCharsets.UTF_8));
+		    					pw.println("BorrowAnswer:거절:"+newValue.getRequested_ID()+":"+newValue.getBook_Number()+":"+newValue.getBook_Title()+":"+newValue.getRequester_ID());
+		    					pw.flush();
+		    					int index1=lv_alter_list.getSelectionModel().getSelectedIndex();
+		    					Platform.runLater(() -> {ItemList_alter.remove(index1);});
+							} catch (IOException e) {e.printStackTrace();}
+		    			}
+		    		}//대여요청에 대한 알림 끝
+		    		
+		    		else if(newValue.getRequest_Status().equals("빌려주다")||newValue.getRequest_Status().equals("안빌려주다")){
+		    			Alert alert = new Alert(Alert.AlertType.WARNING, lv_alter_list.getSelectionModel().getSelectedItem().toString(), ButtonType.YES);
+		    			alert.show();
+						try {
+							PrintWriter pw = new PrintWriter(new OutputStreamWriter(DataModel.socket.getOutputStream(),StandardCharsets.UTF_8));
+							pw.println("AlterOK:"+newValue.getRequested_ID()+":"+newValue.getBook_Number()+":"+newValue.getRequest_Status());//AlterOK:요청자:책번호:(빌려주다,안빌려주다)
+	    					pw.flush();
+							int index1=lv_alter_list.getSelectionModel().getSelectedIndex();
+							Platform.runLater(() -> {ItemList_alter.remove(index1);});
+						} catch (IOException e) {e.printStackTrace();}
+						
+		    		}//빌렸다, 못빌렸다에 대한 알림 끝
+		    		else if(newValue.getRequest_Status().equals("반납하다")) {
+		    			Alert alert = new Alert(Alert.AlertType.WARNING, lv_alter_list.getSelectionModel().getSelectedItem().toString(), ButtonType.YES);
+		    			alert.show();
+		    			try {
+							PrintWriter pw = new PrintWriter(new OutputStreamWriter(DataModel.socket.getOutputStream(),StandardCharsets.UTF_8));
+							pw.println("AlterOK:"+newValue.getRequested_ID()+":"+newValue.getBook_Number()+":"+newValue.getRequest_Status());//AlterOK:요청자:책번호:반납하다
+	    					pw.flush();
+							int index1=lv_alter_list.getSelectionModel().getSelectedIndex();
+							Platform.runLater(() -> {ItemList_alter.remove(index1);});
+						} catch (IOException e) {e.printStackTrace();}
+		    		}//반납했다에 대한 알림 끝
+		    		
+		    		
+		    		if(newValue.getRequest_Status().equals("사다")) {
+		    			Alert alert = new Alert(Alert.AlertType.WARNING, lv_alter_list.getSelectionModel().getSelectedItem().toString(), ButtonType.YES, ButtonType.NO);
+		    			Optional<ButtonType> result = alert.showAndWait();
+		    			if (result.get() == ButtonType.YES) {
+		    				try {
+		    					PrintWriter pw=new PrintWriter(new OutputStreamWriter(DataModel.socket.getOutputStream(),StandardCharsets.UTF_8));//BorrowAnswer:(수락,거부):요청자:책번호:책제목:요청받는자
+
+		    					pw.println("PurchaseAnswer:수락:"+newValue.getRequested_ID()+":"+newValue.getBook_Number()+":"+newValue.getBook_Title()+":"+newValue.getRequester_ID());
+		    					pw.flush();
+		    					int index1=lv_alter_list.getSelectionModel().getSelectedIndex();
+		    					Platform.runLater(() -> {ItemList_alter.remove(index1);});
+		    					
 					
-		    				} catch (IOException e) {
-		    					// TODO Auto-generated catch block
-		    					e.printStackTrace();
-		    				}
+		    				} catch (IOException e) {e.printStackTrace();}
 					
 		    			}else {
-		    			
 		    				try {
-								PrintWriter pw= new PrintWriter(new OutputStreamWriter(DataModel.socket.getOutputStream(),StandardCharsets.UTF_8));
-								pw.println("BorrowAnswer:거절:"+newValue.getRequested_ID()+":"+newValue.getBook_Number()+":"+newValue.getBook_Title()+":"+newValue.getRequester_ID());
-		    					pw.flush();
-								int index=lv_ProfileList.getSelectionModel().getSelectedIndex();
-								Platform.runLater(() -> {ItemList_alter.remove(index);});
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}//BorrowAnswer:(수락,거부):요청자:책번호:책제목:요청받는자
+		    					PrintWriter pw=new PrintWriter(new OutputStreamWriter(DataModel.socket.getOutputStream(),StandardCharsets.UTF_8));//BorrowAnswer:(수락,거부):요청자:책번호:책제목:요청받는자
 
-	    				
+		    					pw.println("PurchaseAnswer:거절:"+newValue.getRequested_ID()+":"+newValue.getBook_Number()+":"+newValue.getBook_Title()+":"+newValue.getRequester_ID());
+		    					pw.flush();
+		    					int index1=lv_alter_list.getSelectionModel().getSelectedIndex();
+		    					Platform.runLater(() -> {ItemList_alter.remove(index1);});
+							} catch (IOException e) {e.printStackTrace();}
 		    			}
-		    		}else if(newValue.getRequest_Status().equals("빌려주다")||newValue.getRequest_Status().equals("안빌려주다")){
-		    			Alert alert = new Alert(Alert.AlertType.WARNING, lv_ProfileList.getSelectionModel().getSelectedItem().toString(), ButtonType.YES);
+		    		}//구매요청에 대한 알림 끝
+		    		else if(newValue.getRequest_Status().equals("팔다")||newValue.getRequest_Status().equals("안팔다")){
+		    			Alert alert = new Alert(Alert.AlertType.WARNING, lv_alter_list.getSelectionModel().getSelectedItem().toString(), ButtonType.YES);
 		    			alert.show();
 		    			
 						try {
 							PrintWriter pw = new PrintWriter(new OutputStreamWriter(DataModel.socket.getOutputStream(),StandardCharsets.UTF_8));
-							pw.println("AlterOK:"+newValue.getRequested_ID()+":"+newValue.getBook_Number());//AlterOK:요청자:책번호
+							pw.println("AlterOK:"+newValue.getRequested_ID()+":"+newValue.getBook_Number()+":"+newValue.getRequest_Status());//AlterOK:요청자:책번호:(빌려주다,안빌려주다)
 	    					pw.flush();
-	    					System.out.println("AlterOK:"+newValue.getRequested_ID()+":"+newValue.getBook_Number());
-							int index=lv_ProfileList.getSelectionModel().getSelectedIndex();
-							Platform.runLater(() -> {ItemList_alter.remove(index);});
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
+							int index1=lv_alter_list.getSelectionModel().getSelectedIndex();
+							Platform.runLater(() -> {ItemList_alter.remove(index1);});
+						} catch (IOException e) {e.printStackTrace();}
 						
-		    		}
+		    		}//샀다 못샀다에 대한 알림 끝
 		    	}
-		    }
-		});
+	        	}
+	        }
+	    });
+		
 	}
 
 	public void mainAction() throws Exception {
@@ -176,6 +219,25 @@ public class Base_Controller { // 변하지 않는 화면 = Base
 
 	public void searchAction() throws Exception { 
 		//tf_Search 내용 받기 start
+		if (tf_Search.getText().contains("-")) {
+			new Alert(Alert.AlertType.WARNING, "특수문자'-'를 사용하실 수 없습니다.", ButtonType.CLOSE).show();
+		} else if (tf_Search.getText().contains(":") ) {
+			new Alert(Alert.AlertType.WARNING, "특수문자':'를 사용하실 수 없습니다.", ButtonType.CLOSE).show();
+		} else {
+
+			if (tf_Search.getText().length() != 0) {
+				PrintWriter pw;
+				try {
+					pw = new PrintWriter(new OutputStreamWriter(DataModel.socket.getOutputStream(), StandardCharsets.UTF_8), true);
+					pw.println("SearchBook:"+"Title-" + tf_Search.getText());
+					pw.flush();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}	
+			}
+		}
+				
+			
 		//tf_Search 내용 받기 end
 		
 		//To Search_Gui

@@ -59,7 +59,6 @@ public class LibraryServerThread extends Thread{
 						break;
 					}
 					String [] request_tokens=request.split(":");// [ex] LOGIN:ID:IP
-
 					if(request_tokens[0].equals(ServerRequest.SIGN_UP.getRequest())) {//SignUp:ID:PW:Name:Phone:Email,Address
 						method="SignUp";
 						SignUp(request_tokens[1],request_tokens[2],request_tokens[3],request_tokens[4],request_tokens[5],request_tokens[6]);
@@ -75,6 +74,7 @@ public class LibraryServerThread extends Thread{
 						LogOut(request_tokens[1],pw);
 					
 					}else if(request_tokens[0].equals(ServerRequest.MODIFY_USER_DATA.getRequest())) {//ModifyUserData:ID:PW:NAME:PHONE:EMAIL:ADDRESS  !아이디는 변경 불가!
+						method="ModifyUserData";
 						ModifyUserData(request_tokens[1],request_tokens[2],request_tokens[3],request_tokens[4],request_tokens[5],request_tokens[6]);
 					
 					}else if(request_tokens[0].equals(ServerRequest.SEARCH_BOOK.getRequest())) {//SearchBook:제목-~~:작가-~~
@@ -89,15 +89,12 @@ public class LibraryServerThread extends Thread{
 						method="AddBookData";
 						AddBookData(request_tokens);
 						
-					}else if(request_tokens[0].equals(ServerRequest.DELETE_BOOK_DATA.getRequest())) {//DeleteBookData:책번호
-						deleteBookData(request_tokens[1]);
+					}else if(request_tokens[0].equals(ServerRequest.REMOVE_BOOK_DATA.getRequest())) {//RemoveBookData:책번호
+						RemoveBookData(request_tokens[1]);
 						
 					}	else if(request_tokens[0].equals(ServerRequest.PRINT_BOOK_DATA.getRequest())) {//PrintBookData:책번호
 						PrintBookData(request_tokens[1],Integer.parseInt(request_tokens[2]));
 						
-					}else if(request_tokens[0].equals(ServerRequest.PURCHASE_BOOK.getRequest())) {//PurchaseBook:살 책 제목:파는사람Id:사는사람ID
-						
-					
 					}else if(request_tokens[0].equals(ServerRequest.BORROW_REQUEST.getRequest())) {//BorrowRequest:요청자:책번호:책제목
 						method="BorrowRequest";
 						BorrowRequest(request_tokens[1],request_tokens[2],request_tokens[3]);
@@ -105,16 +102,27 @@ public class LibraryServerThread extends Thread{
 					}else if(request_tokens[0].equals(ServerRequest.BORROW_ANSWER.getRequest())) {//BorrowAnswer:(수락,거부):요청자:책번호:책제목:요청받는자
 						BorrowAnswer(request_tokens[1],request_tokens[2],request_tokens[3],request_tokens[4],request_tokens[5]);
 						
-					}else if(request_tokens[0].equals(ServerRequest.ALTER_OK.getRequest())) {//AlterOK:요청자:책번호
-						AlterOK(request_tokens[1],request_tokens[2]);
+					}else if(request_tokens[0].equals(ServerRequest.PURCHASE_REQUEST.getRequest())) {//PurchaseRequest:요청자:책번호:책제목
+						method="PurchaseRequest";
+						PurchaseRequest(request_tokens[1],request_tokens[2],request_tokens[3]);
+						
+					}else if(request_tokens[0].equals(ServerRequest.PURCHASE_ANSWER.getRequest())) {//PurchaseAnswer:(수락,거부):요청자:책번호:책제목:요청받는자
+						PurchaseAnswer(request_tokens[1],request_tokens[2],request_tokens[3],request_tokens[4],request_tokens[5]);
+						
+					}else if(request_tokens[0].equals(ServerRequest.ALTER_OK.getRequest())) {//AlterOK:요청자:책번호:(빌리다,빌려주다,안빌려주다,등등)
+						AlterOK(request_tokens[1],request_tokens[2],request_tokens[3]);
+						
+					}else if(request_tokens[0].equals(ServerRequest.RETURN_BOOK.getRequest())) {//ReturnBook:요청자:책번호,책제목
+						ReturnBook(request_tokens[1],request_tokens[2],request_tokens[3]);
+					}else if(request_tokens[0].equals(ServerRequest.LATE_IN_RETURN.getRequest())) {//LateInReturn:대여불가가 될 ID
+						LateInReturn(request_tokens[1]);
 					}
 
 				}catch(MyException e) {
 					pw.println(method+":"+e.getMessage());
 					pw.flush();
 				}catch(SQLException e) {
-					pw.println(method+":"+e.getMessage());
-					pw.flush();
+					e.printStackTrace();
 				}
 			}
 		}catch(IOException e) {
@@ -136,6 +144,12 @@ public class LibraryServerThread extends Thread{
 		}
 	}
 	
+
+
+
+
+
+
 	private synchronized void SignUp(String id, String password, String name, String phone, String Email, String Address) throws MyException {
 		if(LogInContext.SignUp(name, phone, id, password,Email,Address)) {//아이디,비밀번호,이름,전화번호,연체료,빌린 책 수, 연결여부(로그인여부[0이면 연결X, 1이면 연결O])
 			pw.println("SignUp:성공:");
@@ -190,6 +204,8 @@ public class LibraryServerThread extends Thread{
 		String []changeData= {id, changePw, changeName, changePhone,changeEmail,changeAddress,old.isLend_OK()+"",old.is_connected()+""};
 		User changeMem=new User(changeData);
 		DB_USER.modifyUser(changeMem);
+		pw.println("ModifyUserData:회원정보가 변경되었습니다.:"+changeMem.toString());
+		pw.flush();
 	}
 	
 	private synchronized void SearchBook(String[] info,PrintWriter cleint) {
@@ -235,15 +251,14 @@ public class LibraryServerThread extends Thread{
 		}
 	}
 	private synchronized void AddBookData(String[] bookData) throws  SQLException {
-		
 		int bookNum=DB_BOOK.getBookCount();
-		DB_BOOK.insertBook(bookNum+1,bookData[1],bookData[2],bookData[3],bookData[4],bookData[5],Integer.parseInt(bookData[6]),Integer.parseInt(bookData[7]),Integer.parseInt(bookData[8]),Boolean.parseBoolean(bookData[9]),bookData[10]);
-		
-		DB_UsersBook.uploadBook(bookNum+1,id,bookData[1]);//등록번호,아이디,제목
+		DB_BOOK.insertBook(bookData[1],bookData[2],bookData[3],bookData[4],bookData[5],Integer.parseInt(bookData[6]),Integer.parseInt(bookData[7]),Integer.parseInt(bookData[8]),Boolean.parseBoolean(bookData[9]),bookData[10]);
+		DB_UsersBook.uploadBook(id,bookData[1]);//등록번호,아이디,제목
+		bookNum++;
 		pw.println("AddBookData:성공");
 		pw.flush();
 		String[] newBookData=new String[11];
-		newBookData[0]=bookNum+1+"";
+		newBookData[0]=bookNum+"";
 		for(int i=1; i<11; i++) {
 			newBookData[i]=bookData[i];
 		}
@@ -254,10 +269,10 @@ public class LibraryServerThread extends Thread{
 			new_book_list.remove(20);
 			
 		}
-		broadcast(newBook);
+		broadcastNewBook(newBook);
 	}
 	
-	private void broadcast(Book addBook) {
+	private void broadcastNewBook(Book addBook) {
 		synchronized(listUser) {//모든 사람들에게 메세지 출력
 			for(String writer : listUser.keySet()) {
 				PrintWriter pw=	listUser.get(writer);
@@ -266,10 +281,36 @@ public class LibraryServerThread extends Thread{
 			}
 		}
 	}
-	
+	private void broadcastRemoveNewBook(int book_num) {
+		synchronized(listUser) {//모든 사람들에게 메세지 출력
+			for(String writer : listUser.keySet()) {
+				PrintWriter pw=	listUser.get(writer);
+				pw.println("RemoveNewBook:"+book_num);
+				pw.flush();
+			}
+		}
+	}
+	private synchronized void removeNewBook(int Book_Number) {//지우기
+		for(int i=0; i<new_book_list.size(); i++) {
+			if(new_book_list.get(i).getBook_num()==Book_Number) {
+				new_book_list.remove(i);
+				break;
+			}
+		}
+	}
 
-	private synchronized void deleteBookData(String Book_Number) {
-		DB_BOOK.deleateBook(Integer.parseInt(Book_Number));
+	private synchronized void RemoveBookData(String Book_Number) {
+		if(DB_UsersBook.checkRemovePossibility(Integer.parseInt(Book_Number))) {//지울 수 있는 상황이면
+			DB_UsersBook.deleateBook(Integer.parseInt(Book_Number));
+			DB_BOOK.deleateBook(Integer.parseInt(Book_Number));
+			pw.println("RemoveBookData:책을 성공적으로 삭제하였습니다.");
+			pw.flush();
+			removeNewBook(Integer.parseInt(Book_Number));
+			broadcastRemoveNewBook(Integer.parseInt(Book_Number));
+		}else {
+			pw.println("RemoveBookData:현재 지울 수 없는 상태입니다. 처리하지 않은 요청이 있는지 확인해 주십시오.");
+			pw.flush();
+		}
 	}
 	
 	private synchronized void storeUserLog(String status) {
@@ -325,7 +366,6 @@ public class LibraryServerThread extends Thread{
 				pw.println("PrintBookList:등록한 책이 없습니다.");
 				pw.flush();
 			}
-	
 			for(int i=book_list.size()-1; i>=0; i--) {
 				pw.println("PrintBookList:"+book_list.get(i).getBookInfoTokens());
 				pw.flush();
@@ -382,9 +422,14 @@ public class LibraryServerThread extends Thread{
 				pw.println("PrintBookData:Registered:책이 존재하지 않습니다.");
 				pw.flush();
 			}else {
-				pw.println("PrintBookData:Registered:"+returnBook.getBookInfoTokens());
-				pw.flush();
-
+				String borrowBookId="";
+				if((borrowBookId=DB_UsersBook.getBorrowedBookUser(book_num))==null) {
+					pw.println("PrintBookData:Registered:"+returnBook.getBookInfoTokens());//25사이즈
+					pw.flush();
+				}else {
+					pw.println("PrintBookData:Registered:"+returnBook.getBookInfoTokens()+":"+DB_UsersBook.getBorrowedBookUser(book_num));//26사이즈
+					pw.flush();
+				}
 			}
 		}
 		else if(Status.equals("Loaned")) {
@@ -392,12 +437,19 @@ public class LibraryServerThread extends Thread{
 				pw.println("PrintBookData:Loaned:책이 존재하지 않습니다.");
 				pw.flush();
 			}else {
-				pw.println("PrintBookData:Loaned:"+returnBook.getBookInfoTokens());
+				pw.println("PrintBookData:Loaned:"+returnBook.getBookInfoTokens()+":"+DB_UsersBook.getBorrowedBookUser(book_num));
 				pw.flush();
 
 			}
 		}
 		
+	}
+	private synchronized void printNewAlter(String id,PrintWriter pw) throws SQLException{
+		List<UserAlter> alter_list=DB_ALTER.getAlter(id);
+		for(int i=0; i<alter_list.size(); i++) {
+			pw.println("Alter:"+alter_list.get(i).getToken());
+			pw.flush();
+		}
 	}
 	
 	private synchronized void BorrowRequest(String Requester_ID,String Book_Number, String Book_Title) throws SQLException, MyException {
@@ -405,13 +457,14 @@ public class LibraryServerThread extends Thread{
 			throw new MyException("당신의 책입니다.");
 		}
 		if(DB_UsersBook.CheckRequest(Integer.parseInt(Book_Number))!=null) {
-			throw new MyException("이미 누군가가 대여신청을 하였습니다.");
+			throw new MyException("이미 누군가가 대여/구매 신청을 하였습니다.");
 		
 		}
+		
 		String Requested_ID=DB_UsersBook.searchRegisterByNum(Integer.parseInt(Book_Number));
 		
 		DB_UsersBook.BorrowRequest(Integer.parseInt(Book_Number), Requester_ID);
-		DB_ALTER.BorrowBook(Requester_ID, Integer.parseInt(Book_Number), Book_Title, Requested_ID);
+		DB_ALTER.BorrowRequest(Requester_ID, Integer.parseInt(Book_Number), Book_Title, Requested_ID);
 		this.pw.println("BorrowRequest:대여요청을 보냈습니다.");
 		this.pw.flush();
 		if(listUser.containsKey(Requested_ID)) {//요청받는 사람, 즉 책의 주인이 현재 접속중이면
@@ -422,20 +475,13 @@ public class LibraryServerThread extends Thread{
 		
 	}
 	
-	private synchronized void printNewAlter(String id,PrintWriter pw) throws SQLException{
-		List<UserAlter> alter_list=DB_ALTER.getAlter(id);
-		for(int i=0; i<alter_list.size(); i++) {
-			pw.println("Alter:"+alter_list.get(i).getToken());
-			pw.flush();
-		}
-	}
-	
 	private synchronized void BorrowAnswer(String answer,String Requester_ID,String Book_Number, String Book_Title,String Requested_ID) throws SQLException {
 		if(answer.equals("수락")) {
-			DB_ALTER.AlterOK(Requested_ID, Integer.parseInt(Book_Number));//빌리겠다는 요청을 보낸 사람의 alter을 처리한걸로 바꿈
+			DB_ALTER.AlterOK(Requester_ID, Integer.parseInt(Book_Number),"빌리다");//빌리겠다는 요청을 보낸 사람의 alter을 처리한걸로 바꿈
+					
 			DB_UsersBook.BorrowBook(Integer.parseInt(Book_Number));
 			DB_BOOK.BorrowBook(Integer.parseInt(Book_Number));
-			DB_ALTER.BorrowAnswer(Requester_ID, Integer.parseInt(Book_Number), Book_Title, Requested_ID, "빌려주다");//빌렸다는메세지
+			DB_ALTER.RequestAnswer(Requester_ID, Integer.parseInt(Book_Number), Book_Title, Requested_ID, "빌려주다");//빌렸다는메세지
 			
 			if(listUser.containsKey(Requested_ID)) {//요청받는 사람, 즉 책의 주인이 현재 접속중이면
 				
@@ -444,24 +490,114 @@ public class LibraryServerThread extends Thread{
 				pw.flush();
 			}
 		}else {//거절
-			//초기화시키구
-			DB_ALTER.AlterOK(Requested_ID, Integer.parseInt(Book_Number));//빌리겠다는 요청을 보낸 사람의 alter을 처리한걸로 바꿈
+			DB_ALTER.AlterOK(Requester_ID, Integer.parseInt(Book_Number),"빌리다");//빌리겠다는 요청을 보낸 사람의 alter을 처리한걸로 바꿈
 			
-			DB_UsersBook.NoBorrow(Integer.parseInt(Book_Number), Requested_ID);//여기서는 요청받는 사람이,책을 빌려주라는 요청을 보낸 사람임
-			DB_ALTER.BorrowAnswer(Requester_ID, Integer.parseInt(Book_Number), Book_Title, Requested_ID, "안빌려주다");//거절메세지
+			DB_UsersBook.NoBorrowSell(Integer.parseInt(Book_Number));
+			DB_ALTER.RequestAnswer(Requester_ID, Integer.parseInt(Book_Number), Book_Title, Requested_ID, "안빌려주다");//안빌려줬다는 메세지
+			
 			if(listUser.containsKey(Requested_ID)) {//요청받는 사람, 즉 책의 주인이 현재 접속중이면
 				
 				PrintWriter pw=listUser.get(Requested_ID);
-				pw.println("Alter:"+new UserAlter(Requester_ID, Book_Number, Book_Title, Requested_ID, "안빌려주다", "0").getToken());
+				pw.println("Alter:"+new UserAlter(Requester_ID, Book_Number+"", Book_Title, Requested_ID, "안빌려주다", "0").getToken());
 				pw.flush();
-		}
+			}
 		}
 	}
 	
-	private synchronized void AlterOK(String Requester_ID, String Book_Number) throws  SQLException {
-		DB_ALTER.AlterOK(Requester_ID, Integer.parseInt(Book_Number));
+	private synchronized void AlterOK(String Requester_ID, String Book_Number, String Request_Status) throws  SQLException {
+		DB_ALTER.AlterOK(Requester_ID, Integer.parseInt(Book_Number),Request_Status);
 	}
 	
 	
+	private synchronized void ReturnBook(String Requester_ID,String Book_Number, String Book_Title) throws SQLException {
+		String Requested_ID=DB_UsersBook.searchRequesterByNum(Integer.parseInt(Book_Number));
+		
+		DB_UsersBook.ReturnBook(Integer.parseInt(Book_Number));
+		DB_BOOK.ReturnBook(Integer.parseInt(Book_Number));
+		DB_ALTER.ReturnBook(Requester_ID, Integer.parseInt(Book_Number), Book_Title, Requested_ID);
+					
+		pw.println("ReturnBook:반납처리가 완료되었습니다.");
+		pw.flush();
+		
+		
 
+		if(listUser.containsKey(Requested_ID)) {//요청받는 사람, 즉 책의 주인이 현재 접속중이면
+			PrintWriter pw=listUser.get(Requested_ID);
+			pw.println("Alter:"+new UserAlter(Requester_ID, Book_Number+"", Book_Title, Requested_ID, "반납하다", "0").getToken());
+			pw.flush();
+		}
+		
+		DB_USER.userGoodCredit(Requested_ID);
+		if(listUser.containsKey(Requested_ID)) {//요청받는 사람, 즉 책의 주인이 현재 접속중이면
+			PrintWriter pw=listUser.get(Requested_ID);
+			pw.println("LateInReturn:Good");
+			pw.flush();
+		}
+	
+	}
+	
+	
+	private synchronized void PurchaseRequest(String Requester_ID,String Book_Number, String Book_Title) throws SQLException, MyException {
+		if(DB_UsersBook.searchRegisterByNum(Integer.parseInt(Book_Number)).equals(this.id)) {
+			throw new MyException("당신의 책입니다.");
+		}
+		if(DB_UsersBook.CheckRequest(Integer.parseInt(Book_Number))!=null) {
+			throw new MyException("이미 누군가가 대여/구매 신청을 하였습니다.");
+		
+		}
+		String Requested_ID=DB_UsersBook.searchRegisterByNum(Integer.parseInt(Book_Number));
+		
+		DB_UsersBook.PurchaseRequest(Integer.parseInt(Book_Number), Requester_ID);
+		DB_ALTER.PurchaseRequest(Requester_ID, Integer.parseInt(Book_Number), Book_Title, Requested_ID);
+		this.pw.println("PurchaseRequest:구매요청을 보냈습니다.");
+		this.pw.flush();
+		if(listUser.containsKey(Requested_ID)) {//요청받는 사람, 즉 책의 주인이 현재 접속중이면
+			PrintWriter pw=listUser.get(Requested_ID);
+			pw.println("Alter:"+new UserAlter(Requester_ID, Book_Number+"", Book_Title, Requested_ID, "사다", "0").getToken());
+			pw.flush();
+		}
+		
+	}
+	
+	private synchronized void PurchaseAnswer(String answer,String Requester_ID,String Book_Number, String Book_Title,String Requested_ID) throws SQLException {
+		if(answer.equals("수락")) {
+			DB_ALTER.AlterOK(Requester_ID, Integer.parseInt(Book_Number),"사다");//빌리겠다는 요청을 보낸 사람의 alter을 처리한걸로 바꿈
+					
+			DB_UsersBook.deleateBook(Integer.parseInt(Book_Number));
+			DB_BOOK.deleateBook(Integer.parseInt(Book_Number));
+			DB_ALTER.RequestAnswer(Requester_ID, Integer.parseInt(Book_Number), Book_Title, Requested_ID, "팔다");//빌렸다는메세지
+			
+			removeNewBook(Integer.parseInt(Book_Number));
+			broadcastRemoveNewBook(Integer.parseInt(Book_Number));
+			
+			
+			if(listUser.containsKey(Requested_ID)) {//요청받는 사람, 즉 책의 주인이 현재 접속중이면
+				PrintWriter pw=listUser.get(Requested_ID);
+				pw.println("Alter:"+new UserAlter(Requester_ID, Book_Number+"", Book_Title, Requested_ID, "팔다", "0").getToken());
+				pw.flush();
+			}
+		}else {//거절
+			DB_ALTER.AlterOK(Requester_ID, Integer.parseInt(Book_Number),"사다");//빌리겠다는 요청을 보낸 사람의 alter을 처리한걸로 바꿈
+			
+			DB_UsersBook.NoBorrowSell(Integer.parseInt(Book_Number));
+			DB_ALTER.RequestAnswer(Requester_ID, Integer.parseInt(Book_Number), Book_Title, Requested_ID, "안팔다");//안빌려줬다는 메세지
+			
+			if(listUser.containsKey(Requested_ID)) {//요청받는 사람, 즉 책의 주인이 현재 접속중이면
+				
+				PrintWriter pw=listUser.get(Requested_ID);
+				pw.println("Alter:"+new UserAlter(Requester_ID, Book_Number+"", Book_Title, Requested_ID, "안팔다", "0").getToken());
+				pw.flush();
+			}
+		}
+	}
+	
+	private void LateInReturn( String id) {
+		DB_USER.userBadCredit(id);
+		if(listUser.containsKey(id)) {//요청받는 사람, 즉 책의 주인이 현재 접속중이면
+			
+			PrintWriter pw=listUser.get(id);
+			pw.println("LateInReturn:Bad");
+			pw.flush();
+		}
+	}
 }

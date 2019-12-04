@@ -152,8 +152,16 @@ public class DB_USER extends DBManager {
 			pstmt.setString(4, changeUser.getPhone());
 			pstmt.setString(5, changeUser.getEmail());
 			pstmt.setString(6,  changeUser.getAddress()+ "");
-			pstmt.setString(7, changeUser.isLend_OK()+"");
-			pstmt.setString(8, changeUser.is_connected()+"");
+			if(changeUser.isLend_OK()) {
+				pstmt.setString(7, "1");
+			}else {
+				pstmt.setString(7, "0");
+			}
+			if(changeUser.is_connected()) {
+				pstmt.setString(8, "1");
+			}else {
+				pstmt.setString(8, "0");
+			}
 			
 
 			pstmt.executeUpdate();
@@ -223,7 +231,58 @@ public class DB_USER extends DBManager {
 			}
 		}
 	}
-	
+	public synchronized static void userBadCredit(String id) {//대여가능여부 flase로
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+
+		try {
+
+			conn = getConn();
+
+			String sql;
+			sql = "UPDATE user SET Lend_OK='0' WHERE id='"+id+"'";
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.executeUpdate();
+			pstmt.close();
+			conn.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally {
+			try {if (conn != null)conn.close();
+				if (pstmt != null)pstmt.close();
+			} 
+			catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	public synchronized static void userGoodCredit(String id) {//대여가능여부 flase로
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+
+		try {
+
+			conn = getConn();
+
+			String sql;
+			sql = "UPDATE user SET Lend_OK='1' WHERE id='"+id+"'";
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.executeUpdate();
+			pstmt.close();
+			conn.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally {
+			try {if (conn != null)conn.close();
+				if (pstmt != null)pstmt.close();
+			} 
+			catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 	public synchronized static void allUserLogOut() {
 		Connection conn = null;
 		PreparedStatement pstmt = null;

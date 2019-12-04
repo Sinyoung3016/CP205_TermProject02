@@ -70,10 +70,8 @@ public class Login_Controller implements Initializable {
 			String message = null;
 			try {
 				String m = "LogIn:" + tf_ID.getText() + ":" + pf_Password.getText();
-				BufferedReader br = new BufferedReader(
-						new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
-				PrintWriter pw = new PrintWriter(
-						new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
+				BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+				PrintWriter pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
 				pw.println(m);
 				pw.flush();
 				message = br.readLine();
@@ -110,9 +108,6 @@ public class Login_Controller implements Initializable {
 						}	
 						});
 		
-						
-						
-						
 						//primaryStage.show();
 					} catch (Exception e) {
 						e.printStackTrace();

@@ -5,6 +5,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ResourceBundle;
 
 import Gui.model.DataModel;
@@ -20,6 +21,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 public class MyBookList_Controller extends Base_Controller implements Initializable {
@@ -30,7 +32,9 @@ public class MyBookList_Controller extends Base_Controller implements Initializa
 	public ListView<HBoxCell> lv_MybooklistField;
 	private ObservableList<HBoxCell> ItemList_myBook;
 	private Socket socket;
-
+	@FXML
+	public AnchorPane AnchorPane;
+	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		DataModel.ItemList_myBook.clear();
@@ -47,7 +51,7 @@ public class MyBookList_Controller extends Base_Controller implements Initializa
 
 		PrintWriter pw;
 		try {
-			pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+			pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
 			pw.println("PrintBookList:" + DataModel.ID + ":Borrowed");
 			pw.flush();
 
@@ -72,16 +76,17 @@ public class MyBookList_Controller extends Base_Controller implements Initializa
 						try {
 							// item.num
 							PrintWriter pw = new PrintWriter(
-									new OutputStreamWriter(DataModel.socket.getOutputStream()));
+									new OutputStreamWriter(DataModel.socket.getOutputStream(), StandardCharsets.UTF_8));
 							pw.println("PrintBookData:Detail:" + item.num.getText());
 							pw.flush(); // 책번호에 대한 정보를 달라고 요청
 
 							Stage primaryStage = (Stage) btn_LogOut.getScene().getWindow();
-							Parent search = FXMLLoader.load(getClass().getResource("/Gui/BookDetail_GUI.fxml"));
-							Scene scene = new Scene(search);
-							primaryStage.setTitle("HelloBooks");
-							primaryStage.setScene(scene);
-							primaryStage.show();
+							Parent search = FXMLLoader.load(getClass().getResource("/Gui/BorrowedBook_GUI.fxml"));
+							AnchorPane.getChildren().add(search);
+							/*
+							 * Scene scene = new Scene(search); primaryStage.setTitle("HelloBooks");
+							 * primaryStage.setScene(scene); primaryStage.show();
+							 */
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
@@ -100,7 +105,7 @@ public class MyBookList_Controller extends Base_Controller implements Initializa
 
 		PrintWriter pw;
 		try {
-			pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+			pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
 			pw.println("PrintBookList:" + DataModel.ID + ":Loaned");
 			pw.flush();
 
@@ -125,16 +130,18 @@ public class MyBookList_Controller extends Base_Controller implements Initializa
 						try {
 							// item.num
 							PrintWriter pw = new PrintWriter(
-									new OutputStreamWriter(DataModel.socket.getOutputStream()));
+									new OutputStreamWriter(DataModel.socket.getOutputStream(), StandardCharsets.UTF_8));
 							pw.println("PrintBookData:Loaned:" + item.num.getText());
 							pw.flush(); // 책번호에 대한 정보를 달라고 요청
 
 							Stage primaryStage = (Stage) btn_LogOut.getScene().getWindow();
 							Parent search = FXMLLoader.load(getClass().getResource("/Gui/LoanedBook_GUI.fxml"));
 							Scene scene = new Scene(search);
-							primaryStage.setTitle("HelloBooks");
-							primaryStage.setScene(scene);
-							primaryStage.show();
+							AnchorPane.getChildren().add(search);
+							/*
+							 * primaryStage.setTitle("HelloBooks"); primaryStage.setScene(scene);
+							 * primaryStage.show();
+							 */
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
@@ -153,7 +160,7 @@ public class MyBookList_Controller extends Base_Controller implements Initializa
 
 		PrintWriter pw;
 		try {
-			pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+			pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
 			pw.println("PrintBookList:" + DataModel.ID + ":Registered");
 			pw.flush();
 
@@ -177,17 +184,17 @@ public class MyBookList_Controller extends Base_Controller implements Initializa
 					public void handle(ActionEvent evnet) {
 						try {
 							// item.num
-							PrintWriter pw = new PrintWriter(
-									new OutputStreamWriter(DataModel.socket.getOutputStream()));
+							PrintWriter pw = new PrintWriter(new OutputStreamWriter(DataModel.socket.getOutputStream(), StandardCharsets.UTF_8));
 							pw.println("PrintBookData:Registered:" + item.num.getText());
 							pw.flush(); // 책번호에 대한 정보를 달라고 요청
 
 							Stage primaryStage = (Stage) btn_LogOut.getScene().getWindow();
 							Parent search = FXMLLoader.load(getClass().getResource("/Gui/RegisteredBook_GUI.fxml"));
-							Scene scene = new Scene(search);
-							primaryStage.setTitle("HelloBooks");
-							primaryStage.setScene(scene);
-							primaryStage.show();
+							AnchorPane.getChildren().add(search);
+							/*
+							 * Scene scene = new Scene(search); primaryStage.setTitle("HelloBooks");
+							 * primaryStage.setScene(scene); primaryStage.show();
+							 */
 						} catch (Exception e) {
 							e.printStackTrace();
 						}

@@ -1,6 +1,10 @@
 package Gui;
 
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -18,6 +22,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 public class RegisteredBook_Controller extends Base_Controller implements Initializable {
@@ -35,7 +40,8 @@ public class RegisteredBook_Controller extends Base_Controller implements Initia
 	private Book book;
 	@FXML
 	private ToggleGroup status;
-
+	@FXML
+	public AnchorPane AnchorPane;
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// Base start
@@ -54,8 +60,9 @@ public class RegisteredBook_Controller extends Base_Controller implements Initia
 			} else {//빌려준상대
 				Rbtn_lend.setSelected(true);
 				Rbtn_canLend.setDisable(true);
+				tf_who.setText(DataModel.who_borrow_book);
 				//누구에게는 아직 생각중
-				
+				tf_who.setEditable(false);
 			}
 			lb_Title.setText(book.getTitle());
 			lb_Author.setText(book.getAuther());
@@ -70,17 +77,9 @@ public class RegisteredBook_Controller extends Base_Controller implements Initia
 		}
 	}
 
-	public void backAction() {
-		try {
-			Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
-			Parent main = FXMLLoader.load(getClass().getResource("/Gui/Main_GUI.fxml"));
-			Scene scene = new Scene(main);
-			primaryStage.setTitle("HelloBooks/Main");
-			primaryStage.setScene(scene);
-			primaryStage.show();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public void backAction() { //전 화면으로 
+		AnchorPane root=(AnchorPane) AnchorPane.getScene().getRoot();
+		root.getChildren().remove(AnchorPane);
 	}
 
 	public void removeAction() {
@@ -88,9 +87,29 @@ public class RegisteredBook_Controller extends Base_Controller implements Initia
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == ButtonType.YES) {
 			// 등록된 책을 삭제
+			try {
+			PrintWriter pw=new PrintWriter(new OutputStreamWriter(DataModel.socket.getOutputStream(), StandardCharsets.UTF_8));
+			pw.println("RemoveBookData:"+book.getBook_num());
+			pw.flush();
+
+			try {
+				Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
+				Parent main = FXMLLoader.load(getClass().getResource("/Gui/Main_GUI.fxml"));
+				Scene scene = new Scene(main);
+				primaryStage.setTitle("HelloBooks/Main");
+				primaryStage.setScene(scene);
+				primaryStage.show();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			}catch(IOException e) {
+				e.printStackTrace();
+			} 
 		}
 	}
 
-	public void comfirmAction() {// 정보 수정된 상태로 저장 (만약 책을 빌리거나 구매한다는 alert가 뜨면, 그거에 맞춰서 수정해줌,)
+	public void comfirmAction() {// OK
+		AnchorPane root=(AnchorPane) AnchorPane.getScene().getRoot();
+		root.getChildren().remove(AnchorPane);
 	}
 }

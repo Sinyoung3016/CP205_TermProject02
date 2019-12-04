@@ -137,21 +137,25 @@ public class Book {
 
 		return new HBoxCell(no_book_message);
 	}
+	
+	
 
 	public static class HBoxCell extends HBox {
+		
 		public Label num = new Label();// 책 등록번호
 		public Button title = new Button();
 		public Label author = new Label();
 
+		
 		HBoxCell(int book_num, String book_title, String book_author) {
 			super();
 			num.setText(book_num + "");
-			num.setStyle("-fx-text-fill: white" + "-fx-font-style: Trebuchet MS Bold" + "-fx-font-size: 14");
+			num.setStyle("-fx-text-fill: #6464CD; -fx-font-size: 14; ");
 			num.setPrefWidth(20);
 			num.setPrefHeight(20);
 
 			title.setText(book_title);
-			title.setStyle("-fx-text-fill: white" + "-fx-font-style: Trebuchet MS Bold" + "-fx-font-size: 14");
+			title.setStyle("-fx-text-fill: #6464CD; -fx-font-size: 14; -fx-background-color: #e8f5ff;");
 			title.setPrefWidth(200);
 			title.setPrefHeight(20);
 			title.setOnAction(new EventHandler<ActionEvent>() {
@@ -165,7 +169,7 @@ public class Book {
 			});
 
 			author.setText(book_author);
-			author.setStyle("-fx-text-fill: white" + "-fx-font-style: Trebuchet MS Bold" + "-fx-font-size: 14");
+			author.setStyle("-fx-text-fill: #6464CD;-fx-font-size: 14;");
 			author.setPrefWidth(130);
 			author.setPrefHeight(20);
 
@@ -175,8 +179,13 @@ public class Book {
 		HBoxCell(String no_book_message) {
 			super();
 			num.setText(no_book_message);
-
 			this.getChildren().addAll(num);
+		}
+		
+		
+		
+		public String getBookNum() {
+			return num.getText();
 		}
 
 		public void openRegisteredBook() {

@@ -67,7 +67,7 @@
                            <font>
                               <Font name="Trebuchet MS Bold" size="14.0" />
                            </font></TextField>
-                        <Label fx:id="lb_error_name" prefHeight="24.0" prefWidth="205.0" textFill="RED">
+                        <Label fx:id="lb_error_name" prefHeight="24.0" prefWidth="325.0" textFill="RED">
                            <font>
                               <Font name="Trebuchet MS Bold" size="14.0" />
                            </font>
@@ -118,11 +118,7 @@
                               <Font name="Trebuchet MS Bold" size="14.0" />
                            </font>
                         </PasswordField>
-                        <Label fx:id="lb_error_id" prefHeight="24.0" prefWidth="209.0" textFill="RED">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Label>
+                        <Label fx:id="lb_error_pw" prefHeight="24.0" prefWidth="342.0" textFill="RED" />
                      </children>
                      <opaqueInsets>
                         <Insets />
@@ -187,7 +183,7 @@
                            <font>
                               <Font name="Trebuchet MS Bold" size="14.0" />
                            </font></TextField>
-                        <Label fx:id="lb_error_phone" prefHeight="24.0" prefWidth="138.0" textFill="RED">
+                        <Label fx:id="lb_error_phone" prefHeight="24.0" prefWidth="194.0" textFill="RED">
                            <font>
                               <Font name="Trebuchet MS Bold" size="14.0" />
                            </font>
@@ -229,14 +225,26 @@
                         <Insets left="13.0" />
                      </VBox.margin>
                   </HBox>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                  <HBox alignment="CENTER" prefHeight="35.0" prefWidth="679.0" spacing="10.0">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
                      <children>
-                        <Button fx:id="btn_ChangeInfo" mnemonicParsing="false" onAction="#changeinfoAction" prefHeight="30.0" prefWidth="150.0" style="-fx-text-fill: white;" text="Change Info">
+                        <Label fx:id="lb_error_address" prefHeight="24.0" prefWidth="435.0" textFill="RED">
+                           <font>
+                              <Font name="Trebuchet MS Bold" size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="76.0" prefWidth="679.0" spacing="10.0">
+                     <children>
+                        <Button fx:id="btn_ChangeInfo1" mnemonicParsing="false" onAction="#changeinfoAction" prefHeight="30.0" prefWidth="150.0" style="-fx-text-fill: white;" text="Change Info">
                            <font>
                               <Font name="Trebuchet MS Bold" size="14.0" />
                            </font>
                         </Button>
-                        <Button fx:id="btn_Confirm" mnemonicParsing="false" onAction="#confirmAction" prefHeight="30.0" prefWidth="150.0" style="-fx-text-fill: white;" text="Comfirm">
+                        <Button fx:id="btn_Confirm1" mnemonicParsing="false" onAction="#confirmAction" prefHeight="30.0" prefWidth="150.0" style="-fx-text-fill: white;" text="Comfirm">
                            <font>
                               <Font name="Trebuchet MS Bold" size="14.0" />
                            </font>
@@ -316,7 +324,7 @@
                         <Insets top="5.0" />
                      </VBox.margin>
                   </HBox>
-                  <ListView fx:id="lv_ProfileList" prefHeight="200.0" prefWidth="200.0">
+                  <ListView fx:id="lv_alter_list" prefHeight="200.0" prefWidth="200.0">
                      <VBox.margin>
                         <Insets left="5.0" right="5.0" />
                      </VBox.margin>

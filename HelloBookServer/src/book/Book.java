@@ -107,9 +107,9 @@ public class Book {
 	}
 
 	public String getBookInfoTokens() {
-		StringBuilder sb = new StringBuilder("[");
+		StringBuilder sb = new StringBuilder("");
 		sb.append("등록번호:" + book_num + ":제목:" + title + ":작가:" + auther + ":출판사:" + publisher
-				+  ":장르:" + genre +":책의 상태:" + book_condition + ":정가:" + full_price +  ":판매가:" + sale_price +":대여가:" + lend_price +":대여가능여부:" + rental_status +":소개:"+Introduction+":]");
+				+  ":장르:" + genre +":책의 상태:" + book_condition + ":정가:" + full_price +  ":판매가:" + sale_price +":대여가:" + lend_price +":대여가능여부:" + rental_status +":소개:"+Introduction);
 
 		return new String(sb);
 	}

@@ -9,6 +9,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.ResourceBundle;
 
 import Gui.model.DataModel;
+import exception.FormException;
+import exception.MyException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -73,39 +75,45 @@ public class UploadBook_Controller extends Base_Controller implements Initializa
 			new Alert(Alert.AlertType.WARNING, "특수문자 ':'을 사용하실 수 없습니다. ", ButtonType.CLOSE).show();
 		}else if(tf_Title.getText().contains("-")||tf_Author.getText().contains("-")||tf_Publisher.getText().contains(":")||ta_Introduction.getText().contains(":")) {
 			new Alert(Alert.AlertType.WARNING, "특수문자 '-'을 사용하실 수 없습니다. ", ButtonType.CLOSE).show();
-		}
-		else {
-
+		} else
 			try {
-				Integer.parseInt(tf_FullPrice.getText());
-				Integer.parseInt(tf_SalePrice.getText());
-				Integer.parseInt(tf_LendPrice.getText());
-	
-				PrintWriter pw = new PrintWriter(
-					new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
-		
-				String request="AddBookData:";
-				request+=tf_Title.getText()+":";
-				request+=tf_Author.getText()+":";
-				request+=tf_Publisher.getText()+":";
-				request+=cb_Genre.getSelectionModel().getSelectedItem().toString()+":";
-				request+=condition.getSelectedToggle().getUserData()+":";
-				request+=tf_FullPrice.getText()+":";
-				request+=tf_SalePrice.getText()+":";
-				request+=tf_LendPrice.getText()+":";
-				request+="true:";
-				request+=ta_Introduction.getText();
-		
-				pw.println(request);
-				pw.flush();
+				if(FormException.BookFormCheck(tf_Title.getText())||FormException.BookFormCheck(tf_Author.getText()) || FormException.BookFormCheck(tf_Publisher.getText())||FormException.BookIntroduceFormCheck(ta_Introduction.getText())) {
 
-			}catch(NumberFormatException e) {
-				new Alert(Alert.AlertType.WARNING, "가격은 숫자만 입력해주세요", ButtonType.CLOSE).show();
-			} catch (IOException e) {
-				e.printStackTrace();
+
+					try {
+						Integer.parseInt(tf_FullPrice.getText());
+						Integer.parseInt(tf_SalePrice.getText());
+						Integer.parseInt(tf_LendPrice.getText());
+
+						PrintWriter pw = new PrintWriter(
+							new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
+				
+						String request="AddBookData:";
+						request+=tf_Title.getText()+":";
+						request+=tf_Author.getText()+":";
+						request+=tf_Publisher.getText()+":";
+						request+=cb_Genre.getSelectionModel().getSelectedItem().toString()+":";
+						request+=condition.getSelectedToggle().getUserData()+":";
+						request+=tf_FullPrice.getText()+":";
+						request+=tf_SalePrice.getText()+":";
+						request+=tf_LendPrice.getText()+":";
+						request+="true:";
+						request+=ta_Introduction.getText();
+				
+						pw.println(request);
+						pw.flush();
+		
+
+					}catch(NumberFormatException e) {
+						new Alert(Alert.AlertType.WARNING, "가격은 숫자만 입력해주세요", ButtonType.CLOSE).show();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					
+				}
+			} catch (MyException e) {
+				new Alert(Alert.AlertType.WARNING, e.getMessage(), ButtonType.CLOSE).show();
 			}
-			
-		}
 
 	}
 }

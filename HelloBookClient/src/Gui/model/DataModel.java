@@ -20,8 +20,8 @@ public class DataModel {
 	public static String ID;
 	public static User user;
 
-	public static List<Book> book_list;
-	public static boolean exist_new_book = false;
+
+	public static boolean is_exist_new_book = false;
 	public static ObservableList<HBoxCell> ItemList_newBook;
 	public static ObservableList<HBoxCell> ItemList_myBook;
 	public static ObservableList<HBoxCell> ItemList_searchBook;
@@ -33,6 +33,8 @@ public class DataModel {
 	public static Book book_for_detail;
 	public static Book book_for_loaned;
 	public static Book book_for_registered;
+	
+	public static String who_borrow_book;
 
 	// public static BufferedReader br;
 
@@ -46,28 +48,44 @@ public class DataModel {
 			DataModel.ItemList_newBook.remove(20);
 		}
 	}
+	public static void removeNewBook(String BookNum) {
+		
+		if(!ItemList_newBook.get(0).getBookNum().equals("새로운 책이 없습니다.")) {//새로운 책이 없습니다가 아닐때
+			for(int i=0; i<ItemList_newBook.size(); i++) {
+				if(ItemList_newBook.get(i).getBookNum().equals(BookNum)) {
+					ItemList_newBook.remove(i);
+					break;
+				}
+			}
+		}
+		if(ItemList_newBook.size()==0) {
+			NoNewBook("새로운 책이 없습니다.");
+		}
+	}
 
 	public static void addMyBookList(Book book) {
 		ItemList_myBook.add(book.getBook());
 	}
 
-	public static void removeMyBookList(Book book) {
-		ItemList_myBook.remove(book.getBook());
-	}
-
 	public static void addSearchBookList(Book book) {
 		ItemList_searchBook.add(book.getBook());
 	}
+	
+	public static void removeMyBookList(Book book) {
+		ItemList_myBook.remove(book.getBook());
+	}
+	
 
-	public static void addNewBook(String no_book_message) {
+	
+	public static void NoNewBook(String no_book_message) {
 		ItemList_newBook.add(Book.getBook(no_book_message));
 	}
 
-	public static void addMyBookList(String no_book_message) {
+	public static void NoMyBookList(String no_book_message) {
 		ItemList_myBook.add(Book.getBook(no_book_message));// 등록된 책이 없습니다.
 	}
 
-	public static void addSearchBookList(String no_book_message) {
+	public static void NoSearchBookList(String no_book_message) {
 		ItemList_searchBook.add(Book.getBook(no_book_message));// 등록된 책이 없습니다.
 	}
 }

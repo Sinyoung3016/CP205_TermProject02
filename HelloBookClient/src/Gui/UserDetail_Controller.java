@@ -1,7 +1,11 @@
 package Gui;
 
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -37,7 +41,7 @@ public class UserDetail_Controller extends Base_Controller implements Initializa
 	@FXML
 	public Label lb_Rent;
 	@FXML
-	public Label lb_error_pw, lb_error_confirm, lb_error_name, lb_error_email, lb_error_phone;
+	public Label lb_error_pw, lb_error_name, lb_error_email, lb_error_phone, lb_error_address;
 	@FXML
 	public ChoiceBox<String> cb_Email;
 	@FXML
@@ -61,9 +65,6 @@ public class UserDetail_Controller extends Base_Controller implements Initializa
 		// MyInfo print start
 		user = DataModel.user;
 		tf_Name.setText(user.getName());
-		tf_Name.setOnAction(event -> {
-			System.out.println("11");
-		}); // 뭐냐 이거
 		pf_Password.setText(user.getPassword());
 		if (user.isLend_OK()) {
 			lb_Rent.setText("대여 가능");
@@ -127,55 +128,85 @@ public class UserDetail_Controller extends Base_Controller implements Initializa
 				}
 			}
 		});
+		ta_Address.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				try {
+					if (newValue.length() == 0 || FormException.AddressFormCheck(newValue)) {
+						lb_error_address.setText("");
+					}
+				} catch (MyException e) {
+					lb_error_address.setText(e.getMessage());
+				}
+			}
+		});
+
 		// 수정 양식 end
 	}
 
 	public void changeinfoAction() {
-		Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "수정된 정보로 저장하시겠습니까?", ButtonType.APPLY, ButtonType.CANCEL);
-		Optional<ButtonType> result = alert.showAndWait();
+		if (tf_Name.getText().length() == 0 || pf_Password.getText().length() == 0 || tf_Email.getText().length() == 0
+				|| tf_Phone.getText().length() == 0 || ta_Address.getText().length() == 0) {
+			new Alert(Alert.AlertType.WARNING, "빈칸을 모두 채워주세요", ButtonType.CLOSE).show();
+		} else if (!lb_error_name.getText().equals("") ||  !lb_error_pw.getText().equals("")
+				|| !lb_error_phone.getText().equals("") ||!lb_error_email.getText().equals("")||!lb_error_address.getText().equals("")) {
+			new Alert(Alert.AlertType.WARNING, "형식에 맞지 않는 칸이 있습니다.", ButtonType.CLOSE).show();
+		}else {
+			Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "수정된 정보로 저장하시겠습니까?", ButtonType.APPLY,ButtonType.CANCEL);
+			Optional<ButtonType> result = alert.showAndWait();
 
-		if (result.get() == ButtonType.APPLY) {
-			// user info modify start
-			if (tf_Name.getText().length() != 0)
-				user.setName(tf_Name.getText());
-			if (pf_Password.getText().length() != 0)
-				user.setPassword(pf_Password.getText());
-			if (tf_Email.getText().length() != 0)
-				user.setEmail(tf_Email.getText());
-			if (tf_Phone.getText().length() != 0)
-				user.setPhone(tf_Phone.getText());
-			if (ta_Address.getText().length() != 0)
-				user.setAddress(ta_Address.getText());
-			// user info modify end
-		} else if (result.get() == ButtonType.CANCEL) {
-			try {
-				Stage primaryStage = (Stage) btn_ChangeInfo.getScene().getWindow();
-				Parent search = FXMLLoader.load(getClass().getResource("/Gui/UserDetail_GUI.fxml"));
-				Scene scene = new Scene(search);
-				primaryStage.setTitle("HelloBooks/MyInfo");
-				primaryStage.setScene(scene);
-				primaryStage.show();
-			} catch (Exception e) {
-				e.printStackTrace();
+			if (result.get() == ButtonType.APPLY) {
+				// user info modify start
+				try {
+		
+					PrintWriter pw = new PrintWriter(new OutputStreamWriter(DataModel.socket.getOutputStream(), StandardCharsets.UTF_8));
+					pw.println("ModifyUserData:"+user.getID()+":"+pf_Password.getText()+":"+tf_Name.getText()+":"+tf_Phone.getText()+":"+tf_Email.getText()+ "@"
+							+ cb_Email.getSelectionModel().getSelectedItem().toString()+":"+ta_Address.getText());
+					pw.flush();
+					// ModifyUserData:ID:PW:NAME:PHONE:EMAIL:ADDRESS
+					
+				
+				}catch (IOException e) {
+					e.printStackTrace();
+				} 
+				try {
+					Stage primaryStage = (Stage) btn_MyInfo.getScene().getWindow();
+					Parent search = FXMLLoader.load(getClass().getResource("/Gui/UserDetail_GUI.fxml"));
+					Scene scene = new Scene(search);
+					primaryStage.setTitle("HelloBooks/MyInfo");
+					primaryStage.setScene(scene);
+					primaryStage.show();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+
+			}else if (result.get() == ButtonType.CANCEL) {
+				try {
+					Stage primaryStage = (Stage) btn_MyInfo.getScene().getWindow();
+					Parent search = FXMLLoader.load(getClass().getResource("/Gui/UserDetail_GUI.fxml"));
+					Scene scene = new Scene(search);
+					primaryStage.setTitle("HelloBooks/MyInfo");
+					primaryStage.setScene(scene);
+					primaryStage.show();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
 
-	public void confirmAction() {
-		if (tf_Name.getText().length() != 0 || pf_Password.getText().length() != 0 || tf_Email.getText().length() != 0
-				|| tf_Phone.getText().length() != 0 || ta_Address.getText().length() != 0)
-			changeinfoAction();
-		else {
-			try {
-				Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
-				Parent main = FXMLLoader.load(getClass().getResource("/Gui/Main_GUI.fxml"));
-				Scene scene = new Scene(main);
-				primaryStage.setTitle("HelloBooks/Main");
-				primaryStage.setScene(scene);
-				primaryStage.show();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+	public void confirmAction() {// OK
+		try {
+			Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
+			Parent main = FXMLLoader.load(getClass().getResource("/Gui/Main_GUI.fxml"));
+			Scene scene = new Scene(main);
+			primaryStage.setTitle("HelloBooks/Main");
+			primaryStage.setScene(scene);
+			primaryStage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+
 	}
 }
