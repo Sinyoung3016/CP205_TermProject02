@@ -14,7 +14,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -61,6 +63,8 @@ public class BookDetail_Controller extends Base_Controller implements Initializa
 
 	@FXML
 	public void borrowedNowAction() { //이 책을 바로 빌리기 책주인에게 알리기 -> 책 주인의 New Alert에 뜨기
+		if(DataModel.user.isLend_OK()) {//대여가능할때
+
 		PrintWriter pw;
 		try {
 			pw = new PrintWriter(new OutputStreamWriter(DataModel.socket.getOutputStream(), StandardCharsets.UTF_8));
@@ -81,7 +85,9 @@ public class BookDetail_Controller extends Base_Controller implements Initializa
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	
+		}else {//대여못할때
+			new Alert(Alert.AlertType.WARNING, "현재 회원님은 대여하실 수 없는 상태입니다.", ButtonType.YES).show();;
+		}
 
 	}
 

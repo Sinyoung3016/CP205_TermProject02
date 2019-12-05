@@ -72,7 +72,7 @@ public class DB_UsersBook extends DBManager{
 			} catch (SQLException e) {}
 		}
 	}
-	public synchronized static String searchRequesterByNum(int Book_Number) {//요청보낸사람찾기
+	public synchronized static String searchRequesterByNum(int Book_Number) {//요청보낸사람 찾기
 
 		Connection conn = null;
 		Statement state = null;

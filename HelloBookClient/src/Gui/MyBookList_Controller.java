@@ -82,7 +82,7 @@ public class MyBookList_Controller extends Base_Controller implements Initializa
 							pw.flush(); // 책번호에 대한 정보를 달라고 요청
 							
 							Thread.sleep(200);
-							Stage primaryStage = (Stage) btn_LogOut.getScene().getWindow();
+	
 							Parent search = FXMLLoader.load(getClass().getResource("/Gui/BorrowedBook_GUI.fxml"));
 							AnchorPane.getChildren().add(search);
 							
@@ -138,9 +138,7 @@ public class MyBookList_Controller extends Base_Controller implements Initializa
 							pw.flush(); // 책번호에 대한 정보를 달라고 요청
 
 							Thread.sleep(200);
-							Stage primaryStage = (Stage) btn_LogOut.getScene().getWindow();
 							Parent search = FXMLLoader.load(getClass().getResource("/Gui/LoanedBook_GUI.fxml"));
-							Scene scene = new Scene(search);
 							AnchorPane.getChildren().add(search);
 							/*
 							 * primaryStage.setTitle("HelloBooks"); primaryStage.setScene(scene);
@@ -193,7 +191,7 @@ public class MyBookList_Controller extends Base_Controller implements Initializa
 							pw.flush(); // 책번호에 대한 정보를 달라고 요청
 
 							Thread.sleep(200);
-							Stage primaryStage = (Stage) btn_LogOut.getScene().getWindow();
+			
 							Parent search = FXMLLoader.load(getClass().getResource("/Gui/RegisteredBook_GUI.fxml"));
 							AnchorPane.getChildren().add(search);
 							/*

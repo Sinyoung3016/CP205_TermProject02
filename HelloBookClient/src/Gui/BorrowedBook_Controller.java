@@ -1,8 +1,5 @@
 package Gui;
 
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -10,9 +7,7 @@ import Gui.model.DataModel;
 import book.Book;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
@@ -57,6 +52,7 @@ public class BorrowedBook_Controller extends Base_Controller implements Initiali
 
 	@FXML
 	public void OKAction() { // 전 화면으로
-
+		AnchorPane root=(AnchorPane) AnchorPane.getScene().getRoot();
+		root.getChildren().remove(AnchorPane);
 	}
 }

@@ -352,7 +352,7 @@ public class LibraryServerThread extends Thread{
 		}
 	}
 	
-	private synchronized void PrintBookList(String id, String status, PrintWriter pw) throws SQLException {
+	private synchronized void PrintBookList(String id, String status, PrintWriter pw) throws SQLException, MyException {
 		List<Book> book_list=new ArrayList<>();
 		List<Integer> book_num_list=null;
 		if(status.equals("Registered")) {
@@ -413,9 +413,14 @@ public class LibraryServerThread extends Thread{
 				pw.println("PrintBookData:Detail:책이 존재하지 않습니다.");
 				pw.flush();
 			}else {
-				pw.println("PrintBookData:Detail:"+returnBook.getBookInfoTokens());
-				pw.flush();
-
+				String loanBookId="";
+				if((loanBookId=DB_UsersBook.searchRegisterByNum(book_num))==null) {	
+					pw.println("PrintBookData:Detail:"+returnBook.getBookInfoTokens());
+					pw.flush();
+				}else {
+					pw.println("PrintBookData:Detail:"+returnBook.getBookInfoTokens()+":"+loanBookId);//26사이즈
+					pw.flush();
+				}
 			}
 		}else if(Status.equals("Registered")) {
 			if(returnBook==null) {
@@ -427,7 +432,7 @@ public class LibraryServerThread extends Thread{
 					pw.println("PrintBookData:Registered:"+returnBook.getBookInfoTokens());//25사이즈
 					pw.flush();
 				}else {
-					pw.println("PrintBookData:Registered:"+returnBook.getBookInfoTokens()+":"+DB_UsersBook.getBorrowedBookUser(book_num));//26사이즈
+					pw.println("PrintBookData:Registered:"+returnBook.getBookInfoTokens()+":"+borrowBookId);//26사이즈
 					pw.flush();
 				}
 			}
@@ -453,14 +458,17 @@ public class LibraryServerThread extends Thread{
 	}
 	
 	private synchronized void BorrowRequest(String Requester_ID,String Book_Number, String Book_Title) throws SQLException, MyException {
-		if(DB_UsersBook.searchRegisterByNum(Integer.parseInt(Book_Number)).equals(this.id)) {
+		String Register_id=DB_UsersBook.searchRegisterByNum(Integer.parseInt(Book_Number));
+		if(Register_id==null) {
+			throw new MyException("이미 제거되었거나 구매된 책입니다.");
+		}
+		else if(DB_UsersBook.searchRegisterByNum(Integer.parseInt(Book_Number)).equals(this.id)) {
 			throw new MyException("당신의 책입니다.");
 		}
 		if(DB_UsersBook.CheckRequest(Integer.parseInt(Book_Number))!=null) {
 			throw new MyException("이미 누군가가 대여/구매 신청을 하였습니다.");
 		
 		}
-		
 		String Requested_ID=DB_UsersBook.searchRegisterByNum(Integer.parseInt(Book_Number));
 		
 		DB_UsersBook.BorrowRequest(Integer.parseInt(Book_Number), Requester_ID);
