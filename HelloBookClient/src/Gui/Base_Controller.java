@@ -8,11 +8,15 @@ import java.util.Optional;
 
 import Gui.model.DataModel;
 import alter.UserAlter;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -23,7 +27,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class Base_Controller { // 변하지 않는 화면 = Base
 
@@ -40,6 +47,9 @@ public class Base_Controller { // 변하지 않는 화면 = Base
 
 	public ListView lv_alter_list;
 	
+	@FXML
+	public AnchorPane AnchorPane;
+	
 	private ObservableList<UserAlter> ItemList_alter;
 	
 	@SuppressWarnings("unchecked")
@@ -50,7 +60,9 @@ public class Base_Controller { // 변하지 않는 화면 = Base
 		if (DataModel.user.isLend_OK()) {
 			lb_ProfileLend.setText("대여 가능");
 		} else {
+			lb_ProfileLend.setStyle("-fx-text-fill: Red;");
 			lb_ProfileLend.setText("대여 불가");
+		
 		}
 		// Profile end
 
@@ -59,6 +71,9 @@ public class Base_Controller { // 변하지 않는 화면 = Base
 		
 		this.ItemList_alter=DataModel.ItemList_alter;
 		lv_alter_list.setItems(ItemList_alter);
+
+
+
 		lv_alter_list.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
 	        @Override
@@ -301,5 +316,6 @@ public class Base_Controller { // 변하지 않는 화면 = Base
 		// lv_ProfileList에 새로운 알람 보여주기
 		//Alert에 있어야 하는 것 : 판매한다고 하는 유저 ID, btn_내용 삭제하기 버튼, btn_그책으로 바로가기
 	}
+
 
 }

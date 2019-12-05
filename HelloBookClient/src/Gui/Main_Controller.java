@@ -27,6 +27,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -35,15 +36,18 @@ public class Main_Controller extends Base_Controller implements Initializable {
 	@FXML
 	public Button btn_Left, btn_Right;
 	@FXML
-	public ImageView iv_ad;
+	public ImageView iv_ad,iv_BestSeller;
 	@FXML
 	public Label lb_adExplain;
 	@FXML
-	public ListView lv_NewBooks, lv_BestSeller;
+	public ListView lv_NewBooks;
+	
 	private ArrayList<Image> ad_images = new ArrayList<>();
-	private Image[] ad_arr;
+	private ArrayList<Image> best_images = new ArrayList<>();
 	private int ad_count;
+	private int best_count;
 	private ObservableList<HBoxCell> ItemList_newBook;
+
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -68,10 +72,8 @@ public class Main_Controller extends Base_Controller implements Initializable {
 
 						Stage primaryStage = (Stage) btn_LogOut.getScene().getWindow();
 						Parent search = FXMLLoader.load(getClass().getResource("/Gui/BookDetail_GUI.fxml"));
-						Scene scene = new Scene(search);
-						primaryStage.setTitle("HelloBooks");
-						primaryStage.setScene(scene);
-						primaryStage.show();
+						AnchorPane.getChildren().add(search);
+						
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -95,13 +97,12 @@ public class Main_Controller extends Base_Controller implements Initializable {
 								PrintWriter pw = new PrintWriter(new OutputStreamWriter(DataModel.socket.getOutputStream(), StandardCharsets.UTF_8));
 								pw.println("PrintBookData:Detail:" + hbc.num.getText());
 								pw.flush(); // 책번호에 대한 정보를 달라고 요청
-
+								
+					
 								Stage primaryStage = (Stage) btn_LogOut.getScene().getWindow();
 								Parent search = FXMLLoader.load(getClass().getResource("/Gui/BookDetail_GUI.fxml"));
-								Scene scene = new Scene(search);
-								primaryStage.setTitle("HelloBooks");
-								primaryStage.setScene(scene);
-								primaryStage.show();
+								AnchorPane.getChildren().add(search);
+						
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
@@ -111,7 +112,7 @@ public class Main_Controller extends Base_Controller implements Initializable {
 			}
 		});
 
-		File dirFile = new File("src\\image\\advertisement");
+		File dirFile = new File(".\\image\\advertisement");
 		File[] fileList = dirFile.listFiles();
 
 		if (fileList != null) {
@@ -129,6 +130,27 @@ public class Main_Controller extends Base_Controller implements Initializable {
 			 * ad[count++]=i; } System.out.println("??");
 			 */
 			new chageImageThread().start();
+
+		}
+		
+		dirFile = new File(".\\image\\bestSeller");
+		fileList = dirFile.listFiles();
+
+		if (fileList != null) {
+			for (File tempFile : fileList) {
+
+				if (tempFile.isFile()) {
+					Image image = new Image(tempFile.toURI().toString());
+					best_images.add(image);
+
+				}
+			}
+			iv_BestSeller.setPreserveRatio(false);
+			/*
+			 * this.ad=new Image[ad_images.size()]; int count=0; for(Image i:ad_images) {
+			 * ad[count++]=i; } System.out.println("??");
+			 */
+			new chageBestSellerThread().start();
 
 		}
 
@@ -159,6 +181,32 @@ public class Main_Controller extends Base_Controller implements Initializable {
 					tl_table.play();
 					try {
 						sleep(4000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+
+			}
+		}
+	}
+	
+	private class chageBestSellerThread extends Thread {
+		@Override
+		public void run() {
+
+
+			if (best_images.size() != 0) {
+
+				best_count = 0;
+				while (DataModel.socket != null) {
+					if (best_count >= best_images.size() - 1) {
+						best_count = -1;
+					}
+
+					iv_BestSeller.setImage(best_images.get(++best_count));
+					try {
+						sleep(2000);
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

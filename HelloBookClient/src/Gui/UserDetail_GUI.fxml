@@ -8,333 +8,343 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: white;" stylesheets="@css/Css.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Gui.UserDetail_Controller">
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Gui.UserDetail_Controller">
    <children>
-      <HBox alignment="CENTER" prefHeight="80.0" prefWidth="200.0">
+      <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: white;" stylesheets="@css/Css.css">
          <children>
-            <Button fx:id="btn_Main" alignment="CENTER" mnemonicParsing="false" onAction="#mainAction" styleClass="HelloBooks" text="HelloBooks">
-               <font>
-                  <Font name="Trebuchet MS Bold" size="48.0" />
-               </font>
-               <HBox.margin>
-                  <Insets right="25.0" />
-               </HBox.margin>
-            </Button>
-            <TextField fx:id="tf_Search" prefHeight="35.0" prefWidth="400.0" promptText="검색">
-               <font>
-                  <Font size="14.0" />
-               </font></TextField>
-            <Button fx:id="btn_Search" mnemonicParsing="false" onAction="#searchAction" prefHeight="35.0" prefWidth="90.0" style="-fx-text-fill: white;" text="Search">
-               <HBox.margin>
-                  <Insets left="5.0" />
-               </HBox.margin>
-               <font>
-                  <Font name="Trebuchet MS Bold" size="14.0" />
-               </font>
-            </Button>
-         </children>
-         <VBox.margin>
-            <Insets />
-         </VBox.margin>
-      </HBox>
-      <HBox prefHeight="500.0" prefWidth="900.0" spacing="11.0">
-         <children>
-            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="688.0" style="-fx-background-color: #e8f5ff;">
-               <HBox.margin>
-                  <Insets bottom="5.0" left="10.0" />
-               </HBox.margin>
+            <HBox alignment="CENTER" prefHeight="80.0" prefWidth="200.0">
                <children>
-                  <Label prefHeight="50.0" style="-fx-text-fill: #3065AC;" text="My Information">
+                  <Button fx:id="btn_Main" alignment="CENTER" mnemonicParsing="false" onAction="#mainAction" styleClass="HelloBooks" text="HelloBooks">
                      <font>
-                        <Font name="Trebuchet MS Bold" size="24.0" />
+                        <Font name="Trebuchet MS Bold" size="48.0" />
                      </font>
-                     <VBox.margin>
-                        <Insets bottom="20.0" />
-                     </VBox.margin>
-                  </Label>
-                  <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="900.0" spacing="25.0">
+                     <HBox.margin>
+                        <Insets right="25.0" />
+                     </HBox.margin>
+                  </Button>
+                  <TextField fx:id="tf_Search" prefHeight="35.0" prefWidth="400.0" promptText="검색">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </TextField>
+                  <Button fx:id="btn_Search" mnemonicParsing="false" onAction="#searchAction" prefHeight="35.0" prefWidth="90.0" style="-fx-text-fill: white;" text="Search">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font name="Trebuchet MS Bold" size="14.0" />
+                     </font>
+                  </Button>
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </HBox>
+            <HBox prefHeight="500.0" prefWidth="900.0" spacing="11.0">
+               <children>
+                  <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="688.0" style="-fx-background-color: #e8f5ff;">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="10.0" />
+                     </HBox.margin>
                      <children>
-                        <Label style="-fx-text-fill: #3065AC;" text="Name">
+                        <Label prefHeight="50.0" style="-fx-text-fill: #3065AC;" text="My Information">
                            <font>
-                              <Font name="Trebuchet MS Bold" size="14.0" />
+                              <Font name="Trebuchet MS Bold" size="24.0" />
                            </font>
-                        </Label>
-                        <TextField fx:id="tf_Name" prefHeight="25.0" prefWidth="200.0" promptText="저장된 이름">
-                           <font>
-                              <Font name="Trebuchet MS Bold" size="14.0" />
-                           </font></TextField>
-                        <Label fx:id="lb_error_name" prefHeight="24.0" prefWidth="325.0" textFill="RED">
-                           <font>
-                              <Font name="Trebuchet MS Bold" size="14.0" />
-                           </font>
-                        </Label>
-                     </children>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <VBox.margin>
-                        <Insets left="26.0" />
-                     </VBox.margin>
-                     <padding>
-                        <Insets left="30.0" />
-                     </padding>
-                  </HBox>
-                  <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="900.0" spacing="10.0">
-                     <children>
-                        <Label style="-fx-text-fill: #3065AC;" text="CanUserRent">
-                           <font>
-                              <Font name="Trebuchet MS Bold" size="14.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="lb_Rent" text="가능 또는 언제까지 불가능" textFill="#ff0303">
-                           <font>
-                              <Font name="Trebuchet MS Bold" size="14.0" />
-                           </font>
-                        </Label>
-                     </children>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                     <padding>
-                        <Insets left="30.0" />
-                     </padding>
-                  </HBox>
-                  <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="900.0" spacing="10.0">
-                     <children>
-                        <Label style="-fx-text-fill: #3065AC;" text="PassWord">
-                           <font>
-                              <Font name="Trebuchet MS Bold" size="14.0" />
-                           </font>
-                        </Label>
-                        <PasswordField fx:id="pf_Password" prefWidth="200.0" promptText="저장된 비밀번호">
-                           <font>
-                              <Font name="Trebuchet MS Bold" size="14.0" />
-                           </font>
-                        </PasswordField>
-                        <Label fx:id="lb_error_pw" prefHeight="24.0" prefWidth="342.0" textFill="RED" />
-                     </children>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <padding>
-                        <Insets left="30.0" />
-                     </padding>
-                     <VBox.margin>
-                        <Insets left="16.0" />
-                     </VBox.margin>
-                  </HBox>
-                  <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="900.0" spacing="5.0">
-                     <children>
-                        <Label prefHeight="16.0" prefWidth="75.0" style="-fx-text-fill: #3065AC;" text="E-Mail">
-                           <font>
-                              <Font name="Trebuchet MS Bold" size="14.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                           <padding>
-                              <Insets left="10.0" right="10.0" />
-                           </padding>
-                        </Label>
-                        <TextField fx:id="tf_Email" prefHeight="25.0" prefWidth="200.0" promptText="저장된 이메일">
-                           <font>
-                              <Font name="Trebuchet MS Bold" size="14.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin></TextField>
-                        <Label style="-fx-text-fill: #3065AC;" text="\@">
-                           <font>
-                              <Font name="Trebuchet MS Bold" size="14.0" />
-                           </font>
-                        </Label>
-                        <ChoiceBox fx:id="cb_Email" prefHeight="25.0" prefWidth="150.0" />
-                        <Label fx:id="lb_error_email" prefHeight="24.0" prefWidth="205.0" textFill="RED">
-                           <font>
-                              <Font name="Trebuchet MS Bold" size="14.0" />
-                           </font>
-                        </Label>
-                     </children>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <VBox.margin>
-                        <Insets left="28.0" />
-                     </VBox.margin>
-                     <padding>
-                        <Insets left="17.0" />
-                     </padding>
-                  </HBox>
-                  <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="900.0" spacing="9.0">
-                     <children>
-                        <Label style="-fx-text-fill: #3065AC;" text="Phone Num.">
-                           <font>
-                              <Font name="Trebuchet MS Bold" size="14.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="tf_Phone" prefHeight="25.0" prefWidth="200.0" promptText="저장된 번호">
-                           <font>
-                              <Font name="Trebuchet MS Bold" size="14.0" />
-                           </font></TextField>
-                        <Label fx:id="lb_error_phone" prefHeight="24.0" prefWidth="194.0" textFill="RED">
-                           <font>
-                              <Font name="Trebuchet MS Bold" size="14.0" />
-                           </font>
-                        </Label>
-                     </children>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <padding>
-                        <Insets left="30.0" />
-                     </padding>
-                  </HBox>
-                  <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="900.0" spacing="23.0">
-                     <children>
-                        <Label alignment="TOP_CENTER" style="-fx-text-fill: #3065AC;" text="Address">
-                           <font>
-                              <Font name="Trebuchet MS Bold" size="14.0" />
-                           </font>
-                           <HBox.margin>
+                           <VBox.margin>
                               <Insets bottom="20.0" />
-                           </HBox.margin>
+                           </VBox.margin>
                         </Label>
-                        <TextArea fx:id="ta_Address" prefHeight="25.0" prefWidth="400.0" promptText="저장된 주소">
-                           <HBox.margin>
-                              <Insets bottom="10.0" top="10.0" />
-                           </HBox.margin>
+                        <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="900.0" spacing="25.0">
+                           <children>
+                              <Label style="-fx-text-fill: #3065AC;" text="Name">
+                                 <font>
+                                    <Font name="Trebuchet MS Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="tf_Name" prefHeight="25.0" prefWidth="200.0" promptText="저장된 이름">
+                                 <font>
+                                    <Font name="Trebuchet MS Bold" size="14.0" />
+                                 </font>
+                              </TextField>
+                              <Label fx:id="lb_error_name" prefHeight="24.0" prefWidth="325.0" textFill="RED">
+                                 <font>
+                                    <Font name="Trebuchet MS Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <VBox.margin>
+                              <Insets left="26.0" />
+                           </VBox.margin>
+                           <padding>
+                              <Insets left="30.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="900.0" spacing="10.0">
+                           <children>
+                              <Label style="-fx-text-fill: #3065AC;" text="CanUserRent">
+                                 <font>
+                                    <Font name="Trebuchet MS Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lb_Rent" text="가능 또는 언제까지 불가능" textFill="#ff0303">
+                                 <font>
+                                    <Font name="Trebuchet MS Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                           <padding>
+                              <Insets left="30.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="900.0" spacing="10.0">
+                           <children>
+                              <Label style="-fx-text-fill: #3065AC;" text="PassWord">
+                                 <font>
+                                    <Font name="Trebuchet MS Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <PasswordField fx:id="pf_Password" prefWidth="200.0" promptText="저장된 비밀번호">
+                                 <font>
+                                    <Font name="Trebuchet MS Bold" size="14.0" />
+                                 </font>
+                              </PasswordField>
+                              <Label fx:id="lb_error_pw" prefHeight="24.0" prefWidth="342.0" textFill="RED" />
+                           </children>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <padding>
+                              <Insets left="30.0" />
+                           </padding>
+                           <VBox.margin>
+                              <Insets left="16.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="900.0" spacing="5.0">
+                           <children>
+                              <Label prefHeight="16.0" prefWidth="75.0" style="-fx-text-fill: #3065AC;" text="E-Mail">
+                                 <font>
+                                    <Font name="Trebuchet MS Bold" size="14.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                                 <padding>
+                                    <Insets left="10.0" right="10.0" />
+                                 </padding>
+                              </Label>
+                              <TextField fx:id="tf_Email" prefHeight="25.0" prefWidth="200.0" promptText="저장된 이메일">
+                                 <font>
+                                    <Font name="Trebuchet MS Bold" size="14.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </TextField>
+                              <Label style="-fx-text-fill: #3065AC;" text="\@">
+                                 <font>
+                                    <Font name="Trebuchet MS Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <ChoiceBox fx:id="cb_Email" prefHeight="25.0" prefWidth="150.0" />
+                              <Label fx:id="lb_error_email" prefHeight="24.0" prefWidth="205.0" textFill="RED">
+                                 <font>
+                                    <Font name="Trebuchet MS Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <VBox.margin>
+                              <Insets left="28.0" />
+                           </VBox.margin>
+                           <padding>
+                              <Insets left="17.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="900.0" spacing="9.0">
+                           <children>
+                              <Label style="-fx-text-fill: #3065AC;" text="Phone Num.">
+                                 <font>
+                                    <Font name="Trebuchet MS Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="tf_Phone" prefHeight="25.0" prefWidth="200.0" promptText="저장된 번호">
+                                 <font>
+                                    <Font name="Trebuchet MS Bold" size="14.0" />
+                                 </font>
+                              </TextField>
+                              <Label fx:id="lb_error_phone" prefHeight="24.0" prefWidth="194.0" textFill="RED">
+                                 <font>
+                                    <Font name="Trebuchet MS Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <padding>
+                              <Insets left="30.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="900.0" spacing="23.0">
+                           <children>
+                              <Label alignment="TOP_CENTER" style="-fx-text-fill: #3065AC;" text="Address">
+                                 <font>
+                                    <Font name="Trebuchet MS Bold" size="14.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets bottom="20.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <TextArea fx:id="ta_Address" prefHeight="25.0" prefWidth="400.0" promptText="저장된 주소">
+                                 <HBox.margin>
+                                    <Insets bottom="10.0" top="10.0" />
+                                 </HBox.margin>
+                                 <font>
+                                    <Font name="Trebuchet MS Bold" size="14.0" />
+                                 </font>
+                              </TextArea>
+                           </children>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <padding>
+                              <Insets left="30.0" />
+                           </padding>
+                           <VBox.margin>
+                              <Insets left="13.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="35.0" prefWidth="679.0" spacing="10.0">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <children>
+                              <Label fx:id="lb_error_address" prefHeight="24.0" prefWidth="435.0" textFill="RED">
+                                 <font>
+                                    <Font name="Trebuchet MS Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="76.0" prefWidth="679.0" spacing="10.0">
+                           <children>
+                              <Button fx:id="btn_ChangeInfo1" mnemonicParsing="false" onAction="#changeinfoAction" prefHeight="30.0" prefWidth="150.0" style="-fx-text-fill: white;" text="Change Info">
+                                 <font>
+                                    <Font name="Trebuchet MS Bold" size="14.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="btn_Confirm1" mnemonicParsing="false" onAction="#confirmAction" prefHeight="30.0" prefWidth="150.0" style="-fx-text-fill: white;" text="Comfirm">
+                                 <font>
+                                    <Font name="Trebuchet MS Bold" size="14.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="200.0" spacing="5.0" style="-fx-background-color: #e8f5ff;">
+                     <children>
+                        <Button fx:id="btn_BookSales" mnemonicParsing="false" onAction="#salesAction" prefHeight="40.0" prefWidth="180.0" style="-fx-text-fill: white;" text="Book Sales">
                            <font>
                               <Font name="Trebuchet MS Bold" size="14.0" />
                            </font>
-                        </TextArea>
-                     </children>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <padding>
-                        <Insets left="30.0" />
-                     </padding>
-                     <VBox.margin>
-                        <Insets left="13.0" />
-                     </VBox.margin>
-                  </HBox>
-                  <HBox alignment="CENTER" prefHeight="35.0" prefWidth="679.0" spacing="10.0">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <children>
-                        <Label fx:id="lb_error_address" prefHeight="24.0" prefWidth="435.0" textFill="RED">
+                           <VBox.margin>
+                              <Insets bottom="30.0" top="6.0" />
+                           </VBox.margin>
+                        </Button>
+                        <Label fx:id="lb_ProfileName" alignment="CENTER" prefHeight="15.0" prefWidth="150.0" style="-fx-text-fill: #3065AC;" text="이름">
+                           <font>
+                              <Font name="Trebuchet MS Bold" size="14.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label fx:id="lb_ProfileID" alignment="CENTER" prefHeight="15.0" prefWidth="150.0" style="-fx-text-fill: #3065AC;" text="아이디">
                            <font>
                               <Font name="Trebuchet MS Bold" size="14.0" />
                            </font>
                         </Label>
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER" prefHeight="76.0" prefWidth="679.0" spacing="10.0">
-                     <children>
-                        <Button fx:id="btn_ChangeInfo1" mnemonicParsing="false" onAction="#changeinfoAction" prefHeight="30.0" prefWidth="150.0" style="-fx-text-fill: white;" text="Change Info">
+                        <Label fx:id="lb_ProfileLend" alignment="CENTER" prefHeight="15.0" prefWidth="150.0" style="-fx-text-fill: #3065AC;" text="대출 가능 여부">
                            <font>
                               <Font name="Trebuchet MS Bold" size="14.0" />
                            </font>
-                        </Button>
-                        <Button fx:id="btn_Confirm1" mnemonicParsing="false" onAction="#confirmAction" prefHeight="30.0" prefWidth="150.0" style="-fx-text-fill: white;" text="Comfirm">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </Label>
+                        <HBox alignment="CENTER" prefHeight="30.0" prefWidth="200.0" spacing="6.0">
+                           <children>
+                              <Button fx:id="btn_LogOut" mnemonicParsing="false" onAction="#logoutAction" prefWidth="86.0" style="-fx-text-fill: white;" text="LogOut">
+                                 <font>
+                                    <Font name="Trebuchet MS Bold" size="14.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="btn_MyInfo" mnemonicParsing="false" onAction="#myInfoAction" prefWidth="86.0" style="-fx-text-fill: white;" text="My Info">
+                                 <font>
+                                    <Font name="Trebuchet MS Bold" size="14.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <Button fx:id="btn_MyBookList" mnemonicParsing="false" onAction="#mybooklistAction" prefHeight="30.0" prefWidth="180.0" style="-fx-text-fill: white;" text="MyBookList">
                            <font>
                               <Font name="Trebuchet MS Bold" size="14.0" />
                            </font>
+                           <VBox.margin>
+                              <Insets bottom="20.0" />
+                           </VBox.margin>
                         </Button>
+                        <HBox alignment="CENTER" prefHeight="20.0" prefWidth="200.0" spacing="6.0">
+                           <children>
+                              <Button fx:id="btn_ProfileNewAlert" mnemonicParsing="false" onAction="#alertAction" prefWidth="180.0" style="-fx-text-fill: white;" text="New Alert">
+                                 <font>
+                                    <Font name="Trebuchet MS Bold" size="14.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <ListView fx:id="lv_alter_list" prefHeight="200.0" prefWidth="200.0">
+                           <VBox.margin>
+                              <Insets left="5.0" right="5.0" />
+                           </VBox.margin>
+                        </ListView>
                      </children>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                  </HBox>
+                     <HBox.margin>
+                        <Insets bottom="5.0" right="10.0" />
+                     </HBox.margin>
+                  </VBox>
                </children>
-            </VBox>
-            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="200.0" spacing="5.0" style="-fx-background-color: #e8f5ff;">
-               <children>
-                  <Button fx:id="btn_BookSales" mnemonicParsing="false" onAction="#salesAction" prefHeight="40.0" prefWidth="180.0" style="-fx-text-fill: white;" text="Book Sales">
-                     <font>
-                        <Font name="Trebuchet MS Bold" size="14.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets bottom="30.0" top="6.0" />
-                     </VBox.margin>
-                  </Button>
-                  <Label fx:id="lb_ProfileName" alignment="CENTER" prefHeight="15.0" prefWidth="150.0" style="-fx-text-fill: #3065AC;" text="이름">
-                     <font>
-                        <Font name="Trebuchet MS Bold" size="14.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets bottom="5.0" />
-                     </VBox.margin>
-                  </Label>
-                  <Label fx:id="lb_ProfileID" alignment="CENTER" prefHeight="15.0" prefWidth="150.0" style="-fx-text-fill: #3065AC;" text="아이디">
-                     <font>
-                        <Font name="Trebuchet MS Bold" size="14.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="lb_ProfileLend" alignment="CENTER" prefHeight="15.0" prefWidth="150.0" style="-fx-text-fill: #3065AC;" text="대출 가능 여부">
-                     <font>
-                        <Font name="Trebuchet MS Bold" size="14.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </Label>
-                  <HBox alignment="CENTER" prefHeight="30.0" prefWidth="200.0" spacing="6.0">
-                     <children>
-                        <Button fx:id="btn_LogOut" mnemonicParsing="false" onAction="#logoutAction" prefWidth="86.0" style="-fx-text-fill: white;" text="LogOut">
-                           <font>
-                              <Font name="Trebuchet MS Bold" size="14.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="btn_MyInfo" mnemonicParsing="false" onAction="#myInfoAction" prefWidth="86.0" style="-fx-text-fill: white;" text="My Info">
-                           <font>
-                              <Font name="Trebuchet MS Bold" size="14.0" />
-                           </font>
-                        </Button>
-                     </children>
-                     <VBox.margin>
-                        <Insets top="5.0" />
-                     </VBox.margin>
-                  </HBox>
-                  <Button fx:id="btn_MyBookList" mnemonicParsing="false" onAction="#mybooklistAction" prefHeight="30.0" prefWidth="180.0" style="-fx-text-fill: white;" text="MyBookList">
-                     <font>
-                        <Font name="Trebuchet MS Bold" size="14.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets bottom="20.0" />
-                     </VBox.margin>
-                  </Button>
-                  <HBox alignment="CENTER" prefHeight="20.0" prefWidth="200.0" spacing="6.0">
-                     <children>
-                        <Button fx:id="btn_ProfileNewAlert" mnemonicParsing="false" onAction="#alertAction" prefWidth="180.0" style="-fx-text-fill: white;" text="New Alert">
-                           <font>
-                              <Font name="Trebuchet MS Bold" size="14.0" />
-                           </font>
-                        </Button>
-                     </children>
-                     <VBox.margin>
-                        <Insets top="5.0" />
-                     </VBox.margin>
-                  </HBox>
-                  <ListView fx:id="lv_alter_list" prefHeight="200.0" prefWidth="200.0">
-                     <VBox.margin>
-                        <Insets left="5.0" right="5.0" />
-                     </VBox.margin>
-                  </ListView>
-               </children>
-               <HBox.margin>
-                  <Insets bottom="5.0" right="10.0" />
-               </HBox.margin>
-            </VBox>
+            </HBox>
          </children>
-      </HBox>
+      </VBox>
    </children>
-</VBox>
+</AnchorPane>

@@ -13,7 +13,7 @@ import user.User;
 
 public class DataModel {
 
-	public final static String SERVER_IP = "10.3.166.25";
+	public final static String SERVER_IP = "192.168.0.52";
 	public final static int PORT = 26432;
 
 	public static Socket socket = null;
@@ -34,7 +34,8 @@ public class DataModel {
 	public static Book book_for_loaned;
 	public static Book book_for_registered;
 	
-	public static String who_borrow_book;
+	public static String who_borrwed_book;//´©°¡ ºô·Á°¬´ÂÁö
+	public static String borrowed_form_who;//´©°¡ ºô·ÁÁá´ÂÁö
 
 	// public static BufferedReader br;
 

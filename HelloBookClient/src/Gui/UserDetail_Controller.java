@@ -29,6 +29,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import user.User;
 
@@ -152,10 +153,10 @@ public class UserDetail_Controller extends Base_Controller implements Initializa
 				|| !lb_error_phone.getText().equals("") ||!lb_error_email.getText().equals("")||!lb_error_address.getText().equals("")) {
 			new Alert(Alert.AlertType.WARNING, "형식에 맞지 않는 칸이 있습니다.", ButtonType.CLOSE).show();
 		}else {
-			Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "수정된 정보로 저장하시겠습니까?", ButtonType.APPLY,ButtonType.CANCEL);
+			Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "수정된 정보로 저장하시겠습니까?", ButtonType.YES,ButtonType.NO);
 			Optional<ButtonType> result = alert.showAndWait();
 
-			if (result.get() == ButtonType.APPLY) {
+			if (result.get() == ButtonType.YES) {
 				// user info modify start
 				try {
 		
@@ -209,4 +210,5 @@ public class UserDetail_Controller extends Base_Controller implements Initializa
 		}
 
 	}
+
 }

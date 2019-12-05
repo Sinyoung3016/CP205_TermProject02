@@ -6,171 +6,176 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: white;" stylesheets="@css/Css.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Gui.Main_Controller">
-	<children>
-		<HBox alignment="CENTER" prefHeight="80.0" prefWidth="200.0">
-			<children>
-				<Button fx:id="btn_Main" alignment="CENTER" mnemonicParsing="false" onAction="#mainAction" styleClass="HelloBooks" text="HelloBooks">
-					<font>
-						<Font name="Trebuchet MS Bold" size="48.0" />
-					</font>
-					<HBox.margin>
-						<Insets right="25.0" />
-					</HBox.margin>
-				</Button>
-				<TextField fx:id="tf_Search" prefHeight="35.0" prefWidth="400.0" promptText="검색">
-					<font>
-						<Font size="14.0" />
-					</font>
-				</TextField>
-				<Button fx:id="btn_Search" mnemonicParsing="false" onAction="#searchAction" prefHeight="35.0" prefWidth="90.0" style="-fx-text-fill: white;" text="Search">
-					<HBox.margin>
-						<Insets left="5.0" />
-					</HBox.margin>
-					<font>
-						<Font name="Trebuchet MS Bold" size="14.0" />
-					</font>
-				</Button>
-			</children>
-			<VBox.margin>
-				<Insets />
-			</VBox.margin>
-		</HBox>
-		<HBox prefHeight="500.0" prefWidth="900.0" spacing="10.0">
-			<children>
-				<VBox prefHeight="200.0" prefWidth="350.0">
-					<children>
-						<HBox alignment="CENTER" prefHeight="500.0" prefWidth="250.0" style="-fx-background-color: #e8f5ff;">
-							<children>
-								<Button fx:id="btn_Left" mnemonicParsing="false" onAction="#goLeftAction" prefHeight="50.0" style="-fx-text-fill: #3065AC; -fx-background-color: #e8f5ff;" text="&lt;">
-									<font>
-										<Font size="14.0" />
-									</font>
-								</Button>
-								<VBox alignment="CENTER" prefHeight="200.0" prefWidth="350.0">
-									<children>
-										<ImageView fx:id="iv_ad" fitHeight="400.0" fitWidth="270.0" pickOnBounds="true" preserveRatio="true" />
-									</children>
-								</VBox>
-								<Button fx:id="btn_Right" mnemonicParsing="false" onAction="#goRightAction" prefHeight="50.0" style="-fx-text-fill: #3065AC; -fx-background-color: #e8f5ff;" text="&gt;">
-									<font>
-										<Font size="14.0" />
-									</font>
-								</Button>
-							</children>
-							<VBox.margin>
-								<Insets bottom="5.0" left="10.0" />
-							</VBox.margin>
-						</HBox>
-					</children>
-				</VBox>
-				<VBox alignment="CENTER" prefHeight="200.0" prefWidth="350.0" spacing="10.0" style="-fx-background-color: #e8f5ff;">
-					<children>
-						<Label style="-fx-text-fill: #3065AC;" text="New Books">
-							<font>
-								<Font name="Trebuchet MS Bold" size="14.0" />
-							</font>
-						</Label>
-						<ListView fx:id="lv_NewBooks" prefHeight="200.0" prefWidth="350.0" styleClass="list-cell">
-							<VBox.margin>
-								<Insets left="5.0" right="5.0" />
-							</VBox.margin>
-						</ListView>
-						<Label style="-fx-text-fill: #3065AC;" text="Best Seller">
-							<font>
-								<Font name="Trebuchet MS Bold" size="14.0" />
-							</font>
-						</Label>
-						<ListView fx:id="lv_BestSeller" prefHeight="200.0" prefWidth="350.0" styleClass="list-cell">
-							<VBox.margin>
-								<Insets left="5.0" right="5.0" />
-							</VBox.margin>
-						</ListView>
-					</children>
-					<HBox.margin>
-						<Insets bottom="5.0" />
-					</HBox.margin>
-				</VBox>
-				<VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="200.0" spacing="5.0" style="-fx-background-color: #e8f5ff;">
-					<children>
-						<Button fx:id="btn_BookSales" mnemonicParsing="false" onAction="#salesAction" prefHeight="40.0" prefWidth="180.0" style="-fx-text-fill: white;" text="Book Sales">
-							<font>
-								<Font name="Trebuchet MS Bold" size="14.0" />
-							</font>
-							<VBox.margin>
-								<Insets bottom="30.0" top="6.0" />
-							</VBox.margin>
-						</Button>
-						<Label fx:id="lb_ProfileName" alignment="CENTER" prefHeight="15.0" prefWidth="150.0" style="-fx-text-fill: #3065AC;" text="이름">
-							<font>
-								<Font name="Trebuchet MS Bold" size="14.0" />
-							</font>
-							<VBox.margin>
-								<Insets bottom="5.0" />
-							</VBox.margin>
-						</Label>
-						<Label fx:id="lb_ProfileID" alignment="CENTER" prefHeight="15.0" prefWidth="150.0" style="-fx-text-fill: #3065AC;" text="아이디">
-							<font>
-								<Font name="Trebuchet MS Bold" size="14.0" />
-							</font>
-						</Label>
-						<Label fx:id="lb_ProfileLend" alignment="CENTER" prefHeight="15.0" prefWidth="150.0" style="-fx-text-fill: #3065AC;" text="대출 가능 여부">
-							<font>
-								<Font name="Trebuchet MS Bold" size="14.0" />
-							</font>
-						</Label>
-						<HBox alignment="CENTER" prefHeight="30.0" prefWidth="200.0" spacing="6.0">
-							<children>
-								<Button fx:id="btn_LogOut" mnemonicParsing="false" onAction="#logoutAction" prefWidth="86.0" style="-fx-text-fill: white;" text="LogOut">
-									<font>
-										<Font name="Trebuchet MS Bold" size="14.0" />
-									</font>
-								</Button>
-								<Button fx:id="btn_MyInfo" mnemonicParsing="false" onAction="#myInfoAction" prefWidth="86.0" style="-fx-text-fill: white;" text="My Info">
-									<font>
-										<Font name="Trebuchet MS Bold" size="14.0" />
-									</font>
-								</Button>
-							</children>
-							<VBox.margin>
-								<Insets top="5.0" />
-							</VBox.margin>
-						</HBox>
-						<Button fx:id="btn_MyBookList" mnemonicParsing="false" onAction="#mybooklistAction" prefHeight="30.0" prefWidth="180.0" style="-fx-text-fill: white;" text="MyBookList">
-							<font>
-								<Font name="Trebuchet MS Bold" size="14.0" />
-							</font>
-							<VBox.margin>
-								<Insets bottom="20.0" />
-							</VBox.margin>
-						</Button>
-						<HBox alignment="CENTER" prefHeight="20.0" prefWidth="200.0" spacing="6.0">
-							<children>
-								<Button fx:id="btn_ProfileNewAlert" mnemonicParsing="false" onAction="#alertAction" prefWidth="180.0" style="-fx-text-fill: white;" text="New Alert">
-									<font>
-										<Font name="Trebuchet MS Bold" size="14.0" />
-									</font>
-								</Button>
-							</children>
-							<VBox.margin>
-								<Insets top="5.0" />
-							</VBox.margin>
-						</HBox>
-						<ListView fx:id="lv_alter_list" prefHeight="200.0" prefWidth="200.0" styleClass="list-cell">
-							<VBox.margin>
-								<Insets left="5.0" right="5.0" />
-							</VBox.margin>
-						</ListView>
-					</children>
-					<HBox.margin>
-						<Insets bottom="5.0" right="10.0" />
-					</HBox.margin>
-				</VBox>
-			</children>
-		</HBox>
-	</children>
-</VBox>
+<AnchorPane fx:id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Gui.Main_Controller">
+   <children>
+      <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: white;" stylesheets="@css/Css.css">
+         <children>
+            <HBox alignment="CENTER" prefHeight="80.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="btn_Main" alignment="CENTER" mnemonicParsing="false" onAction="#mainAction" styleClass="HelloBooks" text="HelloBooks">
+                     <font>
+                        <Font name="Trebuchet MS Bold" size="48.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="25.0" />
+                     </HBox.margin>
+                  </Button>
+                  <TextField fx:id="tf_Search" prefHeight="35.0" prefWidth="400.0" promptText="검색">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </TextField>
+                  <Button fx:id="btn_Search" mnemonicParsing="false" onAction="#searchAction" prefHeight="35.0" prefWidth="90.0" style="-fx-text-fill: white;" text="Search">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font name="Trebuchet MS Bold" size="14.0" />
+                     </font>
+                  </Button>
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </HBox>
+            <HBox prefHeight="500.0" prefWidth="900.0" spacing="10.0">
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="350.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="500.0" prefWidth="250.0" style="-fx-background-color: #e8f5ff;">
+                           <children>
+                              <Button fx:id="btn_Left" mnemonicParsing="false" onAction="#goLeftAction" prefHeight="50.0" style="-fx-text-fill: #3065AC; -fx-background-color: #e8f5ff;" text="&lt;">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Button>
+                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="350.0">
+                                 <children>
+                                    <ImageView fx:id="iv_ad" fitHeight="400.0" fitWidth="270.0" pickOnBounds="true" preserveRatio="true" />
+                                 </children>
+                              </VBox>
+                              <Button fx:id="btn_Right" mnemonicParsing="false" onAction="#goRightAction" prefHeight="50.0" style="-fx-text-fill: #3065AC; -fx-background-color: #e8f5ff;" text="&gt;">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="10.0" />
+                           </VBox.margin>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="350.0" spacing="10.0" style="-fx-background-color: #e8f5ff;">
+                     <children>
+                        <Label style="-fx-text-fill: #3065AC;" text="New Books">
+                           <font>
+                              <Font name="Trebuchet MS Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <ListView fx:id="lv_NewBooks" prefHeight="200.0" prefWidth="350.0" styleClass="list-cell">
+                           <VBox.margin>
+                              <Insets left="5.0" right="5.0" />
+                           </VBox.margin>
+                        </ListView>
+                        <Label style="-fx-text-fill: #3065AC;" text="Best Seller">
+                           <font>
+                              <Font name="Trebuchet MS Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <AnchorPane prefHeight="200.0" prefWidth="350.0" style="-fx-background-color: white;">
+                           <children>
+                              <ImageView fx:id="iv_BestSeller" fitHeight="200.0" fitWidth="180.0" layoutX="80.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </AnchorPane>
+                     </children>
+                     <HBox.margin>
+                        <Insets bottom="5.0" />
+                     </HBox.margin>
+                  </VBox>
+                  <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="200.0" spacing="5.0" style="-fx-background-color: #e8f5ff;">
+                     <children>
+                        <Button fx:id="btn_BookSales" mnemonicParsing="false" onAction="#salesAction" prefHeight="40.0" prefWidth="180.0" style="-fx-text-fill: white;" text="Book Sales">
+                           <font>
+                              <Font name="Trebuchet MS Bold" size="14.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="30.0" top="6.0" />
+                           </VBox.margin>
+                        </Button>
+                        <Label fx:id="lb_ProfileName" alignment="CENTER" prefHeight="15.0" prefWidth="150.0" style="-fx-text-fill: #3065AC;" text="이름">
+                           <font>
+                              <Font name="Trebuchet MS Bold" size="14.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label fx:id="lb_ProfileID" alignment="CENTER" prefHeight="15.0" prefWidth="150.0" style="-fx-text-fill: #3065AC;" text="아이디">
+                           <font>
+                              <Font name="Trebuchet MS Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lb_ProfileLend" alignment="CENTER" prefHeight="15.0" prefWidth="150.0" style="-fx-text-fill: #3065AC;" text="대출 가능 여부">
+                           <font>
+                              <Font name="Trebuchet MS Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <HBox alignment="CENTER" prefHeight="30.0" prefWidth="200.0" spacing="6.0">
+                           <children>
+                              <Button fx:id="btn_LogOut" mnemonicParsing="false" onAction="#logoutAction" prefWidth="86.0" style="-fx-text-fill: white;" text="LogOut">
+                                 <font>
+                                    <Font name="Trebuchet MS Bold" size="14.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="btn_MyInfo" mnemonicParsing="false" onAction="#myInfoAction" prefWidth="86.0" style="-fx-text-fill: white;" text="My Info">
+                                 <font>
+                                    <Font name="Trebuchet MS Bold" size="14.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <Button fx:id="btn_MyBookList" mnemonicParsing="false" onAction="#mybooklistAction" prefHeight="30.0" prefWidth="180.0" style="-fx-text-fill: white;" text="MyBookList">
+                           <font>
+                              <Font name="Trebuchet MS Bold" size="14.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="20.0" />
+                           </VBox.margin>
+                        </Button>
+                        <HBox alignment="CENTER" prefHeight="20.0" prefWidth="200.0" spacing="6.0">
+                           <children>
+                              <Button fx:id="btn_ProfileNewAlert" mnemonicParsing="false" onAction="#alertAction" prefWidth="180.0" style="-fx-text-fill: white;" text="New Alert">
+                                 <font>
+                                    <Font name="Trebuchet MS Bold" size="14.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <ListView fx:id="lv_alter_list" prefHeight="200.0" prefWidth="200.0" styleClass="list-cell">
+                           <VBox.margin>
+                              <Insets left="5.0" right="5.0" />
+                           </VBox.margin>
+                        </ListView>
+                     </children>
+                     <HBox.margin>
+                        <Insets bottom="5.0" right="10.0" />
+                     </HBox.margin>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

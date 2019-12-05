@@ -21,7 +21,7 @@ public class BorrowedBook_Controller extends Base_Controller implements Initiali
 	@FXML
 	public Button btn_Back, btn_OK;
 	@FXML
-	public Label lb_RentalStatus, lb_Title, lb_Author, lb_Publisher, lb_BookCondition, lb_FullPrice, lb_SalePrice,
+	public Label lb_from_who, lb_Title, lb_Author, lb_Publisher, lb_BookCondition, lb_FullPrice, lb_SalePrice,
 			lb_LendPrice, lb_Introduction;
 
 	private Book book;
@@ -35,7 +35,7 @@ public class BorrowedBook_Controller extends Base_Controller implements Initiali
 		super.base();
 		// Base end
 
-		lb_RentalStatus.setText(book.getRental_status() + "");
+		lb_from_who.setText( DataModel.borrowed_form_who);
 		lb_Title.setText(book.getTitle());
 		lb_Author.setText(book.getAuther());
 		lb_Publisher.setText(book.getPublisher());

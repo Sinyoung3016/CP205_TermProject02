@@ -42,6 +42,7 @@ public class RegisteredBook_Controller extends Base_Controller implements Initia
 	private ToggleGroup status;
 	@FXML
 	public AnchorPane AnchorPane;
+	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// Base start
@@ -60,7 +61,7 @@ public class RegisteredBook_Controller extends Base_Controller implements Initia
 			} else {//빌려준상대
 				Rbtn_lend.setSelected(true);
 				Rbtn_canLend.setDisable(true);
-				tf_who.setText(DataModel.who_borrow_book);
+				tf_who.setText(DataModel.who_borrwed_book);
 				//누구에게는 아직 생각중
 				tf_who.setEditable(false);
 			}

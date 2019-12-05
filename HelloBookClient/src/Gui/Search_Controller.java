@@ -123,14 +123,10 @@ public class Search_Controller extends Base_Controller implements Initializable 
 							pw.println("PrintBookData:Detail:" + item.num.getText());
 							pw.flush(); // 책번호에 대한 정보를 달라고 요청
 
+				
 							Stage primaryStage = (Stage) btn_LogOut.getScene().getWindow();
 							Parent search = FXMLLoader.load(getClass().getResource("/Gui/BookDetail_GUI.fxml"));
 							AnchorPane.getChildren().add(search);
-							
-							/*
-							 * Scene scene = new Scene(search); primaryStage.setTitle("HelloBooks");
-							 * primaryStage.setScene(scene); primaryStage.show();
-							 */
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
@@ -211,7 +207,7 @@ public class Search_Controller extends Base_Controller implements Initializable 
 											new OutputStreamWriter(DataModel.socket.getOutputStream(), StandardCharsets.UTF_8));
 									pw.println("PrintBookData:Detail:" + item.num.getText());
 									pw.flush(); // 책번호에 대한 정보를 달라고 요청
-									Stage primaryStage = (Stage) btn_LogOut.getScene().getWindow();
+				
 									Parent search = FXMLLoader.load(getClass().getResource("/Gui/BookDetail_GUI.fxml"));
 									AnchorPane.getChildren().add(search);
 									

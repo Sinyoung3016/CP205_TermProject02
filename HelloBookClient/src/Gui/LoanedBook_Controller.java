@@ -38,7 +38,7 @@ public class LoanedBook_Controller extends Base_Controller implements Initializa
 		// Base end
 
 		
-		lb_WhoBorrorwed.setText(DataModel.who_borrow_book);
+		lb_WhoBorrorwed.setText(DataModel.who_borrwed_book);
 		lb_Title.setText(book.getTitle());
 		lb_Author.setText(book.getAuther());
 		lb_Publisher.setText(book.getPublisher());

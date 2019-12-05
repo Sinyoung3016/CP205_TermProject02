@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
+import Gui.Base_Controller;
 import alter.UserAlter;
 import book.Book;
 import javafx.application.Platform;
@@ -95,19 +96,23 @@ public class ClientThread  extends Thread{
                     			String mergeToken="";
                     			for(int i=3; i<tokens.length; i+=2) 		{mergeToken+=tokens[i]+":";}//tokens[0]은printBookData,tokens[1] 은 [등록번호, 마지막은 ]임
                     			DataModel.book_for_detail=new Book(mergeToken);
+                    			System.out.println(tokens.length);
+                    			System.out.println(tokens[tokens.length-1]);
+                    			 if(tokens.length==25) {//빌렸으면 마지막에 누구에게 빌렸는지 떠서 25
+                    				 DataModel.borrowed_form_who=tokens[24];
+                    			}
                     		}                    		
                     	}
                     	else if(tokens[1].equals("Registered")) {
                     		if(tokens[2].equals("책이 존재하지 않습니다.")) 
                     			DataModel.book_for_registered=null;
                     		else {
-                    			
                     			String mergeToken="";
                     			for(int i=3; i<tokens.length; i+=2)		 {mergeToken+=tokens[i]+":";}
                     			DataModel.book_for_registered=new Book(mergeToken);
                     	
-                    			 if(tokens.length==25) {//빌려줬으면 마지막에 누구에게 빌려줬는지 떠서 26
-                    				 DataModel.who_borrow_book=tokens[24];
+                    			 if(tokens.length==25) {//빌려줬으면 마지막에 누구에게 빌려줬는지 떠서 25
+                    				 DataModel.who_borrwed_book=tokens[24];
                     			}
                     		}
                     	}
@@ -118,7 +123,7 @@ public class ClientThread  extends Thread{
                     			String mergeToken="";
                     			for(int i=3; i<tokens.length; i+=2) {mergeToken+=tokens[i]+":";}//0은printBookData, 1은 [등록번호, 마지막은 ]임
                     			DataModel.book_for_loaned=new Book(mergeToken);
-                    			DataModel.who_borrow_book=tokens[24];
+                    			DataModel.who_borrwed_book=tokens[24];
                     		}
                     	}
 
@@ -173,7 +178,8 @@ public class ClientThread  extends Thread{
     				}  else if (tokens[0].equals("RemoveBookData")) {
                     	Platform.runLater(() -> { 	new Alert(Alert.AlertType.INFORMATION, tokens[1], ButtonType.CLOSE).show();}); //구매요청을 보냈습니다 	             	
                     	//RemoveBookData end
-    				} else if (tokens[0].equals("LateInReturn")) {
+    				} 
+    				else if (tokens[0].equals("LateInReturn")) {
                     	if(tokens[1].equals("Good")) {//대여가능으로 바뀌면
                     		DataModel.user.setLend_OK(true);
                     		Platform.runLater(() -> { 	new Alert(Alert.AlertType.INFORMATION, "책이 반납되어 대여가능 상태가 되었습니다.", ButtonType.CLOSE).show();}); //구매요청을 보냈습니다 	         
@@ -181,6 +187,8 @@ public class ClientThread  extends Thread{
                     		DataModel.user.setLend_OK(false);
                     		Platform.runLater(() -> { 	new Alert(Alert.AlertType.INFORMATION, "책을 반납하지 않아 대여불가 상태가 되었습니다", ButtonType.CLOSE).show();}); //구매요청을 보냈습니다 	         
                     	}
+                    	
+                    	//lateInReturn e d
     				}
                     
                 }

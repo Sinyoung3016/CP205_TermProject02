@@ -10,7 +10,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane fx:id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Gui.BorrowedBook_Controller">
    <children>
       <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: white;" stylesheets="@css/Css.css">
@@ -78,7 +77,7 @@
                                        <children>
                                           <VBox prefHeight="200.0" prefWidth="180.0" spacing="10.0">
                                              <children>
-                                                <Label style="-fx-text-fill: #3065AC;" text="RentalStatus">
+                                                <Label style="-fx-text-fill: #3065AC;" text="From Who">
                                                    <font>
                                                       <Font name="Trebuchet MS Bold" size="14.0" />
                                                    </font>
@@ -133,7 +132,7 @@
                                           </VBox>
                                           <VBox prefHeight="200.0" prefWidth="380.0" spacing="10.0">
                                              <children>
-                                                <Label fx:id="lb_RentalStatus" prefWidth="370.0" text="가능 또는 언제까지 불가능" textFill="#e80d0d">
+                                                <Label fx:id="lb_from_who" prefWidth="370.0" text="누구에게" textFill="#e80d0d">
                                                    <font>
                                                       <Font name="Trebuchet MS Bold" size="14.0" />
                                                    </font>
