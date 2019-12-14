@@ -94,7 +94,7 @@
                               <Insets top="10.0" />
                            </VBox.margin>
                         </Label>
-                        <ListView fx:id="lv_chat" focusTraversable="false" prefHeight="190.0" prefWidth="350.0" style="-fx-background-color: white;">
+                        <ListView fx:id="lv_chat" focusTraversable="false" prefHeight="190.0" prefWidth="250.0" style="-fx-background-color: white;">
                            <VBox.margin>
                               <Insets left="5.0" right="5.0" top="10.0" />
                            </VBox.margin>
