@@ -21,6 +21,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -61,6 +62,16 @@ public class Base_Controller { // 변하지 않는 화면 = Base
 
 		// ProfileList 초기화 start
 		// ProfileList 초기화 endt
+		tf_Search.setOnKeyPressed(event -> {
+			if (event.getCode().equals(KeyCode.ENTER)) {
+		        	try {
+						searchAction();
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+		        }
+		    });
 		
 		this.ItemList_alter=DataModel.ItemList_alter;
 		lv_alter_list.setItems(ItemList_alter);

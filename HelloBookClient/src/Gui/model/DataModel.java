@@ -15,7 +15,7 @@ import user.User;
 
 public class DataModel {
 
-	public final static String SERVER_IP = "192.168.0.2";
+	public final static String SERVER_IP = "221.158.52.157";
 	public final static int PORT = 26432;
 
 	public static Socket socket = null;

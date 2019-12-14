@@ -56,6 +56,11 @@ public class Login_Controller implements Initializable {
 				btn_SignUp.setDisable(true);
 			//}
 		}
+		
+		pf_Password.setOnAction(event -> {
+			loginAction();
+	    }
+	    );
 	}
 
 	@FXML
