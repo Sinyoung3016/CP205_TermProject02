@@ -1,6 +1,7 @@
 package Gui;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.URL;
@@ -8,6 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import Gui.model.ClientThread;
 import Gui.model.DataModel;
 import book.Book.HBoxCell;
 import javafx.animation.KeyFrame;
@@ -21,13 +23,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -42,22 +45,47 @@ public class Main_Controller extends Base_Controller implements Initializable {
 	@FXML
 	public ListView lv_NewBooks;
 	
+	@FXML
+	public Button btn_chat;
+	
+	public static DataModel dataModel;
+
+	@FXML
+	public TextField tf_chat;
+	@FXML
+	public ListView<Text> lv_chat;
+	
 	private ArrayList<Image> ad_images = new ArrayList<>();
 	private ArrayList<Image> best_images = new ArrayList<>();
 	private int ad_count;
 	private int best_count;
 	private ObservableList<HBoxCell> ItemList_newBook;
+	private ObservableList<Text> chatList;
 
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		DataModel.detail_book=null;
+		if(!DataModel.is_thread_on) {
+			dataModel=new DataModel();
+			new ClientThread(DataModel.socket,lv_chat).start();
+			DataModel.is_thread_on=true;
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
+		}
 		
-
+	
 		
 		// Base start
 		super.base();
 		// Base end
+		
+		chatList=DataModel.chatList;
+		lv_chat.setItems(chatList);
 
 		ItemList_newBook = DataModel.ItemList_newBook;
 		for (HBoxCell item : ItemList_newBook) {
@@ -70,10 +98,8 @@ public class Main_Controller extends Base_Controller implements Initializable {
 						pw.println("PrintBookData:Detail:" + item.num.getText());
 						pw.flush(); // 책번호에 대한 정보를 달라고 요청
 
-						Stage primaryStage = (Stage) btn_LogOut.getScene().getWindow();
 						Parent search = FXMLLoader.load(getClass().getResource("/Gui/BookDetail_GUI.fxml"));
 						AnchorPane.getChildren().add(search);
-						
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -97,9 +123,8 @@ public class Main_Controller extends Base_Controller implements Initializable {
 								PrintWriter pw = new PrintWriter(new OutputStreamWriter(DataModel.socket.getOutputStream(), StandardCharsets.UTF_8));
 								pw.println("PrintBookData:Detail:" + hbc.num.getText());
 								pw.flush(); // 책번호에 대한 정보를 달라고 요청
-								
 					
-								Stage primaryStage = (Stage) btn_LogOut.getScene().getWindow();
+
 								Parent search = FXMLLoader.load(getClass().getResource("/Gui/BookDetail_GUI.fxml"));
 								AnchorPane.getChildren().add(search);
 						
@@ -131,29 +156,8 @@ public class Main_Controller extends Base_Controller implements Initializable {
 			 */
 			new chageImageThread().start();
 
-		}
 		
-		dirFile = new File(".\\image\\bestSeller");
-		fileList = dirFile.listFiles();
-
-		if (fileList != null) {
-			for (File tempFile : fileList) {
-
-				if (tempFile.isFile()) {
-					Image image = new Image(tempFile.toURI().toString());
-					best_images.add(image);
-
-				}
-			}
-			iv_BestSeller.setPreserveRatio(false);
-			/*
-			 * this.ad=new Image[ad_images.size()]; int count=0; for(Image i:ad_images) {
-			 * ad[count++]=i; } System.out.println("??");
-			 */
-			new chageBestSellerThread().start();
-
 		}
-
 	}
 
 	private class chageImageThread extends Thread {
@@ -190,32 +194,24 @@ public class Main_Controller extends Base_Controller implements Initializable {
 			}
 		}
 	}
-	
-	private class chageBestSellerThread extends Thread {
-		@Override
-		public void run() {
-
-
-			if (best_images.size() != 0) {
-
-				best_count = 0;
-				while (DataModel.socket != null) {
-					if (best_count >= best_images.size() - 1) {
-						best_count = -1;
-					}
-
-					iv_BestSeller.setImage(best_images.get(++best_count));
-					try {
-						sleep(2000);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-
+	@FXML
+	public void chatting() {
+		if(tf_chat.getText().length()!=0) {
+			PrintWriter pw;
+			try {
+				pw = new PrintWriter(new OutputStreamWriter(DataModel.socket.getOutputStream(), StandardCharsets.UTF_8));
+				pw.println("Chat:" +DataModel.user.getName()+"("+DataModel.ID+"):"+ tf_chat.getText());
+				pw.flush(); 
+				tf_chat.setText("");
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
+		
 		}
+		
 	}
+	
+
 
 	@FXML
 	public void goLeftAction() {

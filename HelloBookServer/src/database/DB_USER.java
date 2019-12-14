@@ -139,29 +139,130 @@ public class DB_USER extends DBManager {
 		PreparedStatement pstmt = null;
 
 		try {
-			deleateUser(changeUser.getID());
 			conn = getConn();
 
 			String sql;
-			sql = "INSERT INTO user (ID, PassWord, Name, Phone, Email, Address, Lend_OK, is_connected)VALUES (?,?,?,?,?,?,?,?)";
+			sql = "update user set PassWord=?, Name=?, Phone=?, Email=?, Address=? where id=?";
 			pstmt = conn.prepareStatement(sql);
 
-			pstmt.setString(1, changeUser.getID());
-			pstmt.setString(2, changeUser.getPassword());
-			pstmt.setString(3, changeUser.getName());
-			pstmt.setString(4, changeUser.getPhone());
-			pstmt.setString(5, changeUser.getEmail());
-			pstmt.setString(6,  changeUser.getAddress()+ "");
-			if(changeUser.isLend_OK()) {
-				pstmt.setString(7, "1");
-			}else {
-				pstmt.setString(7, "0");
+			
+			pstmt.setString(1, changeUser.getPassword());
+			pstmt.setString(2, changeUser.getName());
+			pstmt.setString(3, changeUser.getPhone());
+			pstmt.setString(4, changeUser.getEmail());
+			pstmt.setString(5,  changeUser.getAddress()+ "");
+			
+			pstmt.setString(6, changeUser.getID());
+			pstmt.executeUpdate();
+			pstmt.close();
+			conn.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally {
+			try {if (conn != null)conn.close();
+				if (pstmt != null)pstmt.close();
+			} 
+			catch (SQLException e) {
+				e.printStackTrace();
 			}
-			if(changeUser.is_connected()) {
-				pstmt.setString(8, "1");
-			}else {
-				pstmt.setString(8, "0");
+		}
+	}
+	
+	public synchronized static int getNoReturnBookCount(String ID) {
+		
+		Connection conn = null;
+		Statement state = null;
+		ResultSet rs =null;
+		
+		try {
+			conn = getConn();
+
+			state = conn.createStatement();// conn연결정보를 state로 생성.
+			
+			String sql;
+			sql = "SELECT * FROM user WHERE id='" + ID + "'";
+			
+			rs = state.executeQuery(sql);
+			int count=-1;
+			if (rs.next()) {
+				count = Integer.parseInt(rs.getString("no_return_count"));
+
 			}
+
+			return count;
+
+			
+		
+		} catch (Exception e) {
+			return -1;
+		} finally {	
+			try {
+				if (state != null)
+					state.close();
+			} catch (SQLException sqle) {
+			}
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException sqle1) {
+				sqle1.printStackTrace();
+			}
+			try {if(rs!=null)
+				rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+	}
+	
+	public synchronized static void plusLateInReturn(String id) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		int count=getNoReturnBookCount(id);
+		try {
+			conn = getConn();
+
+			String sql;
+			sql = "Update user set no_return_count=? where id=?";
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setString(1,++count+"");
+			pstmt.setString(2, id);
+	
+			
+
+			pstmt.executeUpdate();
+			pstmt.close();
+			conn.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally {
+			try {if (conn != null)conn.close();
+				if (pstmt != null)pstmt.close();
+			} 
+			catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	public synchronized static void minusLateInReturn(String id) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		int count=getNoReturnBookCount(id);
+		if(count==0) {
+			return;
+		}
+		try {
+			conn = getConn();
+			
+			String sql;
+			sql = "Update user set no_return_count=? where id=?";
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setString(1,--count+"");
+			pstmt.setString(2, id);
+	
 			
 
 			pstmt.executeUpdate();

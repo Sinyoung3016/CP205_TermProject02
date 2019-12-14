@@ -24,7 +24,8 @@ public class BorrowedBook_Controller extends Base_Controller implements Initiali
 	public AnchorPane AnchorPane;
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		this.book = DataModel.book_for_detail;
+		Main_Controller.dataModel.getBookDetail();
+		this.book=DataModel.detail_book;
 
 		// Base start
 		super.base();
@@ -44,6 +45,7 @@ public class BorrowedBook_Controller extends Base_Controller implements Initiali
 
 	@FXML
 	public void backAction() { //전 화면으로 
+		DataModel.detail_book=null;
 		AnchorPane root=(AnchorPane) AnchorPane.getScene().getRoot();
 		root.getChildren().remove(AnchorPane);
 	}
@@ -52,6 +54,7 @@ public class BorrowedBook_Controller extends Base_Controller implements Initiali
 
 	@FXML
 	public void OKAction() { // 전 화면으로
+		DataModel.detail_book=null;
 		AnchorPane root=(AnchorPane) AnchorPane.getScene().getRoot();
 		root.getChildren().remove(AnchorPane);
 	}

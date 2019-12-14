@@ -33,7 +33,9 @@ public class LoanedBook_Controller extends Base_Controller implements Initializa
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// Base start
-		this.book = DataModel.book_for_loaned;
+
+		Main_Controller.dataModel.getBookDetail();
+		this.book=DataModel.detail_book;
 		super.base();
 		// Base end
 
@@ -52,6 +54,7 @@ public class LoanedBook_Controller extends Base_Controller implements Initializa
 	}
 
 	public void backAction() { //전 화면으로 
+		DataModel.detail_book=null;
 		AnchorPane root=(AnchorPane) AnchorPane.getScene().getRoot();
 		root.getChildren().remove(AnchorPane);
 	}

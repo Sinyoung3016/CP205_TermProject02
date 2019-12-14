@@ -81,7 +81,7 @@ public class MyBookList_Controller extends Base_Controller implements Initializa
 							pw.println("PrintBookData:Detail:" + item.num.getText());
 							pw.flush(); // 책번호에 대한 정보를 달라고 요청
 							
-							Thread.sleep(200);
+							Thread.sleep(500);
 	
 							Parent search = FXMLLoader.load(getClass().getResource("/Gui/BorrowedBook_GUI.fxml"));
 							AnchorPane.getChildren().add(search);

@@ -2,43 +2,71 @@ package Gui.model;
 
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.List;
 
 import alter.UserAlter;
 import book.Book;
 import book.Book.HBoxCell;
+import javafx.beans.binding.DoubleBinding;
 import javafx.collections.ObservableList;
+import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
+import javafx.scene.text.Text;
 import user.User;
 
 public class DataModel {
 
-	public final static String SERVER_IP = "192.168.0.52";
+	public final static String SERVER_IP = "192.168.0.2";
 	public final static int PORT = 26432;
 
 	public static Socket socket = null;
-	public static String ID;
+	public static String ID=null;
 	public static User user;
 
-
+	public static boolean is_thread_on=false;
 	public static boolean is_exist_new_book = false;
 	public static ObservableList<HBoxCell> ItemList_newBook;
 	public static ObservableList<HBoxCell> ItemList_myBook;
 	public static ObservableList<HBoxCell> ItemList_searchBook;
+	public static ObservableList<Text> chatList;
 	
 	public static ObservableList<UserAlter> ItemList_alter;
 
 	public static ArrayList<Image> advertisement_list = new ArrayList<>();
 
-	public static Book book_for_detail;
-	public static Book book_for_loaned;
-	public static Book book_for_registered;
+	public static Book detail_book;
 	
 	public static String who_borrwed_book;//누가 빌려갔는지
 	public static String borrowed_form_who;//누가 빌려줬는지
 
 	// public static BufferedReader br;
-
+	public static void addChat(String msg, ListView chatView) {
+	     Text text = new Text(msg);
+	        // 채팅뷰의 너비에 맞게 자동으로 내용을 줄바꿈해주는 바인딩을 설정한다.
+	        text.wrappingWidthProperty().bind(new DoubleBinding() {
+				@Override
+				protected double computeValue() {
+					return chatView.getPrefWidth();
+				}
+			});
+	        chatList.add(text);
+	        chatView.scrollTo(chatList.size());
+	        
+	}
+	
+	public static void serverNotice(String msg, ListView chatView) {
+	     Text text = new Text(msg);
+	        // 채팅뷰의 너비에 맞게 자동으로 내용을 줄바꿈해주는 바인딩을 설정한다.
+	        text.wrappingWidthProperty().bind(new DoubleBinding() {
+				@Override
+				protected double computeValue() {
+					return chatView.getPrefWidth();
+				}
+			});
+	        chatList.add(text);      
+	        chatView.scrollTo(chatList.size());
+	        
+	}
+	
 	public static void addAlter(UserAlter alter) {
 		ItemList_alter.add(alter);
 	}
@@ -88,5 +116,19 @@ public class DataModel {
 
 	public static void NoSearchBookList(String no_book_message) {
 		ItemList_searchBook.add(Book.getBook(no_book_message));// 등록된 책이 없습니다.
+	}
+	public synchronized Book getBookDetail() {
+		while(detail_book==null) {
+			try {
+				wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		return detail_book;
+	}
+	public synchronized void setBookDetail(Book book) {
+		detail_book=book;
+		notifyAll();
 	}
 }

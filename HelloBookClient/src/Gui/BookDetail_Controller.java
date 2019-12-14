@@ -33,7 +33,10 @@ public class BookDetail_Controller extends Base_Controller implements Initializa
 	public AnchorPane AnchorPane;
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		this.book=DataModel.book_for_detail;
+		
+
+		Main_Controller.dataModel.getBookDetail();
+		this.book=DataModel.detail_book;
 	
 		// Base start
 		super.base();
@@ -57,8 +60,21 @@ public class BookDetail_Controller extends Base_Controller implements Initializa
 
 	@FXML
 	public void backAction() { //전 화면으로 
-		AnchorPane root=(AnchorPane) AnchorPane.getScene().getRoot();
-		root.getChildren().remove(AnchorPane);
+		/*
+		 * AnchorPane root=(AnchorPane) AnchorPane.getScene().getRoot();
+		 * root.getChildren().remove(AnchorPane);
+		 */
+		try {
+			DataModel.detail_book=null;
+			Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
+			Parent main = FXMLLoader.load(getClass().getResource("/Gui/Main_GUI.fxml"));
+			Scene scene = new Scene(main);
+			primaryStage.setTitle("HelloBooks/Main");
+			primaryStage.setScene(scene);
+			primaryStage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@FXML

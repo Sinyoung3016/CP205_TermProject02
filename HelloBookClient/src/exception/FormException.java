@@ -38,7 +38,7 @@ public class FormException {
 		throw new MyException("ÀÌ¸ŞÀÏ ÁÖ¼Ò¸¦ È®ÀÎÇØÁÖ¼¼¿ä.");
 	}
 	public static boolean AddressFormCheck(String name) throws MyException{//ÁÖ¼ÒÀº ÇÑ±Û°ú ¿µ¾î,¼ıÀÚ °¡´É.
-		if(Pattern.matches("^[a-zA-Z°¡-ÆR\\s]{1,100}$", name)&&name.length()!=0)
+		if(Pattern.matches("^[a-zA-Z°¡-ÆR0-9\\s]{1,100}$", name)&&name.length()!=0)
 			return true;
 
 		throw new MyException("ÇÑ±Û°ú ¿µ¾î,¼ıÀÚ¸¸ »ç¿ëÇÏ¿© 100±ÛÀÚ ÀÌÇÏ·Î ÀÛ¼ºÇÏ¼¼¿ä.");
@@ -50,7 +50,7 @@ public class FormException {
 
 		throw new MyException("ÇÑ±Û°ú ¿µ¾î, ¼ıÀÚ¿Í Æ¯¼ö¹®ÀÚ¸¸ »ç¿ëÇÏ¿© 30±ÛÀÚ ÀÌÇÏ·Î ÀÛ¼ºÇÏ¼¼¿ä.");
 	}
-	public static boolean BookIntroduceFormCheck(String name) throws MyException{//Á¦¸ñÀº ÇÑ±Û°ú ¿µ¾î¸¸ °¡´É.
+	public static boolean BookIntroduceFormCheck(String name) throws MyException{//¼Ò°³ ÇÑ±Û°ú ¿µ¾î¸¸ °¡´É.
 		if(Pattern.matches("^[a-zA-Z°¡-ÆR0-9!@#$%^&*()\\s]{1,100}$", name)&&name.length()!=0) 
 			return true;
 

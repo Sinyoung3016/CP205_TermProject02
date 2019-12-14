@@ -26,7 +26,6 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 public class UploadBook_Controller extends Base_Controller implements Initializable {
@@ -104,7 +103,17 @@ public class UploadBook_Controller extends Base_Controller implements Initializa
 						pw.println(request);
 						pw.flush();
 		
-
+						tf_Title.setText("");
+						tf_Author.setText("");
+						tf_Publisher.setText("");
+						cb_Genre.setValue("");
+						rb_BCTop.setSelected(false);
+						rb_BCMid.setSelected(false);
+						rb_BCLow.setSelected(false);
+						tf_FullPrice.setText("");
+						tf_SalePrice.setText("");
+						tf_LendPrice.setText("");
+						ta_Introduction.setText("");
 					}catch(NumberFormatException e) {
 						new Alert(Alert.AlertType.WARNING, "가격은 숫자만 입력해주세요", ButtonType.CLOSE).show();
 					} catch (IOException e) {

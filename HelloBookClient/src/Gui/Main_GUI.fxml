@@ -71,28 +71,40 @@
                         </HBox>
                      </children>
                   </VBox>
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="350.0" spacing="10.0" style="-fx-background-color: #e8f5ff;">
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="350.0" style="-fx-background-color: #e8f5ff;">
                      <children>
                         <Label style="-fx-text-fill: #3065AC;" text="New Books">
                            <font>
                               <Font name="Trebuchet MS Bold" size="14.0" />
                            </font>
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
                         </Label>
                         <ListView fx:id="lv_NewBooks" prefHeight="200.0" prefWidth="350.0" styleClass="list-cell">
                            <VBox.margin>
-                              <Insets left="5.0" right="5.0" />
+                              <Insets left="5.0" right="5.0" top="10.0" />
                            </VBox.margin>
                         </ListView>
-                        <Label style="-fx-text-fill: #3065AC;" text="Best Seller">
+                        <Label style="-fx-text-fill: #3065AC;" text="Chatting">
                            <font>
                               <Font name="Trebuchet MS Bold" size="14.0" />
                            </font>
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
                         </Label>
-                        <AnchorPane prefHeight="200.0" prefWidth="350.0" style="-fx-background-color: white;">
+                        <ListView fx:id="lv_chat" focusTraversable="false" prefHeight="191.0" prefWidth="300.0" style="-fx-background-color: white;">
+                           <VBox.margin>
+                              <Insets left="5.0" right="5.0" top="10.0" />
+                           </VBox.margin>
+                        </ListView>
+                        <HBox prefHeight="50.0" prefWidth="340.0">
                            <children>
-                              <ImageView fx:id="iv_BestSeller" fitHeight="200.0" fitWidth="180.0" layoutX="80.0" pickOnBounds="true" preserveRatio="true" />
+                              <TextField fx:id="tf_chat" prefHeight="34.0" prefWidth="294.0" />
+                              <Button fx:id="btn_chat" mnemonicParsing="false" onAction="#chatting" prefHeight="31.0" prefWidth="54.0" text="전송" />
                            </children>
-                        </AnchorPane>
+                        </HBox>
                      </children>
                      <HBox.margin>
                         <Insets bottom="5.0" />

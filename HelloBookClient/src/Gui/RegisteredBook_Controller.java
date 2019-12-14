@@ -45,11 +45,13 @@ public class RegisteredBook_Controller extends Base_Controller implements Initia
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		
+		Main_Controller.dataModel.getBookDetail();
+		this.book=DataModel.detail_book;
 		// Base start
 		super.base();
 		// Base end
-		
-		this.book = DataModel.book_for_registered;
+
 		
 		if (book == null) {
 			lb_Title.setText("책이 존재하지 않습니다.");
@@ -79,11 +81,13 @@ public class RegisteredBook_Controller extends Base_Controller implements Initia
 	}
 
 	public void backAction() { //전 화면으로 
+		DataModel.detail_book=null;
 		AnchorPane root=(AnchorPane) AnchorPane.getScene().getRoot();
 		root.getChildren().remove(AnchorPane);
 	}
 
 	public void removeAction() {
+		
 		Alert alert = new Alert(Alert.AlertType.WARNING, "이 책을 정말로 삭제하시겠습니까?", ButtonType.YES, ButtonType.CANCEL);
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == ButtonType.YES) {
@@ -94,6 +98,7 @@ public class RegisteredBook_Controller extends Base_Controller implements Initia
 			pw.flush();
 
 			try {
+				DataModel.detail_book=null;
 				Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
 				Parent main = FXMLLoader.load(getClass().getResource("/Gui/Main_GUI.fxml"));
 				Scene scene = new Scene(main);
@@ -110,6 +115,7 @@ public class RegisteredBook_Controller extends Base_Controller implements Initia
 	}
 
 	public void comfirmAction() {// OK
+		DataModel.detail_book=null;
 		AnchorPane root=(AnchorPane) AnchorPane.getScene().getRoot();
 		root.getChildren().remove(AnchorPane);
 	}

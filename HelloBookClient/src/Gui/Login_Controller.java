@@ -11,7 +11,6 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ResourceBundle;
 
-import Gui.model.ClientThread;
 import Gui.model.DataModel;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -39,7 +38,8 @@ public class Login_Controller implements Initializable {
 	public Button btn_Login, btn_SignUp;
 
 	public Socket socket;
-
+	
+	public static DataModel dd;
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		socket = new Socket();
@@ -89,10 +89,7 @@ public class Login_Controller implements Initializable {
 					try {
 						DataModel.user = new User(tokens[2]);
 						DataModel.ID = tf_ID.getText();
-						new ClientThread(DataModel.socket).start();
-						
-						Thread.sleep(500);
-						
+
 						Stage primaryStage = (Stage) btn_Login.getScene().getWindow();
 						Platform.runLater(() -> {//이걸 안 해주면 ClientThread에서 새로운 책을 등록할 때  Platform.runLater를 사용하여, 메인화면이 다 설정된 다음 새로운 책 등록이 됨-> 맨 처음 로그인했을 때 버튼을 눌러도 아무 효과가 발생되지 않음.
 						Parent login;
@@ -111,6 +108,9 @@ public class Login_Controller implements Initializable {
 						//primaryStage.show();
 					} catch (Exception e) {
 						e.printStackTrace();
+						lb_error.setText(e.getMessage());
+						btn_Login.setDisable(true);
+						btn_SignUp.setDisable(true);
 					}
 				}
 			}

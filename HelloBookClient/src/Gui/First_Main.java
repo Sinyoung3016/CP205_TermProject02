@@ -15,6 +15,7 @@ public class First_Main extends Application {
 			primaryStage.setOnCloseRequest(ActionEvent->Base_Controller.CloseButtonActione());
 			primaryStage.setScene(scene);
 			primaryStage.show();
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

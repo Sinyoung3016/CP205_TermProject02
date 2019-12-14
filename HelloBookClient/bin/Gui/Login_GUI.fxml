@@ -19,7 +19,7 @@
             <Insets bottom="30.0" />
          </VBox.margin>
       </Label>
-      <Label fx:id="lb_error" prefHeight="19.0" prefWidth="394.0" textFill="RED">
+      <Label fx:id="lb_error" prefHeight="19.0" prefWidth="520.0" styleClass="mainError" textFill="RED">
          <font>
             <Font size="17.0" />
          </font>

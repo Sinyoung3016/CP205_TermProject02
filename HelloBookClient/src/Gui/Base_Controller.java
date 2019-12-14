@@ -8,12 +8,7 @@ import java.util.Optional;
 
 import Gui.model.DataModel;
 import alter.UserAlter;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -28,9 +23,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 public class Base_Controller { // 변하지 않는 화면 = Base
 
@@ -211,26 +204,32 @@ public class Base_Controller { // 변하지 않는 화면 = Base
 		}
 	}
 	public static void CloseButtonActione() {
-		LogOut();
+		if(DataModel.socket!=null) {
+			LogOut();
+		}
 		System.exit(0);//이걸 안 해주면, 로그인 버튼 누르고 메인화면 뜨기 전에 X버튼을 누르면, 로그아웃이 됨과 동시에 Main 화면이 떠 오류가 발생한다.!
 	}
+	
 	public static void LogOut() {
-		if(DataModel.socket!=null) {
-			String m = "LogOut:" + DataModel.ID;
-			DataModel.ID = null;
-			PrintWriter pw;
-			try {
-				pw = new PrintWriter(
-						new OutputStreamWriter(DataModel.socket.getOutputStream(), StandardCharsets.UTF_8), true);
-				pw.println(m);
+		PrintWriter pw;
+		try {
+			pw = new PrintWriter(new OutputStreamWriter(DataModel.socket.getOutputStream(), StandardCharsets.UTF_8), true);
+			if(DataModel.ID==null) {
+				pw.println("LogOut:");
 				pw.flush();
-				DataModel.socket=null;
-			} catch (IOException e) {
-				e.printStackTrace();
+			}else {
+			pw.println("LogOut:"+DataModel.ID);
+			pw.flush();
 			}
-		}
-		
+		} catch (IOException e) {
+			e.printStackTrace();
+		}	
+			DataModel.socket=null;	
+			DataModel.ID=null;
+			
 	}
+		
+	
 
 	public void searchAction() throws Exception { 
 		//tf_Search 내용 받기 start

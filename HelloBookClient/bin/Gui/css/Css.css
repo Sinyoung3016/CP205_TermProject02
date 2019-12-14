@@ -1,6 +1,9 @@
 .button {
    -fx-background-color: #3065AC;
 }
+.label.mainError{
+	-fx-alignment:center;
+}
 .button.HelloBooks {
 	-fx-text-fill: #3065AC;
 	-fx-background-color: white;
