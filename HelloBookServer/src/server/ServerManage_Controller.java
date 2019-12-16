@@ -194,11 +194,7 @@ public class ServerManage_Controller implements Initializable {
 				System.out.println(e.getMessage());
 				}
 			}finally {
-				client_id_ip=null;
-				listUser= null;
-				new_book_list=null;
-				client_socket_list=null;
-				System.out.println("수락 쓰레드 종료");
+
 			}
 		}
 		
@@ -342,14 +338,14 @@ public class ServerManage_Controller implements Initializable {
 		}
 
 
-		private synchronized void SignUp(String id, String password, String name, String phone, String Email, String Address) throws MyException {
+		private void SignUp(String id, String password, String name, String phone, String Email, String Address) throws MyException, SQLException {
 			if(LogInContext.SignUp(name, phone, id, password,Email,Address)) {//아이디,비밀번호,이름,전화번호,연체료,빌린 책 수, 연결여부(로그인여부[0이면 연결X, 1이면 연결O])
 				pw.println("SignUp:성공:");
 				pw.flush();
 			}
 		}
 		
-		private synchronized void LogIn(String id, String password, PrintWriter pw) throws MyException, SQLException {
+		private void LogIn(String id, String password, PrintWriter pw) throws MyException, SQLException {
 			if(LogInContext.LogIn(id,password)) {//로그인 성공하면 정보 저장
 				DB_USER.userLogIn(id);
 				
@@ -371,7 +367,7 @@ public class ServerManage_Controller implements Initializable {
 			}
 		}
 
-		private synchronized void LogOut(String id, PrintWriter pw){
+		private void LogOut(String id, PrintWriter pw){
 			if(!is_logout) {
 				
 			LogInContext.LogOut(id);
@@ -395,7 +391,7 @@ public class ServerManage_Controller implements Initializable {
 			
 			}
 		}
-		private synchronized void LogOut(String[] id, PrintWriter pw){
+		private void LogOut(String[] id, PrintWriter pw){
 			if(!is_logout) {
 			if(id.length==2) {
 				LogInContext.LogOut(id[1]);
@@ -419,7 +415,7 @@ public class ServerManage_Controller implements Initializable {
 			}
 			}
 		}
-		private synchronized void ModifyUserData(String id, String changePw, String changeName, String changePhone,String changeEmail, String changeAddress) {//로그인 할 상태에서 바꾸는 거기 때문에 정보가 이상해질 일 없음
+		private void ModifyUserData(String id, String changePw, String changeName, String changePhone,String changeEmail, String changeAddress) {//로그인 할 상태에서 바꾸는 거기 때문에 정보가 이상해질 일 없음
 			User old=DB_USER.getUser(id);
 			String []changeData= {id, changePw, changeName, changePhone,changeEmail,changeAddress,old.isLend_OK()+"",old.is_connected()+""};
 			User changeMem=new User(changeData);
@@ -428,7 +424,7 @@ public class ServerManage_Controller implements Initializable {
 			pw.flush();
 		}
 		
-		private synchronized void SearchBook(String[] info,PrintWriter cleint) {
+		private void SearchBook(String[] info,PrintWriter cleint) {
 				
 				List<Book> searchResult=null;
 				if(info.length==1) {//검색 정보 없음-모든 책 검색
@@ -470,11 +466,11 @@ public class ServerManage_Controller implements Initializable {
 			
 			}
 		}
-		private synchronized void AddBookData(String[] bookData) throws  SQLException {
-			int bookNum=DB_BOOK.getBookCount();
+		private void AddBookData(String[] bookData) throws  SQLException {
+			
 			DB_BOOK.insertBook(bookData[1],bookData[2],bookData[3],bookData[4],bookData[5],Integer.parseInt(bookData[6]),Integer.parseInt(bookData[7]),Integer.parseInt(bookData[8]),Boolean.parseBoolean(bookData[9]),bookData[10]);
 			DB_UsersBook.uploadBook(id,bookData[1]);//등록번호,아이디,제목
-			bookNum++;
+			int bookNum=DB_BOOK.getBookCount();
 			pw.println("AddBookData:성공");
 			pw.flush();
 			String[] newBookData=new String[11];
@@ -510,7 +506,7 @@ public class ServerManage_Controller implements Initializable {
 				}
 			}
 		}
-		private synchronized void removeNewBook(int Book_Number) {//지우기
+		private void removeNewBook(int Book_Number) {//지우기
 			for(int i=0; i<new_book_list.size(); i++) {
 				if(new_book_list.get(i).getBook_num()==Book_Number) {
 					new_book_list.remove(i);
@@ -519,7 +515,7 @@ public class ServerManage_Controller implements Initializable {
 			}
 		}
 
-		private synchronized void RemoveBookData(String Book_Number) {
+		private void RemoveBookData(String Book_Number) {
 			if(DB_UsersBook.checkRemovePossibility(Integer.parseInt(Book_Number))) {//지울 수 있는 상황이면
 				DB_UsersBook.deleateBook(Integer.parseInt(Book_Number));
 				DB_BOOK.deleateBook(Integer.parseInt(Book_Number));
@@ -533,7 +529,7 @@ public class ServerManage_Controller implements Initializable {
 			}
 		}
 		
-		private synchronized void storeUserLog(String status) {
+		private void storeUserLog(String status) {
 			SimpleDateFormat format_day = new SimpleDateFormat ( "yyyy-MM-dd");			
 			SimpleDateFormat format_clock = new SimpleDateFormat ( "HH:mm:ss");		
 			Calendar time = Calendar.getInstance();	       
@@ -572,7 +568,7 @@ public class ServerManage_Controller implements Initializable {
 			}
 		}
 		
-		private synchronized void PrintBookList(String id, String status, PrintWriter pw) throws SQLException, MyException {
+		private void PrintBookList(String id, String status, PrintWriter pw) throws SQLException, MyException {
 			List<Book> book_list=new ArrayList<>();
 			List<Integer> book_num_list=null;
 			if(status.equals("Registered")) {
@@ -585,10 +581,11 @@ public class ServerManage_Controller implements Initializable {
 				if(book_list.size()==0) {
 					pw.println("PrintBookList:등록한 책이 없습니다.");
 					pw.flush();
-				}
-				for(int i=book_list.size()-1; i>=0; i--) {
+				}else {
+					for(int i=book_list.size()-1; i>=0; i--) {
 					pw.println("PrintBookList:"+book_list.get(i).getBookInfoTokens());
 					pw.flush();
+					}
 				}
 			}else if(status.equals("Borrowed")) {
 				book_num_list=DB_UsersBook.getBorrowedBookNumber(id);
@@ -600,11 +597,12 @@ public class ServerManage_Controller implements Initializable {
 				if(book_list.size()==0) {
 					pw.println("PrintBookList:빌린 책이 없습니다.");
 					pw.flush();
-				}
+				}else {
 		
 				for(int i=book_list.size()-1; i>=0; i--) {
 					pw.println("PrintBookList:"+book_list.get(i).getBookInfoTokens());
 					pw.flush();
+					}
 				}
 			}else if(status.equals("Loaned")) {
 				book_num_list=DB_UsersBook.getLoanedBookNumber(id);
@@ -616,16 +614,17 @@ public class ServerManage_Controller implements Initializable {
 				if(book_list.size()==0) {
 					pw.println("PrintBookList:빌려준 책이 없습니다.");
 					pw.flush();
-				}
+				}else {
 		
 				for(int i=book_list.size()-1; i>=0; i--) {
 					pw.println("PrintBookList:"+book_list.get(i).getBookInfoTokens());
 					pw.flush();
+					}
 				}
 			}
 		}
 		
-		private synchronized void PrintBookData(String Status,int book_num) throws SQLException {//Detail, Registered, Loaned
+		private void PrintBookData(String Status,int book_num) throws SQLException {//Detail, Registered, Loaned
 
 			Book returnBook=DB_BOOK.searchBookByNum(book_num);
 			if(Status.equals("Detail")) {
@@ -669,7 +668,7 @@ public class ServerManage_Controller implements Initializable {
 			}
 			
 		}
-		private synchronized void printNewAlter(String id,PrintWriter pw) throws SQLException{
+		private void printNewAlter(String id,PrintWriter pw) throws SQLException{
 			List<UserAlter> alter_list=DB_ALTER.getAlter(id);
 			for(int i=0; i<alter_list.size(); i++) {
 				pw.println("Alter:"+alter_list.get(i).getToken());
@@ -677,7 +676,7 @@ public class ServerManage_Controller implements Initializable {
 			}
 		}
 		
-		private synchronized void BorrowRequest(String Requester_ID,String Book_Number, String Book_Title) throws SQLException, MyException {
+		private void BorrowRequest(String Requester_ID,String Book_Number, String Book_Title) throws SQLException, MyException {
 			String Register_id=DB_UsersBook.searchRegisterByNum(Integer.parseInt(Book_Number));
 			if(Register_id==null) {
 				throw new MyException("이미 제거되었거나 구매된 책입니다.");
@@ -703,7 +702,7 @@ public class ServerManage_Controller implements Initializable {
 			
 		}
 		
-		private synchronized void BorrowAnswer(String answer,String Requester_ID,String Book_Number, String Book_Title,String Requested_ID) throws SQLException {
+		private void BorrowAnswer(String answer,String Requester_ID,String Book_Number, String Book_Title,String Requested_ID) throws SQLException {
 			if(answer.equals("수락")) {
 				DB_ALTER.AlterOK(Requester_ID, Integer.parseInt(Book_Number),"빌리다");//빌리겠다는 요청을 보낸 사람의 alter을 처리한걸로 바꿈
 						
@@ -732,20 +731,19 @@ public class ServerManage_Controller implements Initializable {
 			}
 		}
 		
-		private synchronized void AlterOK(String Requester_ID, String Book_Number, String Request_Status) throws  SQLException {
+		private void AlterOK(String Requester_ID, String Book_Number, String Request_Status) throws  SQLException {
 			DB_ALTER.AlterOK(Requester_ID, Integer.parseInt(Book_Number),Request_Status);
 		}
 		
 		
-		private synchronized void ReturnBook(String Requester_ID,String Book_Number, String Book_Title) throws SQLException {//Requester_ID는 책을 빌려준 사람 즉 주인
+		private void ReturnBook(String Requester_ID,String Book_Number, String Book_Title) throws SQLException {//Requester_ID는 책을 빌려준 사람 즉 주인
 
 			String Requested_ID=DB_UsersBook.searchRequesterByNum(Integer.parseInt(Book_Number));		
-			int no_book_return_count=DB_USER.getNoReturnBookCount(Requested_ID);
-			System.out.println("개수:"+no_book_return_count);
+
 			DB_UsersBook.ReturnBook(Integer.parseInt(Book_Number));
 			DB_BOOK.ReturnBook(Integer.parseInt(Book_Number));
 			DB_ALTER.ReturnBook(Requester_ID, Integer.parseInt(Book_Number), Book_Title, Requested_ID);
-			DB_USER.minusLateInReturn(Requested_ID);
+		
 			pw.println("ReturnBook:반납처리가 완료되었습니다.");
 			pw.flush();
 			
@@ -756,9 +754,8 @@ public class ServerManage_Controller implements Initializable {
 				pw.println("Alter:"+new UserAlter(Requester_ID, Book_Number+"", Book_Title, Requested_ID, "반납하다", "0").getToken());
 				pw.flush();
 			}
-			
-			if(no_book_return_count==1) {//안 반납한 책이 1권이었고 여기서 반납했으면 대여가능으로 풀림.
-				System.out.println("여기!!!!!!!!!");
+		
+			if(!DB_USER.getLentalStatus(Requested_ID)) {//false였을 때
 			DB_USER.userGoodCredit(Requested_ID);
 			if(listUser.containsKey(Requested_ID)) {//요청받는 사람, 즉 책을 빌린 사람이
 				PrintWriter pw=listUser.get(Requested_ID);
@@ -766,11 +763,12 @@ public class ServerManage_Controller implements Initializable {
 				pw.flush();
 			}
 			}
+			
 		
 		}
 		
 		
-		private synchronized void PurchaseRequest(String Requester_ID,String Book_Number, String Book_Title) throws SQLException, MyException {
+		private void PurchaseRequest(String Requester_ID,String Book_Number, String Book_Title) throws SQLException, MyException {
 			if(DB_UsersBook.searchRegisterByNum(Integer.parseInt(Book_Number)).equals(this.id)) {
 				throw new MyException("당신의 책입니다.");
 			}
@@ -784,6 +782,7 @@ public class ServerManage_Controller implements Initializable {
 			DB_ALTER.PurchaseRequest(Requester_ID, Integer.parseInt(Book_Number), Book_Title, Requested_ID);
 			this.pw.println("PurchaseRequest:구매요청을 보냈습니다.");
 			this.pw.flush();
+	
 			if(listUser.containsKey(Requested_ID)) {//요청받는 사람, 즉 책의 주인이 현재 접속중이면
 				PrintWriter pw=listUser.get(Requested_ID);
 				pw.println("Alter:"+new UserAlter(Requester_ID, Book_Number+"", Book_Title, Requested_ID, "사다", "0").getToken());
@@ -792,7 +791,7 @@ public class ServerManage_Controller implements Initializable {
 			
 		}
 		
-		private synchronized void PurchaseAnswer(String answer,String Requester_ID,String Book_Number, String Book_Title,String Requested_ID) throws SQLException {
+		private void PurchaseAnswer(String answer,String Requester_ID,String Book_Number, String Book_Title,String Requested_ID) throws SQLException {
 			if(answer.equals("수락")) {
 				DB_ALTER.AlterOK(Requester_ID, Integer.parseInt(Book_Number),"사다");//빌리겠다는 요청을 보낸 사람의 alter을 처리한걸로 바꿈
 						
@@ -825,7 +824,6 @@ public class ServerManage_Controller implements Initializable {
 		}
 		
 		private void LateInReturn( String id) {
-			DB_USER.plusLateInReturn(id);
 			DB_USER.userBadCredit(id);
 			if(listUser.containsKey(id)) {//요청받는 사람, 즉 책의 주인이 현재 접속중이면
 				

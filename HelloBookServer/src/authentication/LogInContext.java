@@ -1,5 +1,7 @@
 package authentication;
 
+import java.sql.SQLException;
+
 import database.DB_USER;
 import exception.FormException;
 import exception.MyException;
@@ -8,7 +10,7 @@ import user.User;
 public class LogInContext {
 
 
-	public static boolean SignUp(String Name, String Phone, String ID, String Password, String Emain	,String Address) throws MyException {// 회원가입
+	public synchronized static boolean SignUp(String Name, String Phone, String ID, String Password, String Emain	,String Address) throws MyException, SQLException {// 회원가입
 	
 		if(FormException.NameFormCheck(Name)&&FormException.phoneFormCheck(Phone)&&
 				FormException.IDFormCheck(ID)&&FormException.passwordFormCheck(Password)) {//형식에 맞다면
@@ -27,25 +29,9 @@ public class LogInContext {
 		
 	}
 
-	public static boolean SignOut(String ID, String Password) throws MyException {
-		User getUser;
-		getUser = DB_USER.getUser(ID);
-			if (getUser == null) {// 아이디가 존재하지 않는다면 null을 반환
-				throw new MyException("ID does not exist");
-			}
-		// 지울 아이디는 존재하는 상황
 	
-			if (Password.equals(getUser.getPassword())) {
-				DB_USER.deleateUser(ID);
-				return true;//제거 성공
-			}else {
-			throw new MyException("Passwords do not match");
-				}
-			
-			
-	}
 
-	public static boolean LogIn(String ID, String PW) throws MyException {
+	public synchronized static boolean LogIn(String ID, String PW) throws MyException {
 		User getUser;
 		getUser = DB_USER.getUser(ID);
 

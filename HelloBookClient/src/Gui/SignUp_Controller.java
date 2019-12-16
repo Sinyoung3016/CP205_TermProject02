@@ -1,6 +1,7 @@
 package Gui;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -30,6 +31,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
 public class SignUp_Controller implements Initializable {
@@ -46,9 +49,15 @@ public class SignUp_Controller implements Initializable {
 	@FXML
 	public Label lb_error_id, lb_error_pw, lb_error_confirm, lb_error_name, lb_error_email, lb_error_phone,lb_error_address;
 	public Socket socket;
-
+	File dirFile = new File(".\\sound\\click");
+	File[] fileList = dirFile.listFiles();
+	Media[] me= {new Media(fileList[0].toURI().toString()),
+			new Media(fileList[1].toURI().toString())
+			};
+	MediaPlayer[] mp= {new MediaPlayer(me[0]),new MediaPlayer(me[1])};
 	@FXML
 	public void mainAction() throws Exception {
+
 		try {
 			Stage primaryStage = (Stage) btn_Main.getScene().getWindow();
 			Parent root = FXMLLoader.load(getClass().getResource("/Gui/Login_GUI.fxml"));
@@ -114,6 +123,8 @@ public class SignUp_Controller implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		socket = DataModel.socket;
+		mp[0].setVolume(0.1);
+		mp[1].setVolume(0.1);
 		ObservableList<String> publicComboList = FXCollections.observableArrayList("naver.com", "gmail.com",
 				"hanmail.net");
 		cb_Email.setItems(publicComboList);
@@ -207,6 +218,15 @@ public class SignUp_Controller implements Initializable {
 
 			}
 		});
+	}
+	public void ButtonHover() {
+		mp[1].play();
+	}
+	public void ButtonExited() {
+		mp[1].stop();
+	}
+	public void ButtonClicked() {
+		mp[0].play();
 	}
 
 }

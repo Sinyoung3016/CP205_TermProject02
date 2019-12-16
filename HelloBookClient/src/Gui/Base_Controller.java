@@ -1,5 +1,6 @@
 package Gui;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -7,6 +8,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 import Gui.model.DataModel;
+import Gui.model.LogInModel;
 import alter.UserAlter;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -24,7 +26,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class Base_Controller { // 변하지 않는 화면 = Base
 
@@ -41,6 +46,14 @@ public class Base_Controller { // 변하지 않는 화면 = Base
 
 	public ListView lv_alter_list;
 	
+	File dirFile = new File(".\\sound\\click");
+	File[] fileList = dirFile.listFiles();
+	Media[] me= {new Media(fileList[0].toURI().toString()),
+			new Media(fileList[1].toURI().toString())
+			};
+	
+	MediaPlayer[] mp= {new MediaPlayer(me[0]),new MediaPlayer(me[1])};
+	
 	@FXML
 	public AnchorPane AnchorPane;
 	
@@ -48,6 +61,8 @@ public class Base_Controller { // 변하지 않는 화면 = Base
 	
 	@SuppressWarnings("unchecked")
 	public void base() {
+		mp[0].setVolume(0.1);
+		mp[1].setVolume(0.1);
 		// Profile start
 		lb_ProfileName.setText(DataModel.user.getName());
 		lb_ProfileID.setText(DataModel.user.getID());
@@ -201,7 +216,7 @@ public class Base_Controller { // 변하지 않는 화면 = Base
 		//Logout start
 		LogOut();
 		//Logout end
-
+		LogInModel.status_log_outed=true;
 		//To Login_GUI
 		try {
 			Stage primaryStage = (Stage) btn_LogOut.getScene().getWindow();
@@ -325,6 +340,22 @@ public class Base_Controller { // 변하지 않는 화면 = Base
 	public void alertAction() { 
 		// lv_ProfileList에 새로운 알람 보여주기
 		//Alert에 있어야 하는 것 : 판매한다고 하는 유저 ID, btn_내용 삭제하기 버튼, btn_그책으로 바로가기
+	}
+	
+	public void ButtonHover() {
+		mp[1].stop();
+		mp[1].play();
+	}
+	public void ButtonExited() {
+		mp[1].stop();
+	}
+	public void ButtonClicked() {
+		mp[0].play();
+		mp[0].setOnEndOfMedia(new Runnable() {
+		        public void run() {
+		        	mp[0].stop();
+		        }
+		    });
 	}
 
 

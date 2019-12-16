@@ -1,6 +1,7 @@
 package Gui;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -12,7 +13,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.ResourceBundle;
 
 import Gui.model.DataModel;
+import Gui.model.LogInModel;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -24,7 +28,11 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import user.User;
 
 public class Login_Controller implements Initializable {
@@ -37,16 +45,28 @@ public class Login_Controller implements Initializable {
 	@FXML
 	public Button btn_Login, btn_SignUp;
 
-	public Socket socket;
 	
-	public static DataModel dd;
+
+	public Socket socket;
+	File clickSoundDirFile = new File(".\\sound\\click");
+	File[] clickSoundFileList = clickSoundDirFile.listFiles();
+	@FXML
+	Button btn_Sound;
+	
+	
+	Media[] c_me= {new Media(clickSoundFileList[0].toURI().toString()),
+			new Media(clickSoundFileList[1].toURI().toString())
+			};
+	MediaPlayer[] c_mp= {new MediaPlayer(c_me[0]),new MediaPlayer(c_me[1])};
+	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		c_mp[0].setVolume(0.1);
+		c_mp[1].setVolume(0.1);
 		socket = new Socket();
 		try {
 			socket.connect(new InetSocketAddress(DataModel.SERVER_IP, DataModel.PORT));
 			DataModel.socket = socket;
- 
 		}catch (Exception e) {
 			e.printStackTrace();
 			//if (e.getMessage().equals("Connection refused: connect")) {
@@ -54,6 +74,7 @@ public class Login_Controller implements Initializable {
 				lb_error.setText(e.getMessage());
 				btn_Login.setDisable(true);
 				btn_SignUp.setDisable(true);
+				btn_Sound.setDisable(true);
 			//}
 		}
 		
@@ -61,6 +82,29 @@ public class Login_Controller implements Initializable {
 			loginAction();
 	    }
 	    );
+		LogInModel.b_mp.setVolume(0.2);
+		btn_Sound.setText(LogInModel.BGM);
+		btn_Sound.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+            	if(btn_Sound.getText().equals("On")) {//on인 상태에서 누르면
+            		btn_Sound.setText("Off");
+            		LogInModel.BGM="Off";
+            		LogInModel.b_mp.pause();
+            	}
+            	else {
+            		btn_Sound.setText("On");
+            		LogInModel.BGM="On";
+            		LogInModel.b_mp.play();
+            	}
+            }
+        });
+		if(LogInModel.status_log_outed) {
+			if(btn_Sound.getText().equals("On")) {
+				LogInModel.b_mp.play();
+				LogInModel.b_mp.setOnEndOfMedia(()->LogInModel.b_mp.seek(new Duration(120)));
+			}	
+		}
 	}
 
 	@FXML
@@ -104,7 +148,7 @@ public class Login_Controller implements Initializable {
 							primaryStage.setTitle("HelloBooks/Main");
 							primaryStage.setScene(scene);
 							primaryStage.show();
-							
+							LogInModel.b_mp.stop();
 						} catch (IOException e) {
 							e.printStackTrace();
 						}	
@@ -127,6 +171,7 @@ public class Login_Controller implements Initializable {
 	public void signUpAction() throws Exception {
 		// To SignUp_GUI
 		try {
+			LogInModel.status_log_outed=false;
 			Stage primaryStage = (Stage) btn_SignUp.getScene().getWindow();
 			Parent login = FXMLLoader.load(getClass().getResource("/Gui/SignUp_GUI.fxml"));
 			Scene scene = new Scene(login);
@@ -137,5 +182,18 @@ public class Login_Controller implements Initializable {
 			e.printStackTrace();
 		}
 	}
+	public void ButtonHover() {
+		c_mp[1].play();
+	}
+	public void ButtonExited() {
+		c_mp[1].stop();
+	}
+	public void ButtonClicked() {
+		c_mp[0].play();
+	}
+	
+
+
+
 
 }

@@ -1,6 +1,14 @@
 .button {
    -fx-background-color: #3065AC;
 }
+.button.sound{
+	-fx-background-radius: 16.4, 15;
+	-fx-border-color:#3065AC;
+	-fx-background-insets: -1.4,0;
+
+  	-fx-border-radius: 15;
+  	-fx-border-width: 2;
+}
 .label.mainError{
 	-fx-alignment:center;
 }

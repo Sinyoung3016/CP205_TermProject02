@@ -20,7 +20,7 @@
          <children>
             <HBox alignment="CENTER" prefHeight="80.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="btn_Main" alignment="CENTER" mnemonicParsing="false" onAction="#mainAction" styleClass="HelloBooks" text="HelloBooks">
+                  <Button fx:id="btn_Main" alignment="CENTER" mnemonicParsing="false" onAction="#mainAction" onMouseEntered="#ButtonHover" onMouseExited="#ButtonExited" onMousePressed="#ButtonClicked" styleClass="HelloBooks" text="HelloBooks">
                      <font>
                         <Font name="Trebuchet MS Bold" size="48.0" />
                      </font>
@@ -33,7 +33,7 @@
                         <Font size="14.0" />
                      </font>
                   </TextField>
-                  <Button fx:id="btn_Search" mnemonicParsing="false" onAction="#searchAction" prefHeight="35.0" prefWidth="90.0" style="-fx-text-fill: white;" text="Search">
+                  <Button fx:id="btn_Search" mnemonicParsing="false" onAction="#searchAction" onMouseEntered="#ButtonHover" onMouseExited="#ButtonExited" onMousePressed="#ButtonClicked" prefHeight="35.0" prefWidth="90.0" style="-fx-text-fill: white;" text="Search">
                      <HBox.margin>
                         <Insets left="5.0" />
                      </HBox.margin>
@@ -247,12 +247,12 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="76.0" prefWidth="679.0" spacing="10.0">
                            <children>
-                              <Button fx:id="btn_ChangeInfo1" mnemonicParsing="false" onAction="#changeinfoAction" prefHeight="30.0" prefWidth="150.0" style="-fx-text-fill: white;" text="Change Info">
+                              <Button fx:id="btn_ChangeInfo" mnemonicParsing="false" onAction="#changeinfoAction" onMouseEntered="#ButtonHover" onMouseExited="#ButtonExited" onMousePressed="#ButtonClicked" prefHeight="30.0" prefWidth="150.0" style="-fx-text-fill: white;" text="Change Info">
                                  <font>
                                     <Font name="Trebuchet MS Bold" size="14.0" />
                                  </font>
                               </Button>
-                              <Button fx:id="btn_Confirm1" mnemonicParsing="false" onAction="#confirmAction" prefHeight="30.0" prefWidth="150.0" style="-fx-text-fill: white;" text="Comfirm">
+                              <Button fx:id="btn_Confirm" mnemonicParsing="false" onAction="#confirmAction" onMouseEntered="#ButtonHover" onMouseExited="#ButtonExited" onMousePressed="#ButtonClicked" prefHeight="30.0" prefWidth="150.0" style="-fx-text-fill: white;" text="Comfirm">
                                  <font>
                                     <Font name="Trebuchet MS Bold" size="14.0" />
                                  </font>
@@ -266,7 +266,7 @@
                   </VBox>
                   <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="200.0" spacing="5.0" style="-fx-background-color: #e8f5ff;">
                      <children>
-                        <Button fx:id="btn_BookSales" mnemonicParsing="false" onAction="#salesAction" prefHeight="40.0" prefWidth="180.0" style="-fx-text-fill: white;" text="Book Sales">
+                        <Button fx:id="btn_BookSales" mnemonicParsing="false" onAction="#salesAction" onMouseEntered="#ButtonHover" onMouseExited="#ButtonExited" onMousePressed="#ButtonClicked" prefHeight="40.0" prefWidth="180.0" style="-fx-text-fill: white;" text="Book Sales">
                            <font>
                               <Font name="Trebuchet MS Bold" size="14.0" />
                            </font>
@@ -297,12 +297,12 @@
                         </Label>
                         <HBox alignment="CENTER" prefHeight="30.0" prefWidth="200.0" spacing="6.0">
                            <children>
-                              <Button fx:id="btn_LogOut" mnemonicParsing="false" onAction="#logoutAction" prefWidth="86.0" style="-fx-text-fill: white;" text="LogOut">
+                              <Button fx:id="btn_LogOut" mnemonicParsing="false" onAction="#logoutAction" onMouseEntered="#ButtonHover" onMouseExited="#ButtonExited" onMousePressed="#ButtonClicked" prefWidth="86.0" style="-fx-text-fill: white;" text="LogOut">
                                  <font>
                                     <Font name="Trebuchet MS Bold" size="14.0" />
                                  </font>
                               </Button>
-                              <Button fx:id="btn_MyInfo" mnemonicParsing="false" onAction="#myInfoAction" prefWidth="86.0" style="-fx-text-fill: white;" text="My Info">
+                              <Button fx:id="btn_MyInfo" mnemonicParsing="false" onAction="#myInfoAction" onMouseEntered="#ButtonHover" onMouseExited="#ButtonExited" onMousePressed="#ButtonClicked" prefWidth="86.0" style="-fx-text-fill: white;" text="My Info">
                                  <font>
                                     <Font name="Trebuchet MS Bold" size="14.0" />
                                  </font>
@@ -312,7 +312,7 @@
                               <Insets top="5.0" />
                            </VBox.margin>
                         </HBox>
-                        <Button fx:id="btn_MyBookList" mnemonicParsing="false" onAction="#mybooklistAction" prefHeight="30.0" prefWidth="180.0" style="-fx-text-fill: white;" text="MyBookList">
+                        <Button fx:id="btn_MyBookList" mnemonicParsing="false" onAction="#mybooklistAction" onMouseEntered="#ButtonHover" onMouseExited="#ButtonExited" onMousePressed="#ButtonClicked" prefHeight="30.0" prefWidth="180.0" style="-fx-text-fill: white;" text="MyBookList">
                            <font>
                               <Font name="Trebuchet MS Bold" size="14.0" />
                            </font>
@@ -322,7 +322,7 @@
                         </Button>
                         <HBox alignment="CENTER" prefHeight="20.0" prefWidth="200.0" spacing="6.0">
                            <children>
-                              <Button fx:id="btn_ProfileNewAlert" mnemonicParsing="false" onAction="#alertAction" prefWidth="180.0" style="-fx-text-fill: white;" text="New Alert">
+                              <Button fx:id="btn_ProfileNewAlert" mnemonicParsing="false" onAction="#alertAction" onMouseEntered="#ButtonHover" onMouseExited="#ButtonExited" onMousePressed="#ButtonClicked" prefWidth="180.0" style="-fx-text-fill: white;" text="New Alert">
                                  <font>
                                     <Font name="Trebuchet MS Bold" size="14.0" />
                                  </font>

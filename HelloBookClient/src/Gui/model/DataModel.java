@@ -15,7 +15,8 @@ import user.User;
 
 public class DataModel {
 
-	public final static String SERVER_IP = "221.158.52.157";
+	public final static String SERVER_IP = "huipulco.iptime.org";
+	//public final static String SERVER_IP = "10.3.166.25";
 	public final static int PORT = 26432;
 
 	public static Socket socket = null;
@@ -78,17 +79,21 @@ public class DataModel {
 		}
 	}
 	public static void removeNewBook(String BookNum) {
-		
+
 		if(!ItemList_newBook.get(0).getBookNum().equals("새로운 책이 없습니다.")) {//새로운 책이 없습니다가 아닐때
 			for(int i=0; i<ItemList_newBook.size(); i++) {
 				if(ItemList_newBook.get(i).getBookNum().equals(BookNum)) {
 					ItemList_newBook.remove(i);
+					if(ItemList_newBook.size()==0) {
+						is_exist_new_book=false;
+					}
 					break;
 				}
 			}
 		}
 		if(ItemList_newBook.size()==0) {
 			NoNewBook("새로운 책이 없습니다.");
+			
 		}
 	}
 

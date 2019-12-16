@@ -168,7 +168,7 @@ public class DB_USER extends DBManager {
 		}
 	}
 	
-	public synchronized static int getNoReturnBookCount(String ID) {
+	public synchronized static boolean getLentalStatus(String ID) {
 		
 		Connection conn = null;
 		Statement state = null;
@@ -185,16 +185,18 @@ public class DB_USER extends DBManager {
 			rs = state.executeQuery(sql);
 			int count=-1;
 			if (rs.next()) {
-				count = Integer.parseInt(rs.getString("no_return_count"));
+				count = Integer.parseInt(rs.getString("Lend_OK"));
 
 			}
-
-			return count;
+			if(count==1) {
+				return true;
+			}
+			return false;
 
 			
 		
 		} catch (Exception e) {
-			return -1;
+			return true;
 		} finally {	
 			try {
 				if (state != null)
@@ -216,69 +218,7 @@ public class DB_USER extends DBManager {
 		
 	}
 	
-	public synchronized static void plusLateInReturn(String id) {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		int count=getNoReturnBookCount(id);
-		try {
-			conn = getConn();
-
-			String sql;
-			sql = "Update user set no_return_count=? where id=?";
-			pstmt = conn.prepareStatement(sql);
-
-			pstmt.setString(1,++count+"");
-			pstmt.setString(2, id);
 	
-			
-
-			pstmt.executeUpdate();
-			pstmt.close();
-			conn.close();
-		} catch (Exception e) {
-			System.out.println(e);
-		} finally {
-			try {if (conn != null)conn.close();
-				if (pstmt != null)pstmt.close();
-			} 
-			catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	public synchronized static void minusLateInReturn(String id) {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		int count=getNoReturnBookCount(id);
-		if(count==0) {
-			return;
-		}
-		try {
-			conn = getConn();
-			
-			String sql;
-			sql = "Update user set no_return_count=? where id=?";
-			pstmt = conn.prepareStatement(sql);
-
-			pstmt.setString(1,--count+"");
-			pstmt.setString(2, id);
-	
-			
-
-			pstmt.executeUpdate();
-			pstmt.close();
-			conn.close();
-		} catch (Exception e) {
-			System.out.println(e);
-		} finally {
-			try {if (conn != null)conn.close();
-				if (pstmt != null)pstmt.close();
-			} 
-			catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-	}
 	
 	public synchronized static void userLogIn(String id) {
 		Connection conn = null;
@@ -411,7 +351,7 @@ public class DB_USER extends DBManager {
 		}
 	}
 	
-	public synchronized static void insertUser(String ID, String PassWord, String Name, String Phone ,String Email, String Address, int Lend_OK,int is_connected) {
+	public synchronized static void insertUser(String ID, String PassWord, String Name, String Phone ,String Email, String Address, int Lend_OK,int is_connected) throws SQLException {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 
@@ -436,9 +376,7 @@ public class DB_USER extends DBManager {
 			pstmt.executeUpdate();
 			pstmt.close();
 			conn.close();
-		} catch (Exception e) {
-			System.out.println(e);
-		} finally {
+		}finally {
 			try {if (conn != null)conn.close();
 				if (pstmt != null)pstmt.close();
 			} 

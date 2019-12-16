@@ -165,7 +165,6 @@ public class MyBookList_Controller extends Base_Controller implements Initializa
 			pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
 			pw.println("PrintBookList:" + DataModel.ID + ":Registered");
 			pw.flush();
-
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
