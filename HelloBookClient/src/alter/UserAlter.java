@@ -80,7 +80,7 @@ public class UserAlter {
 			return "책 ["+Book_Title+"]를(을) 구매하셨습니다.";
 		}
 		else 	if(Request_Status.equals("안팔다")) {
-			return"님이 책 ["+Book_Title+"]를(을) 파는것을 거부하셨습니다.";
+			return Requester_ID+"님이 책 ["+Book_Title+"]를(을) 파는것을 거부하셨습니다.";
 		}
 	
 		
