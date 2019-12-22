@@ -6,7 +6,7 @@ public enum ServerRequest {
 	SEARCH_BOOK("SearchBook"),PRINT_BOOK_LIST("PrintBookList"),
 	ADD_BOOK_DATA("AddBookData"),REMOVE_BOOK_DATA("RemoveBookData"),
 	PRINT_BOOK_DATA("PrintBookData"),PURCHASE_REQUEST("PurchaseRequest"),PURCHASE_ANSWER("PurchaseAnswer"),
-	BORROW_REQUEST("BorrowRequest"), BORROW_ANSWER("BorrowAnswer"),ALTER_OK("AlterOK"),PRINT_NEW_ALTER("printNewAlter"),
+	BORROW_REQUEST("BorrowRequest"), BORROW_ANSWER("BorrowAnswer"),ALERT_OK("AlterOK"),PRINT_NEW_ALTER("printNewAlter"),
 	RETURN_BOOK("ReturnBook"),LATE_IN_RETURN("LateInReturn"),CHAT("Chat");
 	
 	private String request;

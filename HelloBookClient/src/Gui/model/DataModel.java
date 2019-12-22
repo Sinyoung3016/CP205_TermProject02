@@ -3,7 +3,7 @@ package Gui.model;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import alter.UserAlter;
+import alert.UserAlert;
 import book.Book;
 import book.Book.HBoxCell;
 import javafx.beans.binding.DoubleBinding;
@@ -30,7 +30,7 @@ public class DataModel {
 	public static ObservableList<HBoxCell> ItemList_searchBook;
 	public static ObservableList<Text> chatList;
 	
-	public static ObservableList<UserAlter> ItemList_alter;
+	public static ObservableList<UserAlert> ItemList_alter;
 
 	public static ArrayList<Image> advertisement_list = new ArrayList<>();
 
@@ -68,7 +68,7 @@ public class DataModel {
 	        
 	}
 	
-	public static void addAlter(UserAlter alter) {
+	public static void addAlter(UserAlert alter) {
 		ItemList_alter.add(alter);
 	}
 	

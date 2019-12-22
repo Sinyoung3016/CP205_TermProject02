@@ -9,7 +9,7 @@ import java.nio.charset.StandardCharsets;
 import Gui.Base_Controller;
 import Gui.Main_Controller;
 import Gui.model.DataModel;
-import alter.UserAlter;
+import alert.UserAlert;
 import book.Book;
 import javafx.application.Platform;
 import javafx.beans.binding.DoubleBinding;
@@ -158,7 +158,7 @@ public class ClientThread  extends Thread{
                     	alterData[0]=tokens[1];
                 		for(int i=1; i<6; i++) 		{alterData[i]=tokens[i+1];}
                 		
-                    	UserAlter user_alter=new UserAlter(alterData);
+                    	UserAlert user_alter=new UserAlert(alterData);
                     	Platform.runLater(() -> { DataModel.addAlter(user_alter);});
                     	
                     	//Alter end

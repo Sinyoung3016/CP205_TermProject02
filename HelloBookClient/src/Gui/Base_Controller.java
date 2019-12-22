@@ -9,7 +9,7 @@ import java.util.Optional;
 
 import Gui.model.DataModel;
 import Gui.model.LogInModel;
-import alter.UserAlter;
+import alert.UserAlert;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -57,7 +57,7 @@ public class Base_Controller { // 변하지 않는 화면 = Base
 	@FXML
 	public AnchorPane AnchorPane;
 	
-	private ObservableList<UserAlter> ItemList_alter;
+	private ObservableList<UserAlert> ItemList_alter;
 	
 	@SuppressWarnings("unchecked")
 	public void base() {
@@ -101,7 +101,7 @@ public class Base_Controller { // 변하지 않는 화면 = Base
 	        	int index=lv_alter_list.getSelectionModel().getSelectedIndex();
 	        	
 	        	if(index>=0) {
-	        	UserAlter newValue= ItemList_alter.get( lv_alter_list.getSelectionModel().getSelectedIndex());
+	        	UserAlert newValue= ItemList_alter.get( lv_alter_list.getSelectionModel().getSelectedIndex());
 	        	if(newValue!=null) {
 		    		if(newValue.getRequest_Status().equals("빌리다")) {
 		    			Alert alert = new Alert(Alert.AlertType.WARNING, lv_alter_list.getSelectionModel().getSelectedItem().toString(), ButtonType.YES, ButtonType.NO);
