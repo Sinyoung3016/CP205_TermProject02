@@ -2,8 +2,7 @@ package Gui.model;
 
 import java.net.Socket;
 import java.util.ArrayList;
-
-import alert.UserAlert;
+import alter.UserAlter;
 import book.Book;
 import book.Book.HBoxCell;
 import javafx.beans.binding.DoubleBinding;
@@ -15,8 +14,7 @@ import user.User;
 
 public class DataModel {
 
-	public final static String SERVER_IP = "huipulco.iptime.org";
-	//public final static String SERVER_IP = "10.3.166.25";
+	public final static String SERVER_IP = "172.30.1.47";
 	public final static int PORT = 26432;
 
 	public static Socket socket = null;
@@ -30,7 +28,7 @@ public class DataModel {
 	public static ObservableList<HBoxCell> ItemList_searchBook;
 	public static ObservableList<Text> chatList;
 	
-	public static ObservableList<UserAlert> ItemList_alter;
+	public static ObservableList<UserAlter> ItemList_alter;
 
 	public static ArrayList<Image> advertisement_list = new ArrayList<>();
 
@@ -68,8 +66,8 @@ public class DataModel {
 	        
 	}
 	
-	public static void addAlter(UserAlert alter) {
-		ItemList_alter.add(alter);
+	public static void addAlter(UserAlter user_alter) {
+		ItemList_alter.add(user_alter);
 	}
 	
 	public static void addNewBook(Book book) {
