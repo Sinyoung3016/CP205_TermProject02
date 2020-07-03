@@ -9,7 +9,6 @@ import java.util.Optional;
 
 import Gui.model.DataModel;
 import Gui.model.LogInModel;
-import alert.UserAlert;
 import alter.UserAlter;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;

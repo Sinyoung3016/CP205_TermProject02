@@ -24,12 +24,12 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Vector;
 
-import alert.UserAlert;
+import alter.UserAlter;
 import authentication.LogInContext;
 import book.Book;
-import database.DB_ALERT;
 import database.DB_BOOK;
 import database.DB_USER;
+import database.DB_ALTER;
 import database.DB_UsersBook;
 import exception.MyException;
 import javafx.application.Platform;
@@ -429,27 +429,19 @@ public class ServerManage_Controller implements Initializable {
 				List<Book> searchResult=null;
 				if(info.length==1) {//검색 정보 없음-모든 책 검색
 					searchResult=DB_BOOK.getAllBook();
-				}
-				else if(info.length==2) {//검색 정보 1개
+				}else if(info.length==2) {//검색 정보 1개
 					searchResult=DB_BOOK.searchBook(info[1]);
 				}else if(info.length==3) {//검색 정보 2개
-
 					searchResult=DB_BOOK.searchBook(info[1],info[2]);
-					
 				}else if(info.length==4) {//검색 정보 3개
 					searchResult=DB_BOOK.searchBook(info[1],info[2],info[3]);
-
 				}else if(info.length==5) {//검색 정보 4개
-
 					searchResult=DB_BOOK.searchBook(info[1], info[2], info[3], info[4]);
 				}else if(info.length==6) {//검색 정보 5개
-
 					searchResult=DB_BOOK.searchBook(info[1], info[2], info[3], info[4],info[5]);
 				}else if(info.length==7) {//검색 정보 5개
-
 					searchResult=DB_BOOK.searchBook(info[1], info[2], info[3], info[4],info[5],info[6]);
 				}
-				
 				
 				if(searchResult==null||searchResult.size()==0) {
 					String result="SearchBookList:정보에 부합하는 책이 없습니다.";
@@ -669,7 +661,7 @@ public class ServerManage_Controller implements Initializable {
 			
 		}
 		private void printNewAlter(String id,PrintWriter pw) throws SQLException{
-			List<UserAlert> alter_list=DB_ALERT.getAlert(id);
+			List<UserAlter> alter_list=DB_ALTER.getAlter(id);
 			for(int i=0; i<alter_list.size(); i++) {
 				pw.println("Alter:"+alter_list.get(i).getToken());
 				pw.flush();
@@ -691,12 +683,12 @@ public class ServerManage_Controller implements Initializable {
 			String Requested_ID=DB_UsersBook.searchRegisterByNum(Integer.parseInt(Book_Number));
 			
 			DB_UsersBook.BorrowRequest(Integer.parseInt(Book_Number), Requester_ID);
-			DB_ALERT.BorrowRequest(Requester_ID, Integer.parseInt(Book_Number), Book_Title, Requested_ID);
+			DB_ALTER.BorrowRequest(Requester_ID, Integer.parseInt(Book_Number), Book_Title, Requested_ID);
 			this.pw.println("BorrowRequest:대여요청을 보냈습니다.");
 			this.pw.flush();
 			if(listUser.containsKey(Requested_ID)) {//요청받는 사람, 즉 책의 주인이 현재 접속중이면
 				PrintWriter pw=listUser.get(Requested_ID);
-				pw.println("Alter:"+new UserAlert(Requester_ID, Book_Number+"", Book_Title, Requested_ID, "빌리다", "0").getToken());
+				pw.println("Alter:"+new UserAlter(Requester_ID, Book_Number+"", Book_Title, Requested_ID, "빌리다", "0").getToken());
 				pw.flush();
 			}
 			
@@ -704,35 +696,35 @@ public class ServerManage_Controller implements Initializable {
 		
 		private void BorrowAnswer(String answer,String Requester_ID,String Book_Number, String Book_Title,String Requested_ID) throws SQLException {
 			if(answer.equals("수락")) {
-				DB_ALERT.AlertOK(Requester_ID, Integer.parseInt(Book_Number),"빌리다");//빌리겠다는 요청을 보낸 사람의 alter을 처리한걸로 바꿈
+				DB_ALTER.AlterOK(Requester_ID, Integer.parseInt(Book_Number),"빌리다");//빌리겠다는 요청을 보낸 사람의 alter을 처리한걸로 바꿈
 						
 				DB_UsersBook.BorrowBook(Integer.parseInt(Book_Number));
 				DB_BOOK.BorrowBook(Integer.parseInt(Book_Number));
-				DB_ALERT.RequestAnswer(Requester_ID, Integer.parseInt(Book_Number), Book_Title, Requested_ID, "빌려주다");//빌렸다는메세지
+				DB_ALTER.RequestAnswer(Requester_ID, Integer.parseInt(Book_Number), Book_Title, Requested_ID, "빌려주다");//빌렸다는메세지
 				
 				if(listUser.containsKey(Requested_ID)) {//요청받는 사람, 즉 책의 주인이 현재 접속중이면
 					
 					PrintWriter pw=listUser.get(Requested_ID);
-					pw.println("Alter:"+new UserAlert(Requester_ID, Book_Number+"", Book_Title, Requested_ID, "빌려주다", "0").getToken());
+					pw.println("Alter:"+new UserAlter(Requester_ID, Book_Number+"", Book_Title, Requested_ID, "빌려주다", "0").getToken());
 					pw.flush();
 				}
 			}else {//거절
-				DB_ALERT.AlertOK(Requester_ID, Integer.parseInt(Book_Number),"빌리다");//빌리겠다는 요청을 보낸 사람의 alter을 처리한걸로 바꿈
+				DB_ALTER.AlterOK(Requester_ID, Integer.parseInt(Book_Number),"빌리다");//빌리겠다는 요청을 보낸 사람의 alter을 처리한걸로 바꿈
 				
 				DB_UsersBook.NoBorrowSell(Integer.parseInt(Book_Number));
-				DB_ALERT.RequestAnswer(Requester_ID, Integer.parseInt(Book_Number), Book_Title, Requested_ID, "안빌려주다");//안빌려줬다는 메세지
+				DB_ALTER.RequestAnswer(Requester_ID, Integer.parseInt(Book_Number), Book_Title, Requested_ID, "안빌려주다");//안빌려줬다는 메세지
 				
 				if(listUser.containsKey(Requested_ID)) {//요청받는 사람, 즉 책의 주인이 현재 접속중이면
 					
 					PrintWriter pw=listUser.get(Requested_ID);
-					pw.println("Alter:"+new UserAlert(Requester_ID, Book_Number+"", Book_Title, Requested_ID, "안빌려주다", "0").getToken());
+					pw.println("Alter:"+new UserAlter(Requester_ID, Book_Number+"", Book_Title, Requested_ID, "안빌려주다", "0").getToken());
 					pw.flush();
 				}
 			}
 		}
 		
 		private void AlertOK(String Requester_ID, String Book_Number, String Request_Status) throws  SQLException {
-			DB_ALERT.AlertOK(Requester_ID, Integer.parseInt(Book_Number),Request_Status);
+			DB_ALTER.AlterOK(Requester_ID, Integer.parseInt(Book_Number),Request_Status);
 		}
 		
 		
@@ -742,7 +734,7 @@ public class ServerManage_Controller implements Initializable {
 
 			DB_UsersBook.ReturnBook(Integer.parseInt(Book_Number));
 			DB_BOOK.ReturnBook(Integer.parseInt(Book_Number));
-			DB_ALERT.ReturnBook(Requester_ID, Integer.parseInt(Book_Number), Book_Title, Requested_ID);
+			DB_ALTER.ReturnBook(Requester_ID, Integer.parseInt(Book_Number), Book_Title, Requested_ID);
 		
 			pw.println("ReturnBook:반납처리가 완료되었습니다.");
 			pw.flush();
@@ -751,7 +743,7 @@ public class ServerManage_Controller implements Initializable {
 
 			if(listUser.containsKey(Requested_ID)) {//요청받는 사람, 즉 책을 빌린 사람이
 				PrintWriter pw=listUser.get(Requested_ID);
-				pw.println("Alter:"+new UserAlert(Requester_ID, Book_Number+"", Book_Title, Requested_ID, "반납하다", "0").getToken());
+				pw.println("Alter:"+new UserAlter(Requester_ID, Book_Number+"", Book_Title, Requested_ID, "반납하다", "0").getToken());
 				pw.flush();
 			}
 		
@@ -779,13 +771,13 @@ public class ServerManage_Controller implements Initializable {
 			String Requested_ID=DB_UsersBook.searchRegisterByNum(Integer.parseInt(Book_Number));
 			
 			DB_UsersBook.PurchaseRequest(Integer.parseInt(Book_Number), Requester_ID);
-			DB_ALERT.PurchaseRequest(Requester_ID, Integer.parseInt(Book_Number), Book_Title, Requested_ID);
+			DB_ALTER.PurchaseRequest(Requester_ID, Integer.parseInt(Book_Number), Book_Title, Requested_ID);
 			this.pw.println("PurchaseRequest:구매요청을 보냈습니다.");
 			this.pw.flush();
 	
 			if(listUser.containsKey(Requested_ID)) {//요청받는 사람, 즉 책의 주인이 현재 접속중이면
 				PrintWriter pw=listUser.get(Requested_ID);
-				pw.println("Alter:"+new UserAlert(Requester_ID, Book_Number+"", Book_Title, Requested_ID, "사다", "0").getToken());
+				pw.println("Alter:"+new UserAlter(Requester_ID, Book_Number+"", Book_Title, Requested_ID, "사다", "0").getToken());
 				pw.flush();
 			}
 			
@@ -793,11 +785,11 @@ public class ServerManage_Controller implements Initializable {
 		
 		private void PurchaseAnswer(String answer,String Requester_ID,String Book_Number, String Book_Title,String Requested_ID) throws SQLException {
 			if(answer.equals("수락")) {
-				DB_ALERT.AlertOK(Requester_ID, Integer.parseInt(Book_Number),"사다");//빌리겠다는 요청을 보낸 사람의 alter을 처리한걸로 바꿈
+				DB_ALTER.AlterOK(Requester_ID, Integer.parseInt(Book_Number),"사다");//빌리겠다는 요청을 보낸 사람의 alter을 처리한걸로 바꿈
 						
 				DB_UsersBook.deleateBook(Integer.parseInt(Book_Number));
 				DB_BOOK.deleateBook(Integer.parseInt(Book_Number));
-				DB_ALERT.RequestAnswer(Requester_ID, Integer.parseInt(Book_Number), Book_Title, Requested_ID, "팔다");//빌렸다는메세지
+				DB_ALTER.RequestAnswer(Requester_ID, Integer.parseInt(Book_Number), Book_Title, Requested_ID, "팔다");//빌렸다는메세지
 				
 				removeNewBook(Integer.parseInt(Book_Number));
 				broadcastRemoveNewBook(Integer.parseInt(Book_Number));
@@ -805,19 +797,19 @@ public class ServerManage_Controller implements Initializable {
 				
 				if(listUser.containsKey(Requested_ID)) {//요청받는 사람, 즉 책의 주인이 현재 접속중이면
 					PrintWriter pw=listUser.get(Requested_ID);
-					pw.println("Alter:"+new UserAlert(Requester_ID, Book_Number+"", Book_Title, Requested_ID, "팔다", "0").getToken());
+					pw.println("Alter:"+new UserAlter(Requester_ID, Book_Number+"", Book_Title, Requested_ID, "팔다", "0").getToken());
 					pw.flush();
 				}
 			}else {//거절
-				DB_ALERT.AlertOK(Requester_ID, Integer.parseInt(Book_Number),"사다");//빌리겠다는 요청을 보낸 사람의 alter을 처리한걸로 바꿈
+				DB_ALTER.AlterOK(Requester_ID, Integer.parseInt(Book_Number),"사다");//빌리겠다는 요청을 보낸 사람의 alter을 처리한걸로 바꿈
 				
 				DB_UsersBook.NoBorrowSell(Integer.parseInt(Book_Number));
-				DB_ALERT.RequestAnswer(Requester_ID, Integer.parseInt(Book_Number), Book_Title, Requested_ID, "안팔다");//안빌려줬다는 메세지
+				DB_ALTER.RequestAnswer(Requester_ID, Integer.parseInt(Book_Number), Book_Title, Requested_ID, "안팔다");//안빌려줬다는 메세지
 				
 				if(listUser.containsKey(Requested_ID)) {//요청받는 사람, 즉 책의 주인이 현재 접속중이면
 					
 					PrintWriter pw=listUser.get(Requested_ID);
-					pw.println("Alter:"+new UserAlert(Requester_ID, Book_Number+"", Book_Title, Requested_ID, "안팔다", "0").getToken());
+					pw.println("Alter:"+new UserAlter(Requester_ID, Book_Number+"", Book_Title, Requested_ID, "안팔다", "0").getToken());
 					pw.flush();
 				}
 			}
